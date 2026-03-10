@@ -66,13 +66,14 @@ public class Client {
 	}
 
 	// Other Methods
-
+	@Override
 	public String toString() {
 		String display;
 		display = "CLIENT ID: " + CLIENT_ID + "\n" + firstName + " " + lastName + " - " + emailAddress;
 		return display;
 	}
 
+	@Override
 	public boolean equals(Object obj) {
 		if (obj == null) {
 			return false;

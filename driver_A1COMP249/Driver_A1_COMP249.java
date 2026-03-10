@@ -5,9 +5,8 @@
 
 package driver_A1COMP249;
 
-import java.util.Scanner;
-
 import clientPackage.*;
+import java.util.Scanner;
 import travelPackage.*;
 
 public class Driver_A1_COMP249 {
@@ -200,33 +199,33 @@ public class Driver_A1_COMP249 {
 
 			String clientManagementMenu = """
 					Client Management Menu
-						1. Add a client
-						2. Edit a client
-						3. Delete a client
-						4. List all clients
-						5. Back to Main Menu
-					Please select an option from the above menu:""" + " ";
+					\t1. Add a client
+					\t2. Edit a client
+					\t3. Delete a client
+					\t4. List all clients
+					\t5. Back to Main Menu
+					Please select an option from the above menu: """;
 			final int CLIENT_MANAGEMENT_MENU_MAX = 5;
 
 			String clientEditMenu = """
 					Which one would you like to edit?
-						1. Client's first name
-						2. Client's last name
-						3. Client's email address
-						4. Back to previous menu
-					Please enter your choice here:""" + " ";
+					\t1. Client's first name
+					\t2. Client's last name
+					\t3. Client's email address
+					\t4. Back to previous menu
+					Please enter your choice here: """;
 			final int CLIENT_EDIT_MENU_MAX = 4;
 
 			String tripManagementMenu = """
 					Trip Management Menu
-						1. Create a trip
-						2. Edit Trip Information
-						3. Cancel a trip
-						4. List all trips
-						5. List all trips for a specific client
-						6. Back to Main Menu
+					\t1. Create a trip
+					\t2. Edit Trip Information
+					\t3. Cancel a trip
+					\t4. List all trips
+					\t5. List all trips for a specific client
+					\t6. Back to Main Menu
 
-					Please select an option from the above menu:""" + " ";
+					Please select an option from the above menu: """;
 			final int TRIP_MANAGEMENT_MENU_MAX = 6;
 
 			String tripEditMenu = """
@@ -317,102 +316,103 @@ public class Driver_A1_COMP249 {
 						String emailAddress;
 						// Client management subMenu
 						switch (subMenuOption) {
-						case 1: // Add a client
-							System.out.println("Enter the following information in order to add a new client.");
-							System.out.print("Client's first name: ");
-							firstName = keyboard.next();
-							System.out.print("Client's last name: ");
-							lastName = keyboard.next();
-							System.out.print("Clients's email address: ");
-							emailAddress = keyboard.next();
-							clients[numSavedClients] = new Client(firstName, lastName, emailAddress);
-							names[numSavedClients] = firstName + " " + lastName;
-							numSavedClients++;
-							System.out.println("\nClient added successfully!\n");
-							break;
-						case 2: // Edit a client
-							if (numSavedClients == 0) {
-								System.out.println("There are no saved clients.\n");
-								break;
-							}
-							System.out.println("\nHere is the list of current clients:");
-							// print all names in names array
-							printArray(clients, numSavedClients);
-							System.out.print("Enter the index of the client you wish to edit: ");
-							index = keyboard.nextInt();
-							if (index >= numSavedClients) {
-								// no client at that index. empty index in array. return to client management
-								// menu
-								System.out.println("Invalid index. Returning to previous menu...\n");
-								break;
-							}
-							// print menu to edit client and prompt user to pick an attribute to edit.
-							// Validate user input
-							subMenuOption = validateMenuOption(clientEditMenu, CLIENT_EDIT_MENU_MAX, !ZERO_ACCEPTED);
-							switch (subMenuOption) {
-							case 1:// edit first name
-								System.out.print("Enter new first name: ");
+							case 1: // Add a client
+								System.out.println("Enter the following information in order to add a new client.");
+								System.out.print("Client's first name: ");
 								firstName = keyboard.next();
-								clients[index].setFirstName(firstName);
-								break;
-							case 2: // edit last name
-								System.out.print("Enter new last name: ");
+								System.out.print("Client's last name: ");
 								lastName = keyboard.next();
-								clients[index].setLastName(lastName);
-								break;
-							case 3: // edit email address
-								System.out.print("Enter new email address: ");
+								System.out.print("Clients's email address: ");
 								emailAddress = keyboard.next();
-								clients[index].setEmailAddress(emailAddress);
+								clients[numSavedClients] = new Client(firstName, lastName, emailAddress);
+								names[numSavedClients] = firstName + " " + lastName;
+								numSavedClients++;
+								System.out.println("\nClient added successfully!\n");
 								break;
-							case 4:
-								System.out.println("Returning to main menu...\n");
-								// no need for default case since the validateMenuOption function ensures a
-								// valid input
-								break;
-							}
-							// Success message
-							if (subMenuOption != 4) {
-								System.out.println("\nClient updated successfully!\n");
-								// because valid input subMenu option can only be values from 1 to 4. If 4 not
-								// selected, client was edited
-							}
-							break;
-						case 3: // Delete a client
-							if (numSavedClients == 0) {
-								System.out.println("There are no saved clients.\n");
-								break;
-							}
-							System.out.println("\nHere is the list of current clients:");
-							printArray(names, numSavedClients); // print all names in names array
-							System.out.print("Enter the index of the client you wish to delete: ");
-							index = keyboard.nextInt();
-							if (index >= numSavedClients) {
-								// no client at that index. empty index in array
-								System.out.println("Invalid index. Returning to previous menu...\n");
-								break;
-							}
-							// delete trips associated with that client to free up array
-							for (int i = 0; i < numSavedTrips; i++) {
-								if (trips[i].getClient().equals(clients[index])) {
-									deleteIndexInArray(trips, numSavedTrips, i);
-									numSavedTrips--; // update count of number of trips in trips array
+							case 2: // Edit a client
+								if (numSavedClients == 0) {
+									System.out.println("There are no saved clients.\n");
+									break;
 								}
-							}
-							// remove client from array
-							deleteIndexInArray(clients, numSavedClients, index);
-							numSavedClients--;
-							System.out.println("\nClient deleted successfully!\n");
-							break;
-						case 4: // List all clients
-							if (numSavedClients == 0) {
-								System.out.println("There are no saved clients.\n");
-							}
-							printArray(clients, numSavedClients);
-							break;
-						case 5: // Back to Main Menu
-							System.out.println("Returning to main menu...\n");
-							break;
+								System.out.println("\nHere is the list of current clients:");
+								// print all names in names array
+								printArray(clients, numSavedClients);
+								System.out.print("Enter the index of the client you wish to edit: ");
+								index = keyboard.nextInt();
+								if (index >= numSavedClients) {
+									// no client at that index. empty index in array. return to client management
+									// menu
+									System.out.println("Invalid index. Returning to previous menu...\n");
+									break;
+								}
+								// print menu to edit client and prompt user to pick an attribute to edit.
+								// Validate user input
+								subMenuOption = validateMenuOption(clientEditMenu, CLIENT_EDIT_MENU_MAX,
+										!ZERO_ACCEPTED);
+								switch (subMenuOption) {
+									case 1:// edit first name
+										System.out.print("Enter new first name: ");
+										firstName = keyboard.next();
+										clients[index].setFirstName(firstName);
+										break;
+									case 2: // edit last name
+										System.out.print("Enter new last name: ");
+										lastName = keyboard.next();
+										clients[index].setLastName(lastName);
+										break;
+									case 3: // edit email address
+										System.out.print("Enter new email address: ");
+										emailAddress = keyboard.next();
+										clients[index].setEmailAddress(emailAddress);
+										break;
+									case 4:
+										System.out.println("Returning to main menu...\n");
+										// no need for default case since the validateMenuOption function ensures a
+										// valid input
+										break;
+								}
+								// Success message
+								if (subMenuOption != 4) {
+									System.out.println("\nClient updated successfully!\n");
+									// because valid input subMenu option can only be values from 1 to 4. If 4 not
+									// selected, client was edited
+								}
+								break;
+							case 3: // Delete a client
+								if (numSavedClients == 0) {
+									System.out.println("There are no saved clients.\n");
+									break;
+								}
+								System.out.println("\nHere is the list of current clients:");
+								printArray(names, numSavedClients); // print all names in names array
+								System.out.print("Enter the index of the client you wish to delete: ");
+								index = keyboard.nextInt();
+								if (index >= numSavedClients) {
+									// no client at that index. empty index in array
+									System.out.println("Invalid index. Returning to previous menu...\n");
+									break;
+								}
+								// delete trips associated with that client to free up array
+								for (int i = 0; i < numSavedTrips; i++) {
+									if (trips[i].getClient().equals(clients[index])) {
+										deleteIndexInArray(trips, numSavedTrips, i);
+										numSavedTrips--; // update count of number of trips in trips array
+									}
+								}
+								// remove client from array
+								deleteIndexInArray(clients, numSavedClients, index);
+								numSavedClients--;
+								System.out.println("\nClient deleted successfully!\n");
+								break;
+							case 4: // List all clients
+								if (numSavedClients == 0) {
+									System.out.println("There are no saved clients.\n");
+								}
+								printArray(clients, numSavedClients);
+								break;
+							case 5: // Back to Main Menu
+								System.out.println("Returning to main menu...\n");
+								break;
 						}
 					}
 					subMenuOption = 0; // reset to 0 since all other subMenuOptions use the same variable
@@ -441,256 +441,252 @@ public class Driver_A1_COMP249 {
 						subMenuOption = validateMenuOption(tripManagementMenu, TRIP_MANAGEMENT_MENU_MAX,
 								!ZERO_ACCEPTED);
 						switch (subMenuOption) {
-						case 1:// Create a trip
-							System.out.println("Enter the following information in order to create a new trip.");
-							System.out.print("Destination of trip: ");
-							destination = keyboard.next();
-							System.out.print("Duration of trip: ");
-							duration = keyboard.nextInt();
-							System.out.print("Base price of trip: ");
-							basePrice = keyboard.nextDouble();
-							if (numSavedClients == 0) {
-								System.out.println("There are no saved clients.\n");
-								clientOfTrip = null;
-							} else {
-								System.out.println("Here is the list of current clients: ");
-								printArray(clients, numSavedClients);
-								System.out.print("Enter the index of the client associated with this trip: ");
-								indexOfClient = keyboard.nextInt();
-								if (indexOfClient >= numSavedClients) {
-									// no client at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
-								}
-								clientOfTrip = clients[indexOfClient];
-							}
-							System.out.println("\nWhat type of accommodation you would like to add?");
-							accommodationChoice = validateMenuOption(accommodationTypeMenu, ACCOMMODATION_TYPE_MENU_MAX,
-									ZERO_ACCEPTED);
-							if (accommodationChoice == ACCOMMODATION_TYPE_MENU_MAX)
-								break; // last option is return to main menu
-							accommodationType = accommodationTypes[accommodationChoice];
-							accommodationArray = accommodations[accommodationChoice];
-							if (numSavedAccommodations[accommodationChoice] == 0) {
-								System.out.println("There are no saved " + accommodationType + "s.");
-								accommodationOfTrip = null;
-							} else {
-								System.out.println("Here is the list of offered " + accommodationType + "s: ");
-								printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
-								System.out.print("Enter the index of the " + accommodationType
-										+ " you wish to add to this trip: ");
-								indexOfAccommodation = keyboard.nextInt();
-								if (indexOfAccommodation >= numSavedAccommodations[accommodationChoice]) {
-									// no accommodation at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
-								}
-								accommodationOfTrip = accommodationArray[indexOfAccommodation];
-							}
-							System.out.println("What type of transportation you would like to add?");
-							transportChoice = validateMenuOption(transportationTypeMenu, TRANSPORTATION_TYPE_MENU_MAX,
-									ZERO_ACCEPTED);
-							if (transportChoice == TRANSPORTATION_TYPE_MENU_MAX)
-								break; // last option is to return to main menu
-							transportType = transportTypes[transportChoice];
-							transportArray = transports[transportChoice];
-							if (numSavedTransports[transportChoice] == 0) {
-								System.out.println("There are no saved " + transportType + "s.");
-								transportOfTrip = null;
-							} else {
-								System.out.println("Here is the list of offered transportations: ");
-								System.out.print(
-										"Enter the index of the " + transportType + " you wish to add to this trip: ");
-								indexOfTransport = keyboard.nextInt();
-								if (indexOfTransport >= numSavedTransports[transportChoice]) {
-									// no transportation at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
-								}
-								transportOfTrip = transportArray[indexOfTransport];
-							}
-							trips[numSavedTrips] = new Trip(destination, duration, basePrice, clientOfTrip,
-									accommodationOfTrip, transportOfTrip);
-							numSavedTrips++;
-							System.out.println("\nTrip added successfully!\n");
-							break;
-						case 2:// Edit Trip
-							boolean tripUpdated = false; // verification for success message
-							if (numSavedTrips == 0) {
-								System.out.println("There are no saved trips.\n");
-								break;
-							}
-							System.out.println("\nHere is the list of current trips:");
-							printArray(trips, numSavedTrips);
-							System.out.println("Enter the index of the trip you wish to edit: ");
-							indexOfTrip = keyboard.nextInt();
-							if (indexOfTrip >= numSavedTrips) {
-								// no trip at that index. empty index in array
-								System.out.println("Invalid index. Returning to previous menu...\n");
-								break;
-							}
-							Trip tripToEdit = trips[indexOfTrip];
-							subMenuOption = validateMenuOption(tripEditMenu, TRIP_EDIT_MENU_MAX, !ZERO_ACCEPTED); // Print
-																													// trip
-																													// edit
-																													// menu
-																													// and
-																													// prompt
-																													// user
-																													// for
-																													// choice.
-																													// Validate
-																													// input
-							tripUpdated = true;
-							switch (subMenuOption) {
-							case 1:// edit destination
-								System.out.print("Enter new destination: ");
+							case 1:// Create a trip
+								System.out.println("Enter the following information in order to create a new trip.");
+								System.out.print("Destination of trip: ");
 								destination = keyboard.next();
-								tripToEdit.setDestination(destination);
-								tripUpdated = true;
-								break;
-							case 2: // edit duration
-								System.out.print("Enter new duration: ");
+								System.out.print("Duration of trip: ");
 								duration = keyboard.nextInt();
-								tripToEdit.setDuration(duration);
-								tripUpdated = true;
-								break;
-							case 3: // edit base price
-								System.out.print("Enter new base price: ");
+								System.out.print("Base price of trip: ");
 								basePrice = keyboard.nextDouble();
-								tripToEdit.setBasePrice(basePrice);
-								tripUpdated = true;
-								break;
-							case 4: // edit client
-								System.out.println("\nHere is the list of current clients: ");
-								printArray(names, numSavedClients);
-								System.out.print("Enter the index of the client you wish to associate with this trip:");
-								indexOfClient = keyboard.nextInt();
-								if (indexOfClient >= numSavedClients) {
-									// no client at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
+								if (numSavedClients == 0) {
+									System.out.println("There are no saved clients.\n");
+									clientOfTrip = null;
+								} else {
+									System.out.println("Here is the list of current clients: ");
+									printArray(clients, numSavedClients);
+									System.out.print("Enter the index of the client associated with this trip: ");
+									indexOfClient = keyboard.nextInt();
+									if (indexOfClient >= numSavedClients) {
+										// no client at that index. empty index in array
+										System.out.println("Invalid index. Returning to previous menu...\n");
+										break;
+									}
+									clientOfTrip = clients[indexOfClient];
 								}
-								tripToEdit.setClient(clients[indexOfClient]);
-								tripUpdated = true;
-								break;
-							case 5: // edit accommodation
-								System.out.println(
-										"What kind of accommodation would you like to replace the current one with? ");
+								System.out.println("\nWhat type of accommodation you would like to add?");
 								accommodationChoice = validateMenuOption(accommodationTypeMenu,
-										ACCOMMODATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
+										ACCOMMODATION_TYPE_MENU_MAX,
+										ZERO_ACCEPTED);
 								if (accommodationChoice == ACCOMMODATION_TYPE_MENU_MAX)
 									break; // last option is return to main menu
 								accommodationType = accommodationTypes[accommodationChoice];
 								accommodationArray = accommodations[accommodationChoice];
 								if (numSavedAccommodations[accommodationChoice] == 0) {
-									System.out.println("There are no saved " + accommodationType + "s.\n");
-									break;
+									System.out.println("There are no saved " + accommodationType + "s.");
+									accommodationOfTrip = null;
+								} else {
+									System.out.println("Here is the list of offered " + accommodationType + "s: ");
+									printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
+									System.out.print("Enter the index of the " + accommodationType
+											+ " you wish to add to this trip: ");
+									indexOfAccommodation = keyboard.nextInt();
+									if (indexOfAccommodation >= numSavedAccommodations[accommodationChoice]) {
+										// no accommodation at that index. empty index in array
+										System.out.println("Invalid index. Returning to previous menu...\n");
+										break;
+									}
+									accommodationOfTrip = accommodationArray[indexOfAccommodation];
 								}
-								System.out
-										.println("\nHere is the list of current " + accommodationType + "s offered: ");
-								printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
-								System.out.print("Enter the index of the " + accommodationType
-										+ " you wish to associate with this trip:");
-								indexOfAccommodation = keyboard.nextInt();
-								if (indexOfAccommodation >= numSavedAccommodations[accommodationChoice]) {
-									// no accommodation at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
-								}
-								tripToEdit.setAccommodation(accommodationArray[indexOfAccommodation]);
-								tripUpdated = true;
-								break;
-							case 6: // edit transportation
-								System.out.println(
-										"What kind of transportation would you like to replace the current one with? ");
+								System.out.println("What type of transportation you would like to add?");
 								transportChoice = validateMenuOption(transportationTypeMenu,
-										TRANSPORTATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
+										TRANSPORTATION_TYPE_MENU_MAX,
+										ZERO_ACCEPTED);
 								if (transportChoice == TRANSPORTATION_TYPE_MENU_MAX)
-									break; // last option is return to main menu
+									break; // last option is to return to main menu
 								transportType = transportTypes[transportChoice];
 								transportArray = transports[transportChoice];
 								if (numSavedTransports[transportChoice] == 0) {
-									System.out.println("There are no saved " + transportType + "s. \n");
+									System.out.println("There are no saved " + transportType + "s.");
+									transportOfTrip = null;
+								} else {
+									System.out.println("Here is the list of offered transportations: ");
+									System.out.print(
+											"Enter the index of the " + transportType
+													+ " you wish to add to this trip: ");
+									indexOfTransport = keyboard.nextInt();
+									if (indexOfTransport >= numSavedTransports[transportChoice]) {
+										// no transportation at that index. empty index in array
+										System.out.println("Invalid index. Returning to previous menu...\n");
+										break;
+									}
+									transportOfTrip = transportArray[indexOfTransport];
+								}
+								trips[numSavedTrips] = new Trip(destination, duration, basePrice, clientOfTrip,
+										accommodationOfTrip, transportOfTrip);
+								numSavedTrips++;
+								System.out.println("\nTrip added successfully!\n");
+								break;
+							case 2:// Edit Trip
+								boolean tripUpdated = false; // verification for success message
+								if (numSavedTrips == 0) {
+									System.out.println("There are no saved trips.\n");
 									break;
 								}
-								System.out.println("\nHere is the list of current " + transportType + "s offered: ");
-								printArray(transportArray, numSavedTransports[transportChoice]);
-								System.out.print("Enter the index of the " + transportType
-										+ " you wish to associate with this trip:");
-								indexOfTransport = keyboard.nextInt();
-								if (indexOfTransport >= numSavedTransports[transportChoice]) {
-									// no transport at that index. empty index in array
+								System.out.println("\nHere is the list of current trips:");
+								printArray(trips, numSavedTrips);
+								System.out.println("Enter the index of the trip you wish to edit: ");
+								indexOfTrip = keyboard.nextInt();
+								if (indexOfTrip >= numSavedTrips) {
+									// no trip at that index. empty index in array
 									System.out.println("Invalid index. Returning to previous menu...\n");
 									break;
 								}
-								tripToEdit.setTransportation(transportArray[indexOfTransport]);
+								Trip tripToEdit = trips[indexOfTrip];
+								subMenuOption = validateMenuOption(tripEditMenu, TRIP_EDIT_MENU_MAX, !ZERO_ACCEPTED); // Print trip menu and prompt user for choice. Validate input
 								tripUpdated = true;
-								break;
-							case 7:
-								System.out.println("Returning to main menu...\n");
-								// no need for default case since the validateMenuOption function ensures a
-								// valid input
-							}
-
-							// Success message
-							if (tripUpdated == true) {
-								System.out.println("\nTrip updated successfully!\n");
-								// because valid input subMenu option can only be values from 1 to 5. If 5 not
-								// selected, trip was edited
-							}
-
-							break;
-						case 3:// Cancel a trip
-							if (numSavedTrips == 0) {
-								System.out.println("There are no saved trips.\n");
-								break;
-							}
-							System.out.println("\nHere is the list of current trips:");
-							// print all trips in trips array
-							printArray(trips, numSavedTrips);
-							System.out.print("Enter the index of the trip you wish to cancel: ");
-							index = keyboard.nextInt();
-							if (index >= numSavedTrips) {
-								// no trip at that index. empty index in array
-								System.out.println("Invalid index. Returning to previous menu...\n");
-								break;
-							}
-							deleteIndexInArray(trips, numSavedTrips, index);
-							numSavedTrips--;
-							System.out.println("\nTrip canceled successfully!\n");
-							break;
-						case 4:// List all trips
-							if (numSavedTrips == 0) {
-								System.out.println("There are no saved trips.\n");
-							}
-							printArray(trips, numSavedTrips);
-							break;
-						case 5:// List all trips for a specific client
-							if (numSavedClients == 0) {
-								System.out.println("There are no saved clients.\n");
-								break;
-							}
-							System.out.println("Here is the list of clients: ");
-							printArray(clients, numSavedClients);
-							System.out.print("Enter the index of the client whose trips you wish to see: ");
-							indexOfClient = keyboard.nextInt();
-							if (indexOfClient >= numSavedClients) {
-								// no client at that index. empty index in array
-								System.out.println("Invalid index. Returning to previous menu...\n");
-								break;
-							}
-							Client client = clients[indexOfClient]; // for ease of reading
-							for (int i = 0; i < numSavedTrips; i++) {
-								if (trips[i].getClient().equals(client)) {
-									System.out.println(trips[i]);
-									System.out.println();
+								switch (subMenuOption) {
+									case 1:// edit destination
+										System.out.print("Enter new destination: ");
+										destination = keyboard.next();
+										tripToEdit.setDestination(destination);
+										tripUpdated = true;
+										break;
+									case 2: // edit duration
+										System.out.print("Enter new duration: ");
+										duration = keyboard.nextInt();
+										tripToEdit.setDuration(duration);
+										tripUpdated = true;
+										break;
+									case 3: // edit base price
+										System.out.print("Enter new base price: ");
+										basePrice = keyboard.nextDouble();
+										tripToEdit.setBasePrice(basePrice);
+										tripUpdated = true;
+										break;
+									case 4: // edit client
+										System.out.println("\nHere is the list of current clients: ");
+										printArray(names, numSavedClients);
+										System.out.print(
+												"Enter the index of the client you wish to associate with this trip:");
+										indexOfClient = keyboard.nextInt();
+										if (indexOfClient >= numSavedClients) {
+											// no client at that index. empty index in array
+											System.out.println("Invalid index. Returning to previous menu...\n");
+											break;
+										}
+										tripToEdit.setClient(clients[indexOfClient]);
+										tripUpdated = true;
+										break;
+									case 5: // edit accommodation
+										System.out.println(
+												"What kind of accommodation would you like to replace the current one with? ");
+										accommodationChoice = validateMenuOption(accommodationTypeMenu,
+												ACCOMMODATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
+										if (accommodationChoice == ACCOMMODATION_TYPE_MENU_MAX)
+											break; // last option is return to main menu
+										accommodationType = accommodationTypes[accommodationChoice];
+										accommodationArray = accommodations[accommodationChoice];
+										if (numSavedAccommodations[accommodationChoice] == 0) {
+											System.out.println("There are no saved " + accommodationType + "s.\n");
+											break;
+										}
+										System.out
+												.println("\nHere is the list of current " + accommodationType
+														+ "s offered: ");
+										printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
+										System.out.print("Enter the index of the " + accommodationType
+												+ " you wish to associate with this trip:");
+										indexOfAccommodation = keyboard.nextInt();
+										if (indexOfAccommodation >= numSavedAccommodations[accommodationChoice]) {
+											// no accommodation at that index. empty index in array
+											System.out.println("Invalid index. Returning to previous menu...\n");
+											break;
+										}
+										tripToEdit.setAccommodation(accommodationArray[indexOfAccommodation]);
+										tripUpdated = true;
+										break;
+									case 6: // edit transportation
+										System.out.println(
+												"What kind of transportation would you like to replace the current one with? ");
+										transportChoice = validateMenuOption(transportationTypeMenu,
+												TRANSPORTATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
+										if (transportChoice == TRANSPORTATION_TYPE_MENU_MAX)
+											break; // last option is return to main menu
+										transportType = transportTypes[transportChoice];
+										transportArray = transports[transportChoice];
+										if (numSavedTransports[transportChoice] == 0) {
+											System.out.println("There are no saved " + transportType + "s. \n");
+											break;
+										}
+										System.out.println(
+												"\nHere is the list of current " + transportType + "s offered: ");
+										printArray(transportArray, numSavedTransports[transportChoice]);
+										System.out.print("Enter the index of the " + transportType
+												+ " you wish to associate with this trip:");
+										indexOfTransport = keyboard.nextInt();
+										if (indexOfTransport >= numSavedTransports[transportChoice]) {
+											// no transport at that index. empty index in array
+											System.out.println("Invalid index. Returning to previous menu...\n");
+											break;
+										}
+										tripToEdit.setTransportation(transportArray[indexOfTransport]);
+										tripUpdated = true;
+										break;
+									case 7:
+										System.out.println("Returning to main menu...\n");
+										// no need for default case since the validateMenuOption function ensures a
+										// valid input
 								}
-							}
-							break;
-						case 6:
-							System.out.println("Returning to main menu...\n");
-							break;
+
+								// Success message
+								if (tripUpdated == true) {
+									System.out.println("\nTrip updated successfully!\n");
+									// because valid input subMenu option can only be values from 1 to 5. If 5 not
+									// selected, trip was edited
+								}
+
+								break;
+							case 3:// Cancel a trip
+								if (numSavedTrips == 0) {
+									System.out.println("There are no saved trips.\n");
+									break;
+								}
+								System.out.println("\nHere is the list of current trips:");
+								// print all trips in trips array
+								printArray(trips, numSavedTrips);
+								System.out.print("Enter the index of the trip you wish to cancel: ");
+								index = keyboard.nextInt();
+								if (index >= numSavedTrips) {
+									// no trip at that index. empty index in array
+									System.out.println("Invalid index. Returning to previous menu...\n");
+									break;
+								}
+								deleteIndexInArray(trips, numSavedTrips, index);
+								numSavedTrips--;
+								System.out.println("\nTrip canceled successfully!\n");
+								break;
+							case 4:// List all trips
+								if (numSavedTrips == 0) {
+									System.out.println("There are no saved trips.\n");
+								}
+								printArray(trips, numSavedTrips);
+								break;
+							case 5:// List all trips for a specific client
+								if (numSavedClients == 0) {
+									System.out.println("There are no saved clients.\n");
+									break;
+								}
+								System.out.println("Here is the list of clients: ");
+								printArray(clients, numSavedClients);
+								System.out.print("Enter the index of the client whose trips you wish to see: ");
+								indexOfClient = keyboard.nextInt();
+								if (indexOfClient >= numSavedClients) {
+									// no client at that index. empty index in array
+									System.out.println("Invalid index. Returning to previous menu...\n");
+									break;
+								}
+								Client client = clients[indexOfClient]; // for ease of reading
+								for (int i = 0; i < numSavedTrips; i++) {
+									if (trips[i].getClient().equals(client)) {
+										System.out.println(trips[i]);
+										System.out.println();
+									}
+								}
+								break;
+							case 6:
+								System.out.println("Returning to main menu...\n");
+								break;
 						}
 					}
 					subMenuOption = 0; // reset to 0 since all other subMenuOptions use the same variable
@@ -720,97 +716,103 @@ public class Driver_A1_COMP249 {
 						int numberOfStops;
 						// Transport management menu options
 						switch (subMenuOption) {
-						case 1:// Add a transportation option
-							System.out.println("\nWhat is the type of transportation option you would like to add?");
-							transportChoice = validateMenuOption(transportationTypeMenu, TRANSPORTATION_TYPE_MENU_MAX,
-									ZERO_ACCEPTED);
-							transportType = transportTypes[transportChoice];
-							transportArray = transports[transportChoice];
-							System.out.println(
-									"Enter the following information in order to add a " + transportType + " option.");
-							System.out.print("Company name: ");
-							discard = keyboard.nextLine();
-							companyName = keyboard.nextLine();
-							System.out.print("Departure city: ");
-							departureCity = keyboard.nextLine();
-							System.out.print("Arrival city: ");
-							arrivalCity = keyboard.nextLine();
+							case 1:// Add a transportation option
+								System.out
+										.println("\nWhat is the type of transportation option you would like to add?");
+								transportChoice = validateMenuOption(transportationTypeMenu,
+										TRANSPORTATION_TYPE_MENU_MAX,
+										ZERO_ACCEPTED);
+								transportType = transportTypes[transportChoice];
+								transportArray = transports[transportChoice];
+								System.out.println(
+										"Enter the following information in order to add a " + transportType
+												+ " option.");
+								System.out.print("Company name: ");
+								discard = keyboard.nextLine();
+								companyName = keyboard.nextLine();
+								System.out.print("Departure city: ");
+								departureCity = keyboard.nextLine();
+								System.out.print("Arrival city: ");
+								arrivalCity = keyboard.nextLine();
 
-							// Initialize based on flight, train, or bus:
-							// FLIGHT
-							if (transportChoice == numSavedFlightsIndex) {
-								System.out.print("Airline name: ");
-								airlineName = keyboard.nextLine();
-								System.out.print("Luggage Allowance: ");
-								luggageAllowance = keyboard.nextInt();
-								transportArray[numSavedTransports[transportChoice]] = new Flight(companyName,
-										departureCity, arrivalCity, airlineName, luggageAllowance);
-							}
-							// TRAIN
-							else if (transportChoice == numSavedTrainsIndex) {
-								System.out.print("Train type: ");
-								trainType = keyboard.nextLine();
-								System.out.print("Seat class (economy, business, sleeper): ");
-								seatClass = keyboard.next();
-								transportArray[numSavedTransports[transportChoice]] = new Train(companyName,
-										departureCity, arrivalCity, trainType, seatClass);
-							}
-							// BUS
-							else if (transportChoice == numSavedBusesIndex) {
-								System.out.print("Bus company: ");
-								busCompany = keyboard.nextLine();
-								System.out.print("Number of stops: ");
-								numberOfStops = keyboard.nextInt();
-								transportArray[numSavedTransports[transportChoice]] = new Bus(companyName,
-										departureCity, arrivalCity, busCompany, numberOfStops);
-							}
-							numSavedTransports[transportChoice]++;
-							System.out.println("\nTransport option added successfully!\n");
-							break;
-						case 2:// Remove a transportation option
-							System.out.println("What is the type of transportation option you would like to remove?");
-							transportChoice = validateMenuOption(transportationTypeMenu, TRANSPORTATION_TYPE_MENU_MAX,
-									ZERO_ACCEPTED);
-							transportType = transportTypes[transportChoice];
-							transportArray = transports[transportChoice];
-							if (numSavedTransports[transportChoice] == 0) {
-								System.out.println("There are no saved " + transportType + "s.\n");
+								// Initialize based on flight, train, or bus:
+								// FLIGHT
+								if (transportChoice == numSavedFlightsIndex) {
+									System.out.print("Airline name: ");
+									airlineName = keyboard.nextLine();
+									System.out.print("Luggage Allowance: ");
+									luggageAllowance = keyboard.nextInt();
+									transportArray[numSavedTransports[transportChoice]] = new Flight(companyName,
+											departureCity, arrivalCity, airlineName, luggageAllowance);
+								}
+								// TRAIN
+								else if (transportChoice == numSavedTrainsIndex) {
+									System.out.print("Train type: ");
+									trainType = keyboard.nextLine();
+									System.out.print("Seat class (economy, business, sleeper): ");
+									seatClass = keyboard.next();
+									transportArray[numSavedTransports[transportChoice]] = new Train(companyName,
+											departureCity, arrivalCity, trainType, seatClass);
+								}
+								// BUS
+								else if (transportChoice == numSavedBusesIndex) {
+									System.out.print("Bus company: ");
+									busCompany = keyboard.nextLine();
+									System.out.print("Number of stops: ");
+									numberOfStops = keyboard.nextInt();
+									transportArray[numSavedTransports[transportChoice]] = new Bus(companyName,
+											departureCity, arrivalCity, busCompany, numberOfStops);
+								}
+								numSavedTransports[transportChoice]++;
+								System.out.println("\nTransport option added successfully!\n");
 								break;
-							}
-							System.out.println("Here is the list of current " + transportType + "s:");
-							printArray(transportArray, numSavedTransports[transportChoice]);
-							System.out
-									.println("Enter the index of the " + transportType + " you would like to remove: ");
-							index = keyboard.nextInt();
-							if (index >= numSavedTransports[transportChoice]) {
-								// no transport at that index. empty index in array
-								System.out.println("Invalid index. Returning to previous menu...\n");
+							case 2:// Remove a transportation option
+								System.out
+										.println("What is the type of transportation option you would like to remove?");
+								transportChoice = validateMenuOption(transportationTypeMenu,
+										TRANSPORTATION_TYPE_MENU_MAX,
+										ZERO_ACCEPTED);
+								transportType = transportTypes[transportChoice];
+								transportArray = transports[transportChoice];
+								if (numSavedTransports[transportChoice] == 0) {
+									System.out.println("There are no saved " + transportType + "s.\n");
+									break;
+								}
+								System.out.println("Here is the list of current " + transportType + "s:");
+								printArray(transportArray, numSavedTransports[transportChoice]);
+								System.out
+										.println("Enter the index of the " + transportType
+												+ " you would like to remove: ");
+								index = keyboard.nextInt();
+								if (index >= numSavedTransports[transportChoice]) {
+									// no transport at that index. empty index in array
+									System.out.println("Invalid index. Returning to previous menu...\n");
+									break;
+								}
+								deleteIndexInArray(transportArray, numSavedTransports[transportChoice], index);
+								numSavedTransports[transportChoice]--;
 								break;
-							}
-							deleteIndexInArray(transportArray, numSavedTransports[transportChoice], index);
-							numSavedTransports[transportChoice]--;
-							break;
-						case 3:// List transportation options by type (Flight, Train, Bus)
-							System.out.println("Flights:");
-							if (numSavedTransports[numSavedFlightsIndex] == 0) {
-								System.out.println("None.");
-							}
-							printArray(transports[numSavedFlightsIndex], numSavedTransports[numSavedFlightsIndex]);
-							System.out.println("\nTrains:");
-							if (numSavedTransports[numSavedTrainsIndex] == 0) {
-								System.out.println("None.");
-							}
-							printArray(transports[numSavedTrainsIndex], numSavedTransports[numSavedTrainsIndex]);
-							System.out.println("\nBuses:");
-							if (numSavedTransports[numSavedBusesIndex] == 0) {
-								System.out.println("None.");
-							}
-							printArray(transports[numSavedBusesIndex], numSavedTransports[numSavedBusesIndex]);
-							System.out.println();
-							break;
-						case 4:// Back to Main Menu
-							System.out.println("Returning to main menu...\n");
-							break;
+							case 3:// List transportation options by type (Flight, Train, Bus)
+								System.out.println("Flights:");
+								if (numSavedTransports[numSavedFlightsIndex] == 0) {
+									System.out.println("None.");
+								}
+								printArray(transports[numSavedFlightsIndex], numSavedTransports[numSavedFlightsIndex]);
+								System.out.println("\nTrains:");
+								if (numSavedTransports[numSavedTrainsIndex] == 0) {
+									System.out.println("None.");
+								}
+								printArray(transports[numSavedTrainsIndex], numSavedTransports[numSavedTrainsIndex]);
+								System.out.println("\nBuses:");
+								if (numSavedTransports[numSavedBusesIndex] == 0) {
+									System.out.println("None.");
+								}
+								printArray(transports[numSavedBusesIndex], numSavedTransports[numSavedBusesIndex]);
+								System.out.println();
+								break;
+							case 4:// Back to Main Menu
+								System.out.println("Returning to main menu...\n");
+								break;
 						}
 					}
 					subMenuOption = 0; // reset to 0 since all other subMenuOptions use the same variable
@@ -830,74 +832,78 @@ public class Driver_A1_COMP249 {
 						double starRating; // Hotel variable
 						int numOfBeds; // Hostel variable
 						switch (subMenuOption) {
-						case 1:// Add an accommodation
-							System.out.println("What is the type of accommodation option you would like to add?");
-							accommodationChoice = validateMenuOption(accommodationTypeMenu, ACCOMMODATION_TYPE_MENU_MAX,
-									ZERO_ACCEPTED);
-							accommodationType = accommodationTypes[accommodationChoice];
-							accommodationArray = accommodations[accommodationChoice];
-							System.out.println("Enter the following information in order to add a " + accommodationType
-									+ " option.");
-							System.out.print("Name of establishment: ");
-							discard = keyboard.nextLine();
-							name = keyboard.nextLine();
-							System.out.print("Location: ");
-							location = keyboard.nextLine();
-							System.out.print("Price per night: ");
-							pricePerNight = keyboard.nextDouble();
-							// Specific accommodation type variables and initialization
-							if (accommodationChoice == numSavedHotelsIndex) { // Hotel
-								System.out.print("Star rating: ");
-								starRating = keyboard.nextDouble();
-								hotels[numSavedAccommodations[numSavedHotelsIndex]] = new Hotel(name, location,
-										pricePerNight, starRating);
-							} else if (accommodationChoice == numSavedHostelsIndex) { // Hostel
-								System.out.print("Number of shared beds per room: ");
-								numOfBeds = keyboard.nextInt();
-								hostels[numSavedAccommodations[numSavedHostelsIndex]] = new Hostel(name, location,
-										pricePerNight, numOfBeds);
-							}
-							numSavedAccommodations[accommodationChoice]++;
-							System.out.println("Accommodation added successfully!\n");
-							break;
-						case 2:// Remove an accommodation
-							System.out.println("What type of accommodation option you would like to remove?");
-							accommodationChoice = validateMenuOption(accommodationTypeMenu, ACCOMMODATION_TYPE_MENU_MAX,
-									ZERO_ACCEPTED);
-							accommodationType = accommodationTypes[accommodationChoice];
-							accommodationArray = accommodations[accommodationChoice];
-							if (numSavedAccommodations[accommodationChoice] == 0) {
-								System.out.println("There are no saved " + accommodationType + "s.\n");
+							case 1:// Add an accommodation
+								System.out.println("What is the type of accommodation option you would like to add?");
+								accommodationChoice = validateMenuOption(accommodationTypeMenu,
+										ACCOMMODATION_TYPE_MENU_MAX,
+										ZERO_ACCEPTED);
+								accommodationType = accommodationTypes[accommodationChoice];
+								accommodationArray = accommodations[accommodationChoice];
+								System.out.println(
+										"Enter the following information in order to add a " + accommodationType
+												+ " option.");
+								System.out.print("Name of establishment: ");
+								discard = keyboard.nextLine();
+								name = keyboard.nextLine();
+								System.out.print("Location: ");
+								location = keyboard.nextLine();
+								System.out.print("Price per night: ");
+								pricePerNight = keyboard.nextDouble();
+								// Specific accommodation type variables and initialization
+								if (accommodationChoice == numSavedHotelsIndex) { // Hotel
+									System.out.print("Star rating: ");
+									starRating = keyboard.nextDouble();
+									hotels[numSavedAccommodations[numSavedHotelsIndex]] = new Hotel(name, location,
+											pricePerNight, starRating);
+								} else if (accommodationChoice == numSavedHostelsIndex) { // Hostel
+									System.out.print("Number of shared beds per room: ");
+									numOfBeds = keyboard.nextInt();
+									hostels[numSavedAccommodations[numSavedHostelsIndex]] = new Hostel(name, location,
+											pricePerNight, numOfBeds);
+								}
+								numSavedAccommodations[accommodationChoice]++;
+								System.out.println("Accommodation added successfully!\n");
 								break;
-							}
-							System.out.println("Here is the list of current " + accommodationType + "s offered");
-							printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
-							System.out.print(
-									"Enter the index of the " + accommodationType + " you would like to remove: ");
-							index = keyboard.nextInt();
-							if (index >= numSavedAccommodations[accommodationChoice]) {
-								// no item at that index. return to previous menu
-								System.out.println("Invalid index. Returning to previous menu...\n");
+							case 2:// Remove an accommodation
+								System.out.println("What type of accommodation option you would like to remove?");
+								accommodationChoice = validateMenuOption(accommodationTypeMenu,
+										ACCOMMODATION_TYPE_MENU_MAX,
+										ZERO_ACCEPTED);
+								accommodationType = accommodationTypes[accommodationChoice];
+								accommodationArray = accommodations[accommodationChoice];
+								if (numSavedAccommodations[accommodationChoice] == 0) {
+									System.out.println("There are no saved " + accommodationType + "s.\n");
+									break;
+								}
+								System.out.println("Here is the list of current " + accommodationType + "s offered");
+								printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
+								System.out.print(
+										"Enter the index of the " + accommodationType + " you would like to remove: ");
+								index = keyboard.nextInt();
+								if (index >= numSavedAccommodations[accommodationChoice]) {
+									// no item at that index. return to previous menu
+									System.out.println("Invalid index. Returning to previous menu...\n");
+									break;
+								}
+								deleteIndexInArray(accommodationArray, numSavedAccommodations[accommodationChoice],
+										index);
+								numSavedAccommodations[accommodationChoice]--;
 								break;
-							}
-							deleteIndexInArray(accommodationArray, numSavedAccommodations[accommodationChoice], index);
-							numSavedAccommodations[accommodationChoice]--;
-							break;
-						case 3:// List accommodations by type
-							System.out.println("Hotels: ");
-							if (numSavedAccommodations[numSavedHotelsIndex] == 0) {
-								System.out.println("None.");
-							} else
-								printArray(hotels, numSavedAccommodations[numSavedHotelsIndex]);
-							System.out.println("Hostels: ");
-							if (numSavedAccommodations[numSavedHostelsIndex] == 0) {
-								System.out.println("None.");
-							} else
-								printArray(hostels, numSavedAccommodations[numSavedHostelsIndex]);
-							break;
-						case 4:// Back to main menu
-							System.out.println("Returning to main menu...\n");
-							break;
+							case 3:// List accommodations by type
+								System.out.println("Hotels: ");
+								if (numSavedAccommodations[numSavedHotelsIndex] == 0) {
+									System.out.println("None.");
+								} else
+									printArray(hotels, numSavedAccommodations[numSavedHotelsIndex]);
+								System.out.println("Hostels: ");
+								if (numSavedAccommodations[numSavedHostelsIndex] == 0) {
+									System.out.println("None.");
+								} else
+									printArray(hostels, numSavedAccommodations[numSavedHostelsIndex]);
+								break;
+							case 4:// Back to main menu
+								System.out.println("Returning to main menu...\n");
+								break;
 						}
 					}
 					subMenuOption = 0; // reset to 0 since all other subMenuOptions use the same variable
@@ -908,48 +914,50 @@ public class Driver_A1_COMP249 {
 						subMenuOption = validateMenuOption(additionalOperationsMenu, ADDITIONAL_OPERATIONS_MENU_MAX,
 								!ZERO_ACCEPTED);
 						switch (subMenuOption) {
-						case 1:// Display the most expensive trip
-							if (numSavedTrips == 0) {
-								System.out.println("There are no saved trips.\n");
+							case 1:// Display the most expensive trip
+								if (numSavedTrips == 0) {
+									System.out.println("There are no saved trips.\n");
+									break;
+								}
+								findMostExpensiveTrip(trips, numSavedTrips);
 								break;
-							}
-							findMostExpensiveTrip(trips, numSavedTrips);
-							break;
-						case 2:// Calculate and display the total cost of a trip
-							if (numSavedTrips == 0) {
-								System.out.println("There are no saved trips.\n");
+							case 2:// Calculate and display the total cost of a trip
+								if (numSavedTrips == 0) {
+									System.out.println("There are no saved trips.\n");
+									break;
+								}
+								System.out.println("Here is the list of trips");
+								printArray(trips, numSavedTrips);
+								index = validateMenuOption(
+										"\nEnter the index of the trip you would like to calculate the cost of:",
+										numSavedTrips - 1, ZERO_ACCEPTED);
+								Trip trip = trips[index];
+								double cost = trip.calculateTotalCost();
+								String display = String.format("\nThe trip you selected costs $%.2f.", cost);
+								System.out.println(display);
 								break;
-							}
-							System.out.println("Here is the list of trips");
-							printArray(trips, numSavedTrips);
-							index = validateMenuOption(
-									"\nEnter the index of the trip you would like to calculate the cost of:",
-									numSavedTrips - 1, ZERO_ACCEPTED);
-							Trip trip = trips[index];
-							double cost = trip.calculateTotalCost();
-							String display = String.format("\nThe trip you selected costs $%.2f.", cost);
-							System.out.println(display);
-							break;
-						case 3:// Create a deep copy of the transportation array
-							Transportation[] flightsCopy = copyTransportationArray(flights);
-							Transportation[] trainsCopy = copyTransportationArray(trains);
-							Transportation[] busesCopy = copyTransportationArray(buses);
-							Transportation[][] copytransports = { flightsCopy, trainsCopy, busesCopy };
-							System.out.println("\nDeep copy created successfully!\n");
-							break;
-						case 4:// Create a deep copy of the accommodation array
-							Accommodation[] hotelsCopy = copyAccommodationArray(hotels);
-							Accommodation[] hostelsCopy = copyAccommodationArray(hostels);
-							Accommodation[][] accommodationsCopy = { hotelsCopy, hostelsCopy };
-							System.out.println("\nDeep copy created successfully!\n");
-							break;
-						case 5:// Back to main menu
-							System.out.println("\nReturning to main menu...\n");
-							break;
+							case 3:// Create a deep copy of the transportation array
+								Transportation[] flightsCopy = copyTransportationArray(flights);
+								Transportation[] trainsCopy = copyTransportationArray(trains);
+								Transportation[] busesCopy = copyTransportationArray(buses);
+								Transportation[][] copytransports = { flightsCopy, trainsCopy, busesCopy };
+								System.out.println("\nDeep copy created successfully!\n");
+								break;
+							case 4:// Create a deep copy of the accommodation array
+								Accommodation[] hotelsCopy = copyAccommodationArray(hotels);
+								Accommodation[] hostelsCopy = copyAccommodationArray(hostels);
+								Accommodation[][] accommodationsCopy = { hotelsCopy, hostelsCopy };
+								System.out.println("\nDeep copy created successfully!\n");
+								break;
+							case 5:// Back to main menu
+								System.out.println("\nReturning to main menu...\n");
+								break;
 						}
 					}
 					subMenuOption = 0; // reset to 0 since all other subMenuOptions use the same variable
 				} else if (option == 6) {
+					System.out.println("Thank you for using the Smart Travel Agency Booking System!");
+					System.out.println("Returning to main menu...");
 					System.exit(0);
 				}
 
