@@ -19,8 +19,15 @@ public class Trip {
 	private Transportation transportation;
 
 	// Constructors
-	public Trip(String destination, int duration, double basePrice, Client client, Accommodation accommodation,
-			Transportation transportation) {
+	public Trip(String destination, int duration, double basePrice, Client client, Accommodation accommodation, Transportation transportation) {
+		try {
+			if(basePrice < 100)
+				throw InvalidTripDataException("Invalid base price. Must be greater than $100.");
+			if(duration < 1 || duration > 20)
+				throw InvalidTripDataException("Duration must be 1-20 days.");
+			
+		}
+
 		this.destination = destination;
 		this.duration = duration;
 		this.basePrice = basePrice;

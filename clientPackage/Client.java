@@ -21,34 +21,18 @@ public class Client {
 	private String emailAddress;
 
 	// Constructors
-	public Client(String firstName, String lastName, String emailAddress) {
-		//Constructor
-		//Validate parameters
-		try {
-			//check names
-			if(firstName == null || lastName == null) 
-				throw new InvalidClientDataException("The first name and last name entered must not be an empty string.");
-			if(firstName.length() > 50 || lastName.length() > 50)
-				throw new InvalidClientDataException("Exceeds maximum length of 50 characters.");
-			//check email address
-			if(emailAddress.indexOf('@') == -1 || emailAddress.indexOf('.') == -1)
-				throw new InvalidClientDataException("Invalid email address.");
-			if(emailAddress.indexOf(' ') != -1)
-				throw new InvalidClientDataException("Invalid email address. Cannot include spaces.");
+	public Client(String firstName, String lastName, String emailAddress) throws InvalidClientDataException {
+		// Constructor
+		//using the set methods, since they will throw an exception if the arguments are invalid - object will not be created
+		setFirstName(firstName);
+		setLastName(lastName);
+		setEmailAddress(emailAddress);
+		// generate ID
+		String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more
+																// possibility of IDs
+		CLIENT_ID = clientIDFF + clientNum;
+		clientNumber++;
 
-			//no errors - create client
-			this.firstName = firstName;
-			this.lastName = lastName;
-			this.emailAddress = emailAddress;
-			//generate ID
-			String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more possibility of IDs												
-			CLIENT_ID = clientIDFF + clientNum;
-			clientNumber++;
-		}
-		catch(InvalidClientDataException e) {
-			System.err.println("Client not created due to invalid arguments.");
-		}
-		
 	}
 
 	public Client() {
@@ -60,6 +44,43 @@ public class Client {
 	}
 
 	// Accessor and Mutator Methods
+	public void setFirstName(String firstName) throws InvalidClientDataException {
+		// validate first name
+		if (firstName == null) {
+			throw new InvalidClientDataException("The first name entered must not be an empty string.");
+		} else if (firstName.length() > 50) {
+			throw new InvalidClientDataException("Exceeds maximum length of 50 characters.");
+		} else {
+			// no errors - set first name
+			this.firstName = firstName;
+		}
+
+	}
+
+	public void setLastName(String lastName) throws InvalidClientDataException{
+		// validate last name
+		if (lastName == null) {
+			throw new InvalidClientDataException("The first name entered must not be an empty string.");
+		} else if (lastName.length() > 50) {
+			throw new InvalidClientDataException("Exceeds maximum length of 50 characters.");
+		} else {
+			// no errors - set last name
+			this.lastName = lastName;
+		}
+	}
+
+	public void setEmailAddress(String emailAddress) throws InvalidClientDataException{
+		// check email address
+		if (emailAddress.indexOf('@') == -1 || emailAddress.indexOf('.') == -1) {
+			throw new InvalidClientDataException("Invalid email address.");
+		}
+		if (emailAddress.indexOf(' ') != -1) {
+			throw new InvalidClientDataException("Invalid email address. Cannot include spaces.");
+		} else {
+			this.emailAddress = emailAddress;
+		}
+	}
+
 	public String getClientID() {
 		return CLIENT_ID;
 	}
@@ -74,18 +95,6 @@ public class Client {
 
 	public String getEmailAddress() {
 		return emailAddress;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
 	}
 
 	// Other Methods
