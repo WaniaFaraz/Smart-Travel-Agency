@@ -2,10 +2,15 @@
 //Assignment 1
 //Written by Wania Faraz 40332781
 //-----------------------------------------------------------------------------
+
+/* 
+	Client class.
+	Contains the first name, last name, email address of each client
+	Methods: getters, setters (except client ID), equals(), toString()
+ */
 package clientPackage;
 
 public class Client {
-
 	private static String clientIDFF = "C1001"; // FF stands for first five
 	private static int clientNumber = 0; // will be the last 4 digits of the client Id. incremented by 1 each time a
 											// client is initialized
@@ -17,15 +22,33 @@ public class Client {
 
 	// Constructors
 	public Client(String firstName, String lastName, String emailAddress) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.emailAddress = emailAddress;
+		//Constructor
+		//Validate parameters
+		try {
+			//check names
+			if(firstName == null || lastName == null) 
+				throw new InvalidClientDataException("The first name and last name entered must not be an empty string.");
+			if(firstName.length() > 50 || lastName.length() > 50)
+				throw new InvalidClientDataException("Exceeds maximum length of 50 characters.");
+			//check email address
+			if(emailAddress.indexOf('@') == -1 || emailAddress.indexOf('.') == -1)
+				throw new InvalidClientDataException("Invalid email address.");
+			if(emailAddress.indexOf(' ') != -1)
+				throw new InvalidClientDataException("Invalid email address. Cannot include spaces.");
 
-		String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more
-																// possibility of IDs
-		CLIENT_ID = clientIDFF + clientNum;
-		clientNumber++;
-
+			//no errors - create client
+			this.firstName = firstName;
+			this.lastName = lastName;
+			this.emailAddress = emailAddress;
+			//generate ID
+			String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more possibility of IDs												
+			CLIENT_ID = clientIDFF + clientNum;
+			clientNumber++;
+		}
+		catch(InvalidClientDataException e) {
+			System.err.println("Client not created due to invalid arguments.");
+		}
+		
 	}
 
 	public Client() {
