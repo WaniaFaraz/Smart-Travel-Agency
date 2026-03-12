@@ -10,6 +10,8 @@
  */
 package clientPackage;
 
+import exceptions.InvalidClientDataException;
+
 public class Client {
 	private static String clientIDFF = "C1001"; // FF stands for first five
 	private static int clientNumber = 0; // will be the last 4 digits of the client Id. incremented by 1 each time a
@@ -120,3 +122,4 @@ public class Client {
 
 	}
 }
+
