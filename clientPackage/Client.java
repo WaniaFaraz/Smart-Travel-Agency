@@ -37,11 +37,11 @@ public class Client {
 
 	}
 
-	public Client() {
+	public Client() throws InvalidClientDataException {
 		this(null, null, null);
 	}
 
-	public Client(Client other) {
+	public Client(Client other) throws InvalidClientDataException {
 		this(other.firstName, other.lastName, other.emailAddress);
 	}
 
@@ -122,4 +122,5 @@ public class Client {
 
 	}
 }
+
 
