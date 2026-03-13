@@ -33,10 +33,10 @@ public class ClientFileManager {
 		
 		while ((line = br.readLine()) != null) {
 			try {
-				String[] parts = line.split(";");
+				String[] parts = line.split(";"); //separate attribute by ;
 				
 				
-				
+				//need to make sure the object has 4 attributes
 				if (parts.length != 4) {
 					throw new InvalidClientDataException("Invalid number of fields.");
 				}
