@@ -35,8 +35,8 @@ public class ClientFileManager {
 			try {
 				String[] parts = line.split(";");
 				
-				//expected format
-				// clientID; firstName; lastName; emailAddress
+				
+				
 				if (parts.length != 4) {
 					throw new InvalidClientDataException("Invalid number of fields.");
 				}
