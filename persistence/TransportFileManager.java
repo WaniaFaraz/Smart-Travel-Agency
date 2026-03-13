@@ -29,7 +29,7 @@ public class TransportFileManager {
 					Flight f = (Flight) transportations[i];
 					//write the flight data into the csv file
 					pw.println("FLIGHT" + ";"
-                            + f.getTRANSPORT_ID() + ";"
+                            + f.getTransportID() + ";"
                             + f.getCompanyName() + ";"
                             + f.getDepartureCity() + ";"
                             + f.getArrivalCity() + ";"
@@ -40,7 +40,7 @@ public class TransportFileManager {
 				else if (transportations[i] instanceof Train) {
                     Train t = (Train) transportations[i];
                     pw.println("TRAIN" + ";"
-                            + t.getTRANSPORT_ID() + ";"
+                            + t.getTransportID() + ";"
                             + t.getCompanyName() + ";"
                             + t.getDepartureCity() + ";"
                             + t.getArrivalCity() + ";"
@@ -51,7 +51,7 @@ public class TransportFileManager {
 				else if (transportations[i] instanceof Bus) {
                     Bus b = (Bus) transportations[i];
                     pw.println("BUS" + ";"
-                            + b.getTRANSPORT_ID() + ";"
+                            + b.getTransportID() + ";"
                             + b.getCompanyName() + ";"
                             + b.getDepartureCity() + ";"
                             + b.getArrivalCity() + ";"
