@@ -6,7 +6,7 @@ package travelPackage;
 
 public class Bus extends Transportation {
 
-	private static String transportationType = "Bus";
+	private static String TRANSPORT_TYPE = "BUS";
 	private static final double BASE_BUS_FARE = 15;
 	private static final double SURCHARGE_PER_STOP = 3.50;
 
@@ -30,8 +30,8 @@ public class Bus extends Transportation {
 	}
 
 	// Accessor and Mutator Methods
-	public String getTransportationType() {
-		return transportationType;
+	public String getTransportType() {
+		return TRANSPORT_TYPE;
 	}
 
 	public String getBusCompany() {
@@ -58,7 +58,7 @@ public class Bus extends Transportation {
 	@Override
 	public String toString() {
 		String display;
-		display = super.toString() + " \n" + busCompany + " - " + numberOfStops + " stops";
+		display = String.format(";", TRANSPORT_TYPE);
 		return display;
 	}
 

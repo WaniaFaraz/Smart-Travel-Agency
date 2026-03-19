@@ -5,34 +5,36 @@
 
 package travelPackage;
 
+import exceptions.InvalidAccommodationDataException;
+
 abstract public class Accommodation {
-	private static String accommodationIDFF = "A4001"; // FF stands for first five
+	private static String accommodationIDF = "A"; // F stands for first
 	public final String ACCOMMODATION_ID;
-	private static int accommodationNumber = 0;
+	private static int accommodationNumber = 4001;
 
-	private String name;
-	private String location;
-	private double pricePerNight;
-
+	protected String name;
+	protected String location;
+	protected double pricePerNight;
+	
 	// Constructors
-	public Accommodation(String name, String location, double pricePerNight) {
-		this.name = name;
-		this.location = location;
-		this.pricePerNight = pricePerNight;
-
-		String accommodationNum = String.format("%04d", accommodationNumber);
-		ACCOMMODATION_ID = accommodationIDFF + accommodationNum;
+	public Accommodation(String name, String location, double pricePerNight) throws InvalidAccommodationDataException {
+		setName(name);
+		setLocation(location);
+		setPricePerNight(pricePerNight);
+		//ID generation
+		ACCOMMODATION_ID = accommodationIDF + accommodationNumber;
 		accommodationNumber++;
 	}
 
-	public Accommodation(Accommodation other) {
+	public Accommodation(Accommodation other) throws InvalidAccommodationDataException {
 		this(other.name, other.location, other.pricePerNight);
 	}
 
-	public Accommodation() {
-		this(null, null, 0);
+	public Accommodation() throws InvalidAccommodationDataException {
+		this("no name", "No location", 10);
 	}
 
+	//Accessors and Mutators
 	public String getAccommodationID() {
 		return ACCOMMODATION_ID;
 	}
@@ -57,21 +59,18 @@ abstract public class Accommodation {
 		this.location = location;
 	}
 
-	public void setPricePerNight(double pricePerNight) {
+	public void setPricePerNight(double pricePerNight) throws InvalidAccommodationDataException {
+		if(pricePerNight <= 0) {
+			throw new InvalidAccommodationDataException("Price per night must be greater than $0.");
+		}
 		this.pricePerNight = pricePerNight;
 	}
 
 	// Other Methods
-	public abstract Accommodation copy(); // required because cannot use copy constructor of this class since abstract
+	public abstract Accommodation copy() throws InvalidAccommodationDataException; // required because cannot use copy constructor of this class since abstract
 
 	@Override
-	public String toString() {
-		String display;
-		String formattedPricePerNight = String.format("%.2f", pricePerNight);
-		display = "ACCOMMODATION ID: " + ACCOMMODATION_ID + "\n" + name + "\n" + "Location: " + location
-				+ "\nPrice per night: $" + formattedPricePerNight;
-		return display;
-	}
+	public abstract String toString(); //this object cannot be initialized, so it does not need a toString() method. Its children need to define one
 
 	@Override
 	public boolean equals(Object obj) {
@@ -86,7 +85,10 @@ abstract public class Accommodation {
 		}
 	}
 
-	public double calculateCost(int numberOfDays) {
+	public double calculateCost(int numberOfDays) throws InvalidAccommodationDataException{
+		if(numberOfDays < 1) {
+			throw new InvalidAccommodationDataException("Stay must be at least 1 day.");
+		}
 		double cost;
 		cost = pricePerNight * numberOfDays;
 		return cost;

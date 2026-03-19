@@ -7,7 +7,7 @@ package travelPackage;
 
 public class Train extends Transportation {
 
-	private static String transportationType = "Train";
+	private static String TRANSPORT_TYPE = "Train";
 	private static final double ECONOMY_FARE = 32;
 	private static final double BUSINESS_FARE = 57;
 	private static final double SLEEPER_FARE = 89;
@@ -32,8 +32,8 @@ public class Train extends Transportation {
 	}
 
 	// Accessors and Mutator Methods
-	public String getTransportationType() {
-		return transportationType;
+	public String getTransportType() {
+		return TRANSPORT_TYPE;
 	}
 
 	public String getTrainType() {
@@ -61,7 +61,7 @@ public class Train extends Transportation {
 	@Override
 	public String toString() {
 		String display;
-		display = super.toString() + " \n" + trainType + " train -  " + seatClass + "Class";
+		display = String.join(";", TRANSPORT_TYPE);
 		return display;
 	}
 

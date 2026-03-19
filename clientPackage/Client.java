@@ -13,8 +13,8 @@ package clientPackage;
 import exceptions.InvalidClientDataException;
 
 public class Client {
-	private static String clientIDFF = "C1001"; // FF stands for first five
-	private static int clientNumber = 0; // will be the last 4 digits of the client Id. incremented by 1 each time a
+	private static String clientIDF = "C"; // F stands for first
+	private static int clientNumber = 1001; // will be the last 4 digits of the client Id. incremented by 1 each time a
 											// client is initialized
 
 	public final String CLIENT_ID; // assigned automatically
@@ -25,20 +25,15 @@ public class Client {
 	// Constructors
 	public Client(String firstName, String lastName, String emailAddress) throws InvalidClientDataException {
 		// Constructor
-		//using the set methods, since they will throw an exception if the arguments are invalid - object will not be created
-		//putting everything in a try block so that object is not created if there is an issue
-		try{
-			setFirstName(firstName);
-			setLastName(lastName);
-			setEmailAddress(emailAddress);
-			// generate ID
-			String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more
-																// possibility of IDs
-			CLIENT_ID = clientIDFF + clientNum;
-			clientNumber++;
-		}catch(InvalidClientDataException e) {
-			throw new InvalidClientDataException(e.getMessage()); //to pass error on to main
-		}
+		// using the set methods, since they will throw an exception if the arguments are invalid - object will not be created
+		setFirstName(firstName);
+		setLastName(lastName);
+		setEmailAddress(emailAddress);
+		// generate ID
+		String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more
+		// possibility of IDs
+		CLIENT_ID = clientIDF + clientNum;
+		clientNumber++;
 	}
 
 	public Client() throws InvalidClientDataException {
@@ -46,7 +41,8 @@ public class Client {
 	}
 
 	public Client(Client other) throws InvalidClientDataException {
-		this(other.firstName, other.lastName, other.emailAddress); //should never throw an exception because copying a valid client only
+		this(other.firstName, other.lastName, other.emailAddress); // should never throw an exception because copying a
+																	// valid client only
 	}
 
 	// Accessor and Mutator Methods
@@ -63,7 +59,7 @@ public class Client {
 
 	}
 
-	public void setLastName(String lastName) throws InvalidClientDataException{
+	public void setLastName(String lastName) throws InvalidClientDataException {
 		// validate last name
 		if (lastName == null) {
 			throw new InvalidClientDataException("The first name entered must not be an empty string.");
@@ -75,14 +71,18 @@ public class Client {
 		}
 	}
 
-	public void setEmailAddress(String emailAddress) throws InvalidClientDataException{
+	public void setEmailAddress(String emailAddress) throws InvalidClientDataException {
 		// check email address
 		if (emailAddress.indexOf('@') == -1 || emailAddress.indexOf('.') == -1) {
 			throw new InvalidClientDataException("Invalid email address.");
 		}
 		if (emailAddress.indexOf(' ') != -1) {
 			throw new InvalidClientDataException("Invalid email address. Cannot include spaces.");
-		} else {
+		}
+		if(emailAddress.length() > 100) {
+			throw new InvalidClientDataException("Invalid email address. Exceeds max 100 characters.");
+		}
+		else {
 			this.emailAddress = emailAddress;
 		}
 	}
@@ -107,7 +107,7 @@ public class Client {
 	@Override
 	public String toString() {
 		String display;
-		display = "CLIENT ID: " + CLIENT_ID + "\n" + firstName + " " + lastName + " - " + emailAddress;
+		display = String.join(";", CLIENT_ID, firstName, lastName, emailAddress);
 		return display;
 	}
 
@@ -126,5 +126,3 @@ public class Client {
 
 	}
 }
-
-

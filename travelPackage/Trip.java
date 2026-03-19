@@ -5,13 +5,15 @@
 package travelPackage;
 
 import clientPackage.*;
+import exceptions.InvalidAccommodationDataException;
 import exceptions.InvalidClientDataException;
+import exceptions.InvalidTransportDataException;
 import exceptions.InvalidTripDataException;
 
 public class Trip {
-	private static String tripIDFF = "T2001"; // FF stands for first five
+	private static String tripIDF = "T"; // FF stands for first
 	public final String TRIP_ID;
-	private static int tripNumber = 0;
+	private static int tripNumber = 2001; //last 4 digits of trip ID. incremented by 1 after each initialization
 
 	private String destination;
 	private int duration;
@@ -21,7 +23,7 @@ public class Trip {
 	private Transportation transportation;
 
 	// Constructors
-	public Trip(String destination, int duration, double basePrice, Client client, Accommodation accommodation, Transportation transportation) throws InvalidTripDataException {
+	public Trip(String destination, int duration, double basePrice, Client client, Accommodation accommodation, Transportation transportation) throws InvalidTripDataException, InvalidAccommodationDataException, InvalidTransportDataException {
 		//Use setters to instantiate object since those will validate parameters
 		try { //only duration and base price generate exceptions. Everything within try block so that invalid trip is not created
 			setDuration(duration);
@@ -32,19 +34,18 @@ public class Trip {
 			setAccommodation(accommodation);
 			setTransportation(transportation);
 			//tripID
-			String tripNum = String.format("%04d", tripNumber);
-			TRIP_ID = tripIDFF + tripNum;
+			TRIP_ID = tripIDF + tripNumber;
 			tripNumber++;
 		} catch (InvalidTripDataException e) {
 			throw new InvalidTripDataException(e.getMessage() + " Trip not created.");
 		}	
 	}
 
-	public Trip() throws InvalidTripDataException, InvalidClientDataException{
+	public Trip() throws InvalidTripDataException, InvalidClientDataException, InvalidAccommodationDataException, InvalidTransportDataException{
 		this("no destination", 0, 100, new Client(), null, null);
 	}
 
-	public Trip(Trip other) throws InvalidTripDataException, InvalidClientDataException{
+	public Trip(Trip other) throws InvalidTripDataException, InvalidClientDataException, InvalidAccommodationDataException, InvalidTransportDataException{
 		// creating a copy of the client since the constructor does not copy. no need to
 		// create new transportations and accommodations since the constructor copies anyway
 		this(other.destination, other.duration, other.basePrice, new Client(other.client), other.accommodation,
@@ -74,11 +75,11 @@ public class Trip {
 		this.client = client; //no need to create new so that client can directly be edited from the trip
 	}
 
-	public void setAccommodation(Accommodation accommodation) {
+	public void setAccommodation(Accommodation accommodation) throws InvalidAccommodationDataException{
 		this.accommodation = accommodation.copy();
 	}
 
-	public void setTransportation(Transportation transportation) {
+	public void setTransportation(Transportation transportation) throws InvalidTransportDataException {
 		this.transportation = transportation.copy();
 	}
 
@@ -128,9 +129,7 @@ public class Trip {
 	public String toString() {
 		String display;
 		String formattedPrice = String.format("%.2f", basePrice);
-		display = client.toString() + "\n";
-		display = display + "TRIP ID: " + TRIP_ID + "\n" + "Destination: " + destination + "\n" + "Duration: "
-				+ duration + " days" + "\n" + "Base Price: $" + formattedPrice;
+		display = String.join(";", TRIP_ID, client.CLIENT_ID, accommodation.ACCOMMODATION_ID, transportation.TRANSPORT_ID, destination, duration + "", formattedPrice);
 		return display;
 	}
 
@@ -151,7 +150,7 @@ public class Trip {
 		}
 	}
 
-	public double calculateTotalCost() {
+	public double calculateTotalCost() throws InvalidAccommodationDataException {
 		double cost = basePrice + accommodation.calculateCost(duration) + transportation.calculateCost(duration);
 		return cost;
 	}

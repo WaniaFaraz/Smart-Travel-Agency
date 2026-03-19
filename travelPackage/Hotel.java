@@ -4,50 +4,56 @@
 //-----------------------------------------------------------------------------
 package travelPackage;
 
+import exceptions.InvalidAccommodationDataException;
+
 public class Hotel extends Accommodation {
 
-	private static String accommodationType = "Hotel";
+	private static final String ACCOMMODATION_TYPE = "HOTEL";
 	private static final double HOTEL_SERVICE_SURCHARGE = 0.1;
 
 	private double starRating;
 
 	// Constructors
-	public Hotel(String name, String location, double pricePerNight, double starRating) {
+	public Hotel(String name, String location, double pricePerNight, double starRating) throws InvalidAccommodationDataException {
 		super(name, location, pricePerNight);
-		this.starRating = starRating;
+		setStarRating(starRating);
 	}
 
-	public Hotel(Hotel other) {
+	public Hotel(Hotel other) throws InvalidAccommodationDataException{
 		this(other.getName(), other.getLocation(), other.getPricePerNight(), other.starRating);
 	}
 
-	public Hotel() {
+	public Hotel() throws InvalidAccommodationDataException {
 		this(null, null, 0, 0);
 	}
 
 	// Accessors and Mutators
 	public String getAccommodationType() {
-		return accommodationType;
+		return ACCOMMODATION_TYPE;
 	}
 
 	public double getStarRating() {
 		return starRating;
 	}
 
-	public void setStarRating(double starRating) {
+	public void setStarRating(double starRating) throws InvalidAccommodationDataException {
+		if(starRating < 1 || starRating > 5) {
+			throw new InvalidAccommodationDataException("Star rating must be between 1 and 5 stars.");
+		}
 		this.starRating = starRating;
 	}
 
 	// Other Methods
 	@Override
-	public Accommodation copy() {
+	public Accommodation copy() throws InvalidAccommodationDataException {
 		return new Hotel(this);
 	}
 
 	@Override
 	public String toString() {
 		String display;
-		display = super.toString() + "\n" + starRating + " stars";
+		String formattedPrice = String.format("%.2f", pricePerNight);
+		display = String.join(";", ACCOMMODATION_TYPE, ACCOMMODATION_ID, name, location, formattedPrice, starRating+"" );
 		return display;
 	}
 
@@ -64,7 +70,10 @@ public class Hotel extends Accommodation {
 	}
 
 	@Override
-	public double calculateCost(int numberOfDays) {
+	public double calculateCost(int numberOfDays) throws InvalidAccommodationDataException {
+		if(numberOfDays < 1) {
+			throw new InvalidAccommodationDataException("Stay must be at least 1 day.");
+		}
 		double cost;
 		cost = super.calculateCost(numberOfDays) * (1 + HOTEL_SERVICE_SURCHARGE);
 		return cost;

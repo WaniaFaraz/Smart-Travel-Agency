@@ -5,14 +5,16 @@
 
 package travelPackage;
 
-abstract public class Transportation {
-	private static String transportIDFF = "TR3001"; // FF stands for first five
-	public final String TRANSPORT_ID; // assigned automatically
-	private static int transportNumber = 0;
+import exceptions.InvalidTransportDataException;
 
-	private String companyName;
-	private String departureCity;
-	private String arrivalCity;
+abstract public class Transportation {
+	private static String transportIDF = "TR"; // F stands for first
+	public final String TRANSPORT_ID; // assigned automatically
+	private static int transportNumber = 3001;
+
+	protected String companyName;
+	protected String departureCity;
+	protected String arrivalCity;
 
 	// Constructors
 	public Transportation(String companyName, String departureCity, String arrivalCity) {
@@ -20,8 +22,7 @@ abstract public class Transportation {
 		this.departureCity = departureCity;
 		this.arrivalCity = arrivalCity;
 
-		String transportNum = String.format("%04d", transportNumber);
-		TRANSPORT_ID = transportIDFF + transportNum;
+		TRANSPORT_ID = transportIDF + transportNumber;
 		transportNumber++;
 	}
 
@@ -67,11 +68,7 @@ abstract public class Transportation {
 															// class since abstract
 
 	@Override
-	public String toString() {
-		String display;
-		display = "TRANSPORT ID: " + TRANSPORT_ID + "\n" + companyName + ": " + departureCity + " to " + arrivalCity;
-		return display;
-	}
+	public abstract String toString(); //Transportation cannot be intitialized. no need for toString()
 
 	@Override
 	public boolean equals(Object obj) {
@@ -88,5 +85,5 @@ abstract public class Transportation {
 		}
 	}
 
-	public abstract Transportation copy();
+	public abstract Transportation copy() throws InvalidTransportDataException;
 }

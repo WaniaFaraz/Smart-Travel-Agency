@@ -4,30 +4,35 @@
 //-----------------------------------------------------------------------------
 package travelPackage;
 
+import exceptions.InvalidAccommodationDataException;
+
 public class Hostel extends Accommodation {
 
-	private static String accommodationType = "Hostel";
+	private static final String ACCOMMODATION_TYPE = "HOSTEL";
 	private static final double HOSTEL_DISCOUNT = 0.15;
 
 	private int numOfBeds; // number of shared beds per hotel room
 
 	// Constructors
-	public Hostel(String name, String location, double pricePerNight, int numOfBeds) {
+	public Hostel(String name, String location, double pricePerNight, int numOfBeds) throws InvalidAccommodationDataException {
 		super(name, location, pricePerNight);
-		this.numOfBeds = numOfBeds;
+		if(pricePerNight > 150) {
+			throw new InvalidAccommodationDataException("Max price for Hostel is $150.");
+		}
+		setNumOfBeds(numOfBeds);
 	}
 
-	public Hostel(Hostel other) {
-		this(other.getName(), other.getLocation(), other.getPricePerNight(), other.numOfBeds);
+	public Hostel(Hostel other) throws InvalidAccommodationDataException {
+		this(other.name, other.location, other.pricePerNight, other.numOfBeds);
 	}
 
-	public Hostel() {
-		this(null, null, 0, 0);
+	public Hostel() throws InvalidAccommodationDataException {
+		this("no name", "no location", 1, 0);
 	}
 
 	// Accessors and Mutators
 	public String getAccommodationType() {
-		return accommodationType;
+		return ACCOMMODATION_TYPE;
 	}
 
 	public int getNumOfBeds() {
@@ -40,14 +45,15 @@ public class Hostel extends Accommodation {
 
 	// Other Methods
 	@Override
-	public Accommodation copy() {
+	public Accommodation copy() throws InvalidAccommodationDataException {
 		return new Hostel(this);
 	}
 
 	@Override
 	public String toString() {
 		String display;
-		display = super.toString() + "\n" + numOfBeds + " beds";
+		String formattedPrice = String.format("%.2f", pricePerNight);
+		display = String.join(";", ACCOMMODATION_TYPE, ACCOMMODATION_ID, name, location, formattedPrice, numOfBeds+"");
 		return display;
 	}
 
@@ -64,7 +70,10 @@ public class Hostel extends Accommodation {
 	}
 
 	@Override
-	public double calculateCost(int numberOfDays) {
+	public double calculateCost(int numberOfDays) throws InvalidAccommodationDataException{
+		if(numberOfDays < 1) {
+			throw new InvalidAccommodationDataException("Stay must be at least one day.");
+		}
 		double cost;
 		cost = super.calculateCost(numberOfDays) * (1 - HOSTEL_DISCOUNT);
 		return cost;

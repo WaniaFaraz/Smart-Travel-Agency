@@ -5,33 +5,35 @@
 
 package travelPackage;
 
+import exceptions.InvalidTransportDataException;
+
 public class Flight extends Transportation {
-	private static String transportationType = "Flight";
-	private static final double TICKET_PRICE = 370;
+	public static final String TRANSPORT_TYPE = "FLIGHT";
+	private double ticketPrice;
 
 	private String airlineName;
 	private double luggageAllowance; // unit of kg
 
 	// Constructors
-	public Flight(String companyName, String departureCity, String arrivalCity, String airlineName,
-			double luggageAllowance) {
+	public Flight(String companyName, String departureCity, String arrivalCity, String airlineName, double luggageAllowance, double ticketPrice) throws InvalidTransportDataException {
 		super(companyName, departureCity, arrivalCity);
-		this.airlineName = airlineName;
-		this.luggageAllowance = luggageAllowance;
+		setAirlineName(airlineName);
+		setLuggageAllowance(luggageAllowance);
+		setTicketPrice(ticketPrice);
 	}
 
-	public Flight(Flight other) {
+	public Flight(Flight other) throws InvalidTransportDataException {
 		this(other.getCompanyName(), other.getDepartureCity(), other.getArrivalCity(), other.airlineName,
-				other.luggageAllowance);
+				other.luggageAllowance,other.ticketPrice);
 	}
 
-	public Flight() {
-		this(null, null, null, null, 0);
+	public Flight() throws InvalidTransportDataException {
+		this("no company", "no departure city", "no arrival city", "no airline", 0, 100);
 	}
 
 	// Accessors and Mutators
-	public String getTransportationType() {
-		return transportationType;
+	public String getTransportType() {
+		return TRANSPORT_TYPE;
 	}
 
 	public String getAirlineName() {
@@ -46,8 +48,14 @@ public class Flight extends Transportation {
 		this.airlineName = airlineName;
 	}
 
-	public void setLuggageAllowance(double luggageAllowance) {
+	public void setLuggageAllowance(double luggageAllowance) throws InvalidTransportDataException {
+		if(luggageAllowance < 0) {
+			throw new InvalidTransportDataException("Luggage Allowance has a minimum of 0kg.");
+		}
 		this.luggageAllowance = luggageAllowance;
+	}
+	public void setTicketPrice(double ticketPrice) {
+		this.ticketPrice = ticketPrice;
 	}
 
 	// Other Methods
@@ -55,12 +63,13 @@ public class Flight extends Transportation {
 	public String toString() {
 		String display;
 		String formattedLuggage = String.format("%.2f", luggageAllowance);
-		display = super.toString() + " \n" + airlineName + "\n" + "Max Luggage Allowance: " + formattedLuggage + "kg";
+		String formattedTicketPrice = String.format("%.2f", ticketPrice);
+		display = String.join(";", TRANSPORT_TYPE, TRANSPORT_ID, companyName, departureCity, arrivalCity, formattedTicketPrice, formattedLuggage);
 		return display;
 	}
 
 	@Override
-	public Transportation copy() {
+	public Transportation copy() throws InvalidTransportDataException {
 		return new Flight(this);
 	}
 
@@ -79,7 +88,7 @@ public class Flight extends Transportation {
 
 	public double calculateCost(int numberOfDays) {
 		// using number of days doesn't make sense for a flight
-		double cost = TICKET_PRICE * numberOfDays;
+		double cost = ticketPrice * numberOfDays;
 		return cost;
 	}
 
