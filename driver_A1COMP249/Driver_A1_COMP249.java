@@ -8,8 +8,11 @@
 package driver_A1COMP249;
 
 import clientPackage.*;
-import java.util.Scanner;
 import travelPackage.*;
+import exceptions.*;
+
+import java.util.Scanner;
+
 
 public class Driver_A1_COMP249 {
 
@@ -18,7 +21,7 @@ public class Driver_A1_COMP249 {
 	public static void main(String[] args) {
 
 		String welcomeMessage = """
-				Assignment by Wania Faraz.
+				Assignment by Wania Faraz and Zahira Atmani.
 
 				Welcome to the SmartTravel booking management system.
 				""";
@@ -36,7 +39,7 @@ public class Driver_A1_COMP249 {
 		int initialChoice;
 		final int INITIAL_PROMPT_MAX = 2;
 		final boolean ZERO_ACCEPTED = true;
-		initialChoice = validateMenuOption(initialPrompt, INITIAL_PROMPT_MAX, !ZERO_ACCEPTED);
+		initialChoice = validateMenuOption(initialPrompt, INITIAL_PROMPT_MAX, !ZERO_ACCEPTED); //validates menu option - initialChoice is always a valid menu option
 		System.out.println();
 		System.out.println();
 
@@ -44,119 +47,163 @@ public class Driver_A1_COMP249 {
 		if (initialChoice == 1) {
 
 			// 1. Create
-			Client client1 = new Client("Jane", "Doe", "janedoe@gmail.com");
-			Client client2 = new Client("John", "Doe", "johndoe@gmail.com");
-			Client client3 = new Client("Bob", "Ross", "bobross@gmail.com");
-			Client client4 = new Client("Bob", "Ross", "bobross@gmail.com");
+			boolean creationSuccessful = false;
+			Client client1 = null, client2 = null, client3 = null, client4 = null;
+			Transportation flight1 = null, flight2 = null, flight3 = null;
+			Transportation train1 = null, train2 = null, train3 = null;
+			Transportation bus1 = null, bus2 = null, bus3 = null;
+			Accommodation hotel1 = null, hotel2 = null, hotel3 = null;
+			Accommodation hostel1 = null, hostel2 = null, hostel3 = null;
+			Trip trip1 = null, trip2 = null, trip3 = null, trip4 = null;
+			
+			try {
+				//Client creation
+				client1 = new Client("Jane", "Doe", "janedoe@gmail.com");
+				client2 = new Client("John", "Doe", "johndoe@gmail.com");
+				client3 = new Client("Bob", "Ross", "bobross@gmail.com");
+				client4 = new Client("Bob", "Ross", "bobross@gmail.com");
 
-			Transportation flight1 = new Flight("The Emirates Group", "Toronto", "Dubai", "Emirates Airlines", 25);
-			Transportation flight2 = new Flight("International Airlines Group", "London", "Santiago", "British Airways",
-					23);
-			Transportation flight3 = new Flight("International Airlines Group", "London", "Santiago", "British Airways",
-					23);
+				//Transportation creation
+				flight1 = new Flight("The Emirates Group", "Toronto", "Dubai", "Emirates Airlines", 25, 250);
+				flight2 = new Flight("International Airlines Group", "London", "Santiago", "British Airways",23, 300);
+				flight3 = new Flight("International Airlines Group", "London", "Santiago", "British Airways",23, 300);
 
-			Transportation train1 = new Train("VIA Rail", "Montreal", "Toronto", "Intercity", "Economy");
-			Transportation train2 = new Train("VIA Rail", "Montreal", "Halifax", "Transcontinental", "Sleeper");
-			Transportation train3 = new Train("VIA Rail", "Montreal", "Halifax", "Transcontinental", "Sleeper");
+				train1 = new Train("VIA Rail", "Montreal", "Toronto", "Intercity", "Economy", 30);
+				train2 = new Train("VIA Rail", "Montreal", "Halifax", "Transcontinental", "Sleeper", 40);
+				train3 = new Train("VIA Rail", "Montreal", "Halifax", "Transcontinental", "Sleeper", 40);
 
-			Transportation bus1 = new Bus("Keolis Canada", "Montreal", "Ottawa", "Orleans Express", 4);
-			Transportation bus2 = new Bus("Flix SE", "Vancouver", "Calgary", "FlixBus", 3);
-			Transportation bus3 = new Bus("Flix SE", "Vancouver", "Calgary", "FlixBus", 3);
+				bus1 = new Bus("Orleans Express", "Montreal", "Ottawa", 4, 10);
+				bus2 = new Bus("FlixBus", "Vancouver", "Calgary", 3, 15);
+				bus3 = new Bus("FlixBus", "Vancouver", "Calgary", 3, 15);
 
-			Accommodation hotel1 = new Hotel("Holiday Inn", "Lisbon", 108, 3);
-			Accommodation hotel2 = new Hotel("Sheraton", "Istanbul City Center", 184, 5);
-			Accommodation hotel3 = new Hotel("Sheraton", "Istanbul City Center", 184, 5);
+				//Accommodation creation
+				hotel1 = new Hotel("Holiday Inn", "Lisbon", 108, 3);
+				hotel2 = new Hotel("Sheraton", "Istanbul City Center", 184, 5);
+				hotel3 = new Hotel("Sheraton", "Istanbul City Center", 184, 5);
 
-			Accommodation hostel1 = new Hostel("Once Again Hostel", "Bangkok", 47, 2);
-			Accommodation hostel2 = new Hostel("The Bee Hostel", "Amsterdam City Centre", 80, 1);
-			Accommodation hostel3 = new Hostel("The Bee Hostel", "Amsterdam City Centre", 80, 1);
+				hostel1 = new Hostel("Once Again Hostel", "Bangkok", 47, 2);
+				hostel2 = new Hostel("The Bee Hostel", "Amsterdam City Centre", 80, 1);
+				hostel3 = new Hostel("The Bee Hostel", "Amsterdam City Centre", 80, 1);
 
-			Trip trip1 = new Trip("Spain", 5, 43, client1, hotel1, flight1);
-			Trip trip2 = new Trip("Egypt", 3, 32, client2, hotel2, flight2);
-			Trip trip3 = new Trip("Phillipines", 3, 430, client3, hotel3, flight3);
-			Trip trip4 = new Trip("Phillipines", 3, 430, client3, hotel3, flight3);
+				//Trip creation
+				trip1 = new Trip("Spain", 5, 150, client1, hotel1, flight1);
+				trip2 = new Trip("Egypt", 3, 200, client2, hotel2, flight2);
+				trip3 = new Trip("Phillipines", 3, 430, client3, hotel3, flight3);
+				trip4 = new Trip("Phillipines", 3, 430, client3, hotel3, flight3);
 
-			// 4. Create Arrays for...
-			Client[] clientsHardcoded = { client1, client2, client3, client4 };
-			Trip[] tripsHardcoded = { trip1, trip2, trip3, trip4 };
-			Transportation[] transportationsHardcoded = { flight1, flight2, flight3, train1, train2, train3, bus1, bus2,
-					bus3 };
-			Accommodation[] accommodationsHardcoded = { hotel1, hotel2, hotel3, hostel1, hostel2, hostel3 };
-
-			// 2. Display all objects using toString()
-			System.out.println("\n2. Display all objects using toString():");
-
-			System.out.println("\nClients:");
-			for (int i = 0; i < clientsHardcoded.length; i++) {
-				System.out.println(clientsHardcoded[i]);
-				System.out.println();
+				creationSuccessful = true;
+			}catch(InvalidClientDataException e) {
+				System.err.println(e.getMessage() + " Client not created.");
+			}catch(InvalidTransportDataException e) {
+				System.err.println(e.getMessage() + " Transport not created.");
+			}catch(InvalidAccommodationDataException e) {
+				System.err.println(e.getMessage() + " Accommodation not created.");
+			}catch(InvalidTripDataException e) {
+				System.err.println(e.getMessage() + " Trip not created.");
+			}finally {
+				System.out.println("Creation successful: " + creationSuccessful);
 			}
 
-			System.out.println("\nTrips:");
-			for (int i = 0; i < tripsHardcoded.length; i++) {
-				System.out.println(tripsHardcoded[i]);
+			if(creationSuccessful) { //all objects have been created successfully
+				// 4. Create Arrays for...
+				Client[] clientsHardcoded = {client1, client2, client3, client4 };
+				Trip[] tripsHardcoded = { trip1, trip2, trip3, trip4 };
+				Transportation[] transportationsHardcoded = { flight1, flight2, flight3, train1, train2, train3, bus1, bus2,
+						bus3 };
+				Accommodation[] accommodationsHardcoded = { hotel1, hotel2, hotel3, hostel1, hostel2, hostel3 };
+
+				// 2. Display all objects using toString()
+				System.out.println("\n2. Display all objects using toString():");
+
+				System.out.println("\nClients:");
+				for (int i = 0; i < clientsHardcoded.length; i++) {
+					System.out.println(clientsHardcoded[i]);
+					System.out.println();
+				}
+
+				System.out.println("\nTrips:");
+				for (int i = 0; i < tripsHardcoded.length; i++) {
+					System.out.println(tripsHardcoded[i]);
+					System.out.println();
+				}
+
+				System.out.println("\nTransportations:");
+				for (int i = 0; i < transportationsHardcoded.length; i++) {
+					System.out.println(transportationsHardcoded[i]);
+					System.out.println();
+				}
+
+				System.out.println("\nAccommodations:");
+				for (int i = 0; i < accommodationsHardcoded.length; i++) {
+					System.out.println(accommodationsHardcoded[i]);
+					System.out.println();
+				}
+
+				// 3. Display the equals method
+				System.out.println("\n\nDisplay the equals methods");
+				System.out.println("Objects from different classes: (should return false)");
+				System.out.println("train1 and bus1: " + train1.equals(bus1));
+				System.out.println("train1 and hotel1: " + train1.equals(hotel1));
+				System.out.println("train1 and client1: " + train1.equals(client1));
+
+				System.out.println("\nObjects of the same class with different attributes: (should return false)");
+				System.out.println("Clients: " + client1.equals(client2));
+				System.out.println("Trips: " + trip1.equals(trip2));
+				System.out.println("Flights: " + flight1.equals(flight2));
+				System.out.println("Trains: " + train1.equals(train2));
+				System.out.println("Buses: " + bus1.equals(bus2));
+				System.out.println("Hotels: " + hotel1.equals(hotel2));
+				System.out.println("Hostel: " + hostel1.equals(hostel2));
+
+				System.out.println("\nObjects of the same class with same attributes: (should return true)");
+				System.out.println("Clients: " + client3.equals(client4));
+				System.out.println("Trips: " + trip3.equals(trip4));
+				System.out.println("Flights: " + flight2.equals(flight3));
+				System.out.println("Trains: " + train2.equals(train3));
+				System.out.println("Buses: " + bus2.equals(bus3));
+				System.out.println("Hotels: " + hotel2.equals(hotel3));
+				System.out.println("Hostels: " + hostel2.equals(hostel3));
+
+				// Total cost of multiple trips:
+				try {
+					//may throw InvalidAccommodationException if numberOfDays is too low
+					System.out.println("\nTotal cost of all trips ");
+					System.out.println("Trip 1: " + trip1.calculateTotalCost());
+					System.out.println("Trip 2: " + trip2.calculateTotalCost());
+					System.out.println("Trip 3: " + trip3.calculateTotalCost());
+					System.out.println("Trip 4: " + trip4.calculateTotalCost());
+				}catch(InvalidAccommodationDataException e) {
+					System.err.println(e.getMessage());
+				}
+				
+
+				// Method that displays the most expensive trip
 				System.out.println();
-			}
-
-			System.out.println("\nTransportations:");
-			for (int i = 0; i < transportationsHardcoded.length; i++) {
-				System.out.println(transportationsHardcoded[i]);
 				System.out.println();
+				try {
+					findMostExpensiveTrip(tripsHardcoded, tripsHardcoded.length);
+				}catch(InvalidAccommodationDataException e) {
+					System.err.println("Failed to calculate most expensive trip. One of the trips has an accommodation with an invalid number of days.");
+				}
+
+				// Deep copy of transportation array
+
+				try {
+					Transportation[] transportsCopy = copyTransportationArray(transportationsHardcoded);
+					transportsCopy[0] = null;
+					transportsCopy[1] = null;
+					System.out.println("\n\nOriginal transports array:");
+					printArray(transportationsHardcoded, transportationsHardcoded.length);
+					System.out.println("\n\nCopied transports array - modified:");
+					printArray(transportsCopy, transportsCopy.length);
+				}catch(InvalidTransportDataException e) {
+					System.err.println(e.getMessage() + " Failed to copy array.");
+				}
+				
 			}
-
-			System.out.println("\nAccommodations:");
-			for (int i = 0; i < accommodationsHardcoded.length; i++) {
-				System.out.println(accommodationsHardcoded[i]);
-				System.out.println();
-			}
-
-			// 3. Display the equals method
-			System.out.println("\n\nDisplay the equals methods");
-			System.out.println("Objects from different classes: (should return false)");
-			System.out.println("train1 and bus1: " + train1.equals(bus1));
-			System.out.println("train1 and hotel1: " + train1.equals(hotel1));
-			System.out.println("train1 and client1: " + train1.equals(client1));
-
-			System.out.println("\nObjects of the same class with different attributes: (should return false)");
-			System.out.println("Clients: " + client1.equals(client2));
-			System.out.println("Trips: " + trip1.equals(trip2));
-			System.out.println("Flights: " + flight1.equals(flight2));
-			System.out.println("Trains: " + train1.equals(train2));
-			System.out.println("Buses: " + bus1.equals(bus2));
-			System.out.println("Hotels: " + hotel1.equals(hotel2));
-			System.out.println("Hostel: " + hostel1.equals(hostel2));
-
-			System.out.println("\nObjects of the same class with same attributes: (should return true)");
-			System.out.println("Clients: " + client3.equals(client4));
-			System.out.println("Trips: " + trip3.equals(trip4));
-			System.out.println("Flights: " + flight2.equals(flight3));
-			System.out.println("Trains: " + train2.equals(train3));
-			System.out.println("Buses: " + bus2.equals(bus3));
-			System.out.println("Hotels: " + hotel2.equals(hotel3));
-			System.out.println("Hostels: " + hostel2.equals(hostel3));
-
-			// Total cost of multiple trips:
-			System.out.println("Total cost of all trips ");
-			System.out.println("Trip 1: " + trip1.calculateTotalCost());
-			System.out.println("Trip 2: " + trip2.calculateTotalCost());
-			System.out.println("Trip 3: " + trip3.calculateTotalCost());
-			System.out.println("Trip 4: " + trip4.calculateTotalCost());
-
-			// Method that displays the most expensive trip
-			findMostExpensiveTrip(tripsHardcoded, tripsHardcoded.length);
-
-			// Deep copy of transportation array
-			Transportation[] transportsCopy = copyTransportationArray(transportationsHardcoded);
-			transportsCopy[0] = null;
-			transportsCopy[1] = null;
-			System.out.println("\n\nOriginal transports array:");
-			printArray(transportationsHardcoded, transportationsHardcoded.length);
-			System.out.println("Copied transports array - modified:");
-			printArray(transportsCopy, transportsCopy.length);
-
 		}
 		// Menu-driven interface
-		else {
+		else if(initialChoice == 2){
 
 			// length of arrays
 			final int MAX_CLIENTS = 20; // arbitrary number: for names and clients
@@ -326,10 +373,14 @@ public class Driver_A1_COMP249 {
 								lastName = keyboard.next();
 								System.out.print("Clients's email address: ");
 								emailAddress = keyboard.next();
-								clients[numSavedClients] = new Client(firstName, lastName, emailAddress);
-								names[numSavedClients] = firstName + " " + lastName;
-								numSavedClients++;
-								System.out.println("\nClient added successfully!\n");
+								try {
+									clients[numSavedClients] = new Client(firstName, lastName, emailAddress);
+									names[numSavedClients] = firstName + " " + lastName;
+									numSavedClients++;
+									System.out.println("\nClient added successfully!\n");
+								} catch(InvalidClientDataException e) {
+									System.err.println(e.getMessage() + " Failed to create client");
+								}
 								break;
 							case 2: // Edit a client
 								if (numSavedClients == 0) {
@@ -355,17 +406,29 @@ public class Driver_A1_COMP249 {
 									case 1:// edit first name
 										System.out.print("Enter new first name: ");
 										firstName = keyboard.next();
-										clients[index].setFirstName(firstName);
+										try{
+											clients[index].setFirstName(firstName);
+										}catch(InvalidClientDataException e) {
+											System.err.println(e.getMessage() + " Failed to edit client first name.");
+										}
 										break;
 									case 2: // edit last name
 										System.out.print("Enter new last name: ");
 										lastName = keyboard.next();
-										clients[index].setLastName(lastName);
+										try {
+											clients[index].setLastName(lastName);
+										}catch(InvalidClientDataException e) {
+											System.err.println(e.getMessage() + " Failed to edit client last name.");
+										}
 										break;
 									case 3: // edit email address
 										System.out.print("Enter new email address: ");
 										emailAddress = keyboard.next();
-										clients[index].setEmailAddress(emailAddress);
+										try {
+											clients[index].setEmailAddress(emailAddress);
+										} catch(InvalidClientDataException e) {
+											System.err.println("Failed to edit client email address.");
+										}
 										break;
 									case 4:
 										System.out.println("Returning to main menu...\n");
@@ -423,9 +486,8 @@ public class Driver_A1_COMP249 {
 					String destination;
 					int duration;
 					double basePrice;
-					int indexOfClient, indexOfAccommodation, indexOfTransport; // index of client in clients array
-																				// associated with trip (same for
-																				// accommodation and transport)
+					int indexOfClient, indexOfAccommodation, indexOfTransport; // index of client in clients array associated with trip 
+																				// (same for accommodation and transport)
 					Client clientOfTrip; // reference to actual client taken from array. for visual simplicity
 					Accommodation accommodationOfTrip; // reference to accommodation from array or from trip (visual
 														// simplicity)
@@ -514,10 +576,18 @@ public class Driver_A1_COMP249 {
 									}
 									transportOfTrip = transportArray[indexOfTransport];
 								}
-								trips[numSavedTrips] = new Trip(destination, duration, basePrice, clientOfTrip,
-										accommodationOfTrip, transportOfTrip);
-								numSavedTrips++;
-								System.out.println("\nTrip added successfully!\n");
+								try {
+									trips[numSavedTrips] = new Trip(destination, duration, basePrice, clientOfTrip,
+									accommodationOfTrip, transportOfTrip);
+									numSavedTrips++;
+									System.out.println("\nTrip added successfully!\n");
+								}catch(InvalidTripDataException e) {
+									System.err.println(e.getMessage() + " Failed to create Trip.");
+								}catch(InvalidAccommodationDataException e) {
+									System.err.println(e.getMessage() + " Failed to create Trip.");
+								}catch(InvalidTransportDataException e) {
+									System.err.println(e.getMessage() + " Failed to create Trip.");
+								}
 								break;
 							case 2:// Edit Trip
 								boolean tripUpdated = false; // verification for success message
@@ -536,7 +606,7 @@ public class Driver_A1_COMP249 {
 								}
 								Trip tripToEdit = trips[indexOfTrip];
 								subMenuOption = validateMenuOption(tripEditMenu, TRIP_EDIT_MENU_MAX, !ZERO_ACCEPTED); // Print trip menu and prompt user for choice. Validate input
-								tripUpdated = true;
+								tripUpdated = false;
 								switch (subMenuOption) {
 									case 1:// edit destination
 										System.out.print("Enter new destination: ");
@@ -547,16 +617,25 @@ public class Driver_A1_COMP249 {
 									case 2: // edit duration
 										System.out.print("Enter new duration: ");
 										duration = keyboard.nextInt();
-										tripToEdit.setDuration(duration);
-										tripUpdated = true;
+										try {
+											tripToEdit.setDuration(duration);
+											tripUpdated = true;
+										}catch(InvalidTripDataException e) {
+											System.err.println(e.getMessage() + " Failed to edit trip duration.");
+										}
+										
 										break;
 									case 3: // edit base price
 										System.out.print("Enter new base price: ");
 										basePrice = keyboard.nextDouble();
-										tripToEdit.setBasePrice(basePrice);
-										tripUpdated = true;
+										try {
+											tripToEdit.setBasePrice(basePrice);
+											tripUpdated = true;
+										}catch(InvalidTripDataException e) {
+											System.err.println(e.getMessage() + " Failed to edit trip base price.");
+										}
 										break;
-									case 4: // edit client
+									case 4: // edit client //GET CLIENT BY ID!!!!
 										System.out.println("\nHere is the list of current clients: ");
 										printArray(names, numSavedClients);
 										System.out.print(
@@ -567,8 +646,13 @@ public class Driver_A1_COMP249 {
 											System.out.println("Invalid index. Returning to previous menu...\n");
 											break;
 										}
-										tripToEdit.setClient(clients[indexOfClient]);
-										tripUpdated = true;
+										try {
+											tripToEdit.setClient(clients[indexOfClient]);
+											tripUpdated = true;
+										}catch(InvalidTripDataException e) {
+											System.err.println(e.getMessage() + " Failed to edit client.");
+										}
+										
 										break;
 									case 5: // edit accommodation
 										System.out.println(
@@ -595,8 +679,13 @@ public class Driver_A1_COMP249 {
 											System.out.println("Invalid index. Returning to previous menu...\n");
 											break;
 										}
-										tripToEdit.setAccommodation(accommodationArray[indexOfAccommodation]);
-										tripUpdated = true;
+										try {
+											tripToEdit.setAccommodation(accommodationArray[indexOfAccommodation]);
+											tripUpdated = true;
+										}catch(InvalidAccommodationDataException e) {
+											System.err.println(e.getMessage() + "Failed to edit Accommodation.");
+										}
+										
 										break;
 									case 6: // edit transportation
 										System.out.println(
@@ -622,8 +711,12 @@ public class Driver_A1_COMP249 {
 											System.out.println("Invalid index. Returning to previous menu...\n");
 											break;
 										}
-										tripToEdit.setTransportation(transportArray[indexOfTransport]);
-										tripUpdated = true;
+										try {
+											tripToEdit.setTransportation(transportArray[indexOfTransport]);
+											tripUpdated = true;
+										}catch(InvalidTransportDataException e) {
+											System.err.println(e.getMessage() + "Failed to edit Transportation.");
+										}
 										break;
 									case 7:
 										System.out.println("Returning to main menu...\n");
@@ -703,6 +796,7 @@ public class Driver_A1_COMP249 {
 						int transportChoice; // transportChoice menu option
 						String transportType; // string of transport type chosen
 						Transportation[] transportArray; // transport array to work with
+						boolean transportCreated = false;
 						// General transportation variables
 						String companyName;
 						String departureCity;
@@ -710,12 +804,14 @@ public class Driver_A1_COMP249 {
 						// Flight variables
 						String airlineName;
 						double luggageAllowance;
+						double ticketPrice;
 						// Train variables
 						String trainType;
 						String seatClass;
+						double baseFare;
 						// Bus variables
-						String busCompany;
 						int numberOfStops;
+						double busFare;
 						// Transport management menu options
 						switch (subMenuOption) {
 							case 1:// Add a transportation option
@@ -744,8 +840,15 @@ public class Driver_A1_COMP249 {
 									airlineName = keyboard.nextLine();
 									System.out.print("Luggage Allowance: ");
 									luggageAllowance = keyboard.nextInt();
-									transportArray[numSavedTransports[transportChoice]] = new Flight(companyName,
-											departureCity, arrivalCity, airlineName, luggageAllowance);
+									System.out.print("Ticket price: ");
+									ticketPrice = keyboard.nextDouble();
+									try{
+										transportArray[numSavedTransports[transportChoice]] = new Flight(companyName, departureCity, arrivalCity, airlineName, luggageAllowance, ticketPrice);
+										transportCreated = true;
+									} catch(InvalidTransportDataException e) {
+										System.err.println(e.getMessage() + " Failed to create Flight.");
+									}
+									
 								}
 								// TRAIN
 								else if (transportChoice == numSavedTrainsIndex) {
@@ -753,20 +856,35 @@ public class Driver_A1_COMP249 {
 									trainType = keyboard.nextLine();
 									System.out.print("Seat class (economy, business, sleeper): ");
 									seatClass = keyboard.next();
-									transportArray[numSavedTransports[transportChoice]] = new Train(companyName,
-											departureCity, arrivalCity, trainType, seatClass);
+									System.out.print("Base fare: ");
+									baseFare = keyboard.nextDouble();
+									try{
+										transportArray[numSavedTransports[transportChoice]] = new Train(companyName,
+											departureCity, arrivalCity, trainType, seatClass, baseFare);
+										transportCreated = true;
+									}catch(InvalidTransportDataException e) {
+										System.err.println(e.getMessage() + " Failed to create Train.");
+									}
+									
 								}
 								// BUS
 								else if (transportChoice == numSavedBusesIndex) {
-									System.out.print("Bus company: ");
-									busCompany = keyboard.nextLine();
 									System.out.print("Number of stops: ");
 									numberOfStops = keyboard.nextInt();
-									transportArray[numSavedTransports[transportChoice]] = new Bus(companyName,
-											departureCity, arrivalCity, busCompany, numberOfStops);
+									System.out.print("Bus fare: ");
+									busFare = keyboard.nextDouble();
+									try{
+										transportArray[numSavedTransports[transportChoice]] = new Bus(companyName,
+											departureCity, arrivalCity, numberOfStops, busFare);
+										transportCreated = true;
+									}catch(InvalidTransportDataException e) {
+										System.err.println(e.getMessage() + " Failed to create Bus.");
+									}
 								}
-								numSavedTransports[transportChoice]++;
-								System.out.println("\nTransport option added successfully!\n");
+								if(transportCreated == true) {
+									numSavedTransports[transportChoice]++;
+									System.out.println("\nTransport option added successfully!\n");
+								}
 								break;
 							case 2:// Remove a transportation option
 								System.out
@@ -833,6 +951,7 @@ public class Driver_A1_COMP249 {
 						double pricePerNight;
 						double starRating; // Hotel variable
 						int numOfBeds; // Hostel variable
+						boolean accommodationCreated = false; //to decide whether or not to print success message
 						switch (subMenuOption) {
 							case 1:// Add an accommodation
 								System.out.println("What is the type of accommodation option you would like to add?");
@@ -855,16 +974,29 @@ public class Driver_A1_COMP249 {
 								if (accommodationChoice == numSavedHotelsIndex) { // Hotel
 									System.out.print("Star rating: ");
 									starRating = keyboard.nextDouble();
-									hotels[numSavedAccommodations[numSavedHotelsIndex]] = new Hotel(name, location,
+									try {
+										hotels[numSavedAccommodations[numSavedHotelsIndex]] = new Hotel(name, location,
 											pricePerNight, starRating);
+										accommodationCreated = true;
+									}catch(InvalidAccommodationDataException e) {
+										System.err.println(e.getMessage() + " Failed to add Hotel.");
+									}
+									
 								} else if (accommodationChoice == numSavedHostelsIndex) { // Hostel
 									System.out.print("Number of shared beds per room: ");
 									numOfBeds = keyboard.nextInt();
-									hostels[numSavedAccommodations[numSavedHostelsIndex]] = new Hostel(name, location,
+									try {
+										hostels[numSavedAccommodations[numSavedHostelsIndex]] = new Hostel(name, location,
 											pricePerNight, numOfBeds);
+										accommodationCreated = true;
+									}catch(InvalidAccommodationDataException e) {
+										System.err.println("Failed to create Hostel.");
+									}
 								}
-								numSavedAccommodations[accommodationChoice]++;
-								System.out.println("Accommodation added successfully!\n");
+								if(accommodationCreated) {
+									numSavedAccommodations[accommodationChoice]++;
+									System.out.println("Accommodation added successfully!\n");
+								}
 								break;
 							case 2:// Remove an accommodation
 								System.out.println("What type of accommodation option you would like to remove?");
@@ -921,7 +1053,12 @@ public class Driver_A1_COMP249 {
 									System.out.println("There are no saved trips.\n");
 									break;
 								}
-								findMostExpensiveTrip(trips, numSavedTrips);
+								try {
+									findMostExpensiveTrip(trips, numSavedTrips);
+								}catch(InvalidAccommodationDataException e) {
+									System.err.println("Failed to calculate most expensive trip. One of the trips has an accommodation with an invalid number of days.");
+								}
+								
 								break;
 							case 2:// Calculate and display the total cost of a trip
 								if (numSavedTrips == 0) {
@@ -934,22 +1071,36 @@ public class Driver_A1_COMP249 {
 										"\nEnter the index of the trip you would like to calculate the cost of:",
 										numSavedTrips - 1, ZERO_ACCEPTED);
 								Trip trip = trips[index];
-								double cost = trip.calculateTotalCost();
-								String display = String.format("\nThe trip you selected costs $%.2f.", cost);
-								System.out.println(display);
+								try {
+									double cost = trip.calculateTotalCost();
+									String display = String.format("\nThe trip you selected costs $%.2f.", cost);
+									System.out.println(display);
+								}catch(InvalidAccommodationDataException e) {
+									System.err.println(e.getMessage() + "Failed to calculate trip cost.");
+								}
+								
+								
 								break;
 							case 3:// Create a deep copy of the transportation array
-								Transportation[] flightsCopy = copyTransportationArray(flights);
-								Transportation[] trainsCopy = copyTransportationArray(trains);
-								Transportation[] busesCopy = copyTransportationArray(buses);
-								Transportation[][] copytransports = { flightsCopy, trainsCopy, busesCopy };
-								System.out.println("\nDeep copy created successfully!\n");
+								try {
+									Transportation[] flightsCopy = copyTransportationArray(flights);
+									Transportation[] trainsCopy = copyTransportationArray(trains);
+									Transportation[] busesCopy = copyTransportationArray(buses);
+									Transportation[][] copytransports = { flightsCopy, trainsCopy, busesCopy };
+									System.out.println("\nDeep copy created successfully!\n");
+								} catch(InvalidTransportDataException e) {
+									System.err.println(e.getMessage() + " Failed to copy array.");
+								}
 								break;
 							case 4:// Create a deep copy of the accommodation array
-								Accommodation[] hotelsCopy = copyAccommodationArray(hotels);
-								Accommodation[] hostelsCopy = copyAccommodationArray(hostels);
-								Accommodation[][] accommodationsCopy = { hotelsCopy, hostelsCopy };
-								System.out.println("\nDeep copy created successfully!\n");
+								try{
+									Accommodation[] hotelsCopy = copyAccommodationArray(hotels);
+									Accommodation[] hostelsCopy = copyAccommodationArray(hostels);
+									Accommodation[][] accommodationsCopy = { hotelsCopy, hostelsCopy };
+									System.out.println("\nDeep copy created successfully!\n");
+								}catch(InvalidAccommodationDataException e) {
+									System.err.println(e.getMessage() + " Failed to copy array.");
+								}
 								break;
 							case 5:// Back to main menu
 								System.out.println("\nReturning to main menu...\n");
@@ -965,7 +1116,7 @@ public class Driver_A1_COMP249 {
 
 			}
 		}
-
+		
 	}
 
 	public static int validateMenuOption(String menu, int maxMenuOption, boolean zeroAccepted) {
@@ -1001,6 +1152,43 @@ public class Driver_A1_COMP249 {
 			System.out.println(i + ". " + array[i]);
 			System.out.println();
 		}
+	}
+
+	//printIDs method - multiple overloaded method to print IDs depending on type of object
+	public static void printIDs(Client[] array, int afterLastIndex) {
+		//prints the IDs of all client objects in the array
+		int i = 0;
+		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
+		for(i=0; i<=length; i++) {
+			System.out.println(array[i].CLIENT_ID);
+		}
+	}
+
+	public static void printIDs(Transportation[] array, int afterLastIndex) {
+		//prints the IDs of all transportation objects in the array
+		int i = 0;
+		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
+		for(i=0; i<=length; i++) {
+			System.out.println(array[i].TRANSPORT_ID);
+		}	
+	}
+
+	public static void printIDs(Accommodation[] array, int afterLastIndex) {
+		//prints the IDs of all accommodation objects in the array
+		int i = 0;
+		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
+		for(i=0; i<=length; i++) {
+			System.out.println(array[i].ACCOMMODATION_ID);
+		}	
+	}
+
+	public static void printIDs(Trip[] array, int afterLastIndex) {
+		//prints the IDs of all trip objects in the array
+		int i = 0;
+		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
+		for(i=0; i<=length; i++) {
+			System.out.println(array[i].TRIP_ID);
+		}	
 	}
 
 	public static void deleteIndexInArray(Object[] array, int afterLastIndex, int index) {
@@ -1040,7 +1228,7 @@ public class Driver_A1_COMP249 {
 		return index;
 	}
 
-	public static void findMostExpensiveTrip(Trip[] trips, int numSavedTrips) {
+	public static void findMostExpensiveTrip(Trip[] trips, int numSavedTrips) throws InvalidAccommodationDataException {
 		Trip mostExpensiveTrip = trips[0];
 		double maxCost = mostExpensiveTrip.calculateTotalCost(); // if this part is reached, then there is at least one
 																	// trip in the trips array (because of where it is
@@ -1060,7 +1248,7 @@ public class Driver_A1_COMP249 {
 		System.out.println(string);
 	}
 
-	public static Transportation[] copyTransportationArray(Transportation[] original) {
+	public static Transportation[] copyTransportationArray(Transportation[] original) throws InvalidTransportDataException {
 		Transportation[] copy = new Transportation[original.length];
 		for (int i = 0; i < copy.length; i++) {
 			if (original[i] == null) {
@@ -1076,7 +1264,7 @@ public class Driver_A1_COMP249 {
 		return copy;
 	}
 
-	public static Accommodation[] copyAccommodationArray(Accommodation[] original) {
+	public static Accommodation[] copyAccommodationArray(Accommodation[] original) throws InvalidAccommodationDataException {
 		Accommodation[] copy = new Accommodation[original.length];
 		for (int i = 0; i < copy.length; i++) {
 			if (original[i] == null) {

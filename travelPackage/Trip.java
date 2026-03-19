@@ -110,6 +110,7 @@ public class Trip {
 	}
 
 	public String getTripID() {
+		//simple method name so that getID() can be used for all objects without thinking of class
 		return TRIP_ID;
 	}
 

@@ -38,6 +38,7 @@ abstract public class Accommodation {
 
 	//Accessors and Mutators
 	public String getAccommodationID() {
+		//simple method name so that getID() can be used for all objects without thinking of class
 		return ACCOMMODATION_ID;
 	}
 

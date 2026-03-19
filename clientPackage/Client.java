@@ -90,6 +90,7 @@ public class Client {
 	}
 
 	public String getClientID() {
+		//simple method name so that getID() can be used for all objects without thinking of class
 		return CLIENT_ID;
 	}
 
