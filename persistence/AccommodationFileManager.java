@@ -67,7 +67,7 @@ import travelPackage.Hostel;
 	                            + h.getName() + ";"
 	                            + h.getLocation() + ";"
 	                            + h.getPricePerNight() + ";"
-	                            + h.NumOfBeds());
+	                            + h.getNumOfBeds());
 	                }
 	            }
 	        }

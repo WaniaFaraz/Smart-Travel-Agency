@@ -253,7 +253,7 @@ public class Driver_A1_COMP249 {
 					\t3. Delete a client
 					\t4. List all clients
 					\t5. Back to Main Menu
-					Please select an option from the above menu: """;
+					Please select an option from the above menu: """ + " ";
 			final int CLIENT_MANAGEMENT_MENU_MAX = 5;
 
 			String clientEditMenu = """
@@ -346,8 +346,8 @@ public class Driver_A1_COMP249 {
 			boolean runMainMenu = true;
 			int option = 0;
 			int subMenuOption = 0;
-			int index = 0; // for whenever the user is prompted for an index
-
+			int index = 0; // to store an index whenever necessary
+			String ID; //to store the ID of clients, trips, transportations, and accommodations
 			while (runMainMenu) {
 				option = validateMenuOption(mainMenu, MAIN_MENU_MAX, !ZERO_ACCEPTED);
 				// each subMenu below uses switch to manage flow. No need for a default case
@@ -363,6 +363,7 @@ public class Driver_A1_COMP249 {
 						String firstName;
 						String lastName;
 						String emailAddress;
+						boolean clientUpdated = false; //to decide whether to print success message
 						// Client management subMenu
 						switch (subMenuOption) {
 							case 1: // Add a client
@@ -379,7 +380,7 @@ public class Driver_A1_COMP249 {
 									numSavedClients++;
 									System.out.println("\nClient added successfully!\n");
 								} catch(InvalidClientDataException e) {
-									System.err.println(e.getMessage() + " Failed to create client");
+									System.err.println("\n" + e.getMessage() + " Failed to create client.\n");
 								}
 								break;
 							case 2: // Edit a client
@@ -387,27 +388,28 @@ public class Driver_A1_COMP249 {
 									System.out.println("There are no saved clients.\n");
 									break;
 								}
-								System.out.println("\nHere is the list of current clients:");
-								// print all names in names array
+								System.out.println("\nHere is the list of all current clients:");
+								// print all IDs in names array
 								printArray(clients, numSavedClients);
-								System.out.print("Enter the index of the client you wish to edit: ");
-								index = keyboard.nextInt();
-								if (index >= numSavedClients) {
-									// no client at that index. empty index in array. return to client management
-									// menu
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
+								System.out.print("Enter the ID of the client you wish to edit: ");
+								ID = keyboard.next();
+								try {
+									index = findObjectByID(clients, ID);
+								}catch(EntityNotFoundException e) {
+									System.err.println(e.getMessage() + "\n");
+									break; //client not found - exit current menu option
 								}
+															
 								// print menu to edit client and prompt user to pick an attribute to edit.
 								// Validate user input
-								subMenuOption = validateMenuOption(clientEditMenu, CLIENT_EDIT_MENU_MAX,
-										!ZERO_ACCEPTED);
+								subMenuOption = validateMenuOption(clientEditMenu, CLIENT_EDIT_MENU_MAX, !ZERO_ACCEPTED);
 								switch (subMenuOption) {
 									case 1:// edit first name
 										System.out.print("Enter new first name: ");
 										firstName = keyboard.next();
 										try{
 											clients[index].setFirstName(firstName);
+											clientUpdated = true;
 										}catch(InvalidClientDataException e) {
 											System.err.println(e.getMessage() + " Failed to edit client first name.");
 										}
@@ -417,6 +419,7 @@ public class Driver_A1_COMP249 {
 										lastName = keyboard.next();
 										try {
 											clients[index].setLastName(lastName);
+											clientUpdated = true;
 										}catch(InvalidClientDataException e) {
 											System.err.println(e.getMessage() + " Failed to edit client last name.");
 										}
@@ -426,21 +429,19 @@ public class Driver_A1_COMP249 {
 										emailAddress = keyboard.next();
 										try {
 											clients[index].setEmailAddress(emailAddress);
+											clientUpdated = true;
 										} catch(InvalidClientDataException e) {
 											System.err.println("Failed to edit client email address.");
 										}
 										break;
 									case 4:
 										System.out.println("Returning to main menu...\n");
-										// no need for default case since the validateMenuOption function ensures a
-										// valid input
+										// no need for default case since the validateMenuOption function ensures a valid input
 										break;
 								}
-								// Success message
-								if (subMenuOption != 4) {
-									System.out.println("\nClient updated successfully!\n");
-									// because valid input subMenu option can only be values from 1 to 4. If 4 not
-									// selected, client was edited
+								// Success message - after all cases have been executed
+								if (clientUpdated == true) {
+									System.out.println("\nClient updated successfully!\n"); //Success message
 								}
 								break;
 							case 3: // Delete a client
@@ -449,31 +450,33 @@ public class Driver_A1_COMP249 {
 									break;
 								}
 								System.out.println("\nHere is the list of current clients:");
-								printArray(names, numSavedClients); // print all names in names array
-								System.out.print("Enter the index of the client you wish to delete: ");
-								index = keyboard.nextInt();
-								if (index >= numSavedClients) {
-									// no client at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
-								}
-								// delete trips associated with that client to free up array
-								for (int i = 0; i < numSavedTrips; i++) {
-									if (trips[i].getClient().equals(clients[index])) {
-										deleteIndexInArray(trips, numSavedTrips, i);
-										numSavedTrips--; // update count of number of trips in trips array
+								printArray(clients, numSavedClients); // print all clients in clients array
+								System.out.print("Enter the ID of the client you wish to delete: ");
+								ID = keyboard.next();
+								try {
+									index = findObjectByID(clients, ID); //returns the index of the client that has the ID in the clients array
+									// delete trips associated with that client to free up array
+									for (int i = 0; i < numSavedTrips; i++) {
+										if (trips[i].getClient().equals(clients[index])) {
+											deleteIndexInArray(trips, numSavedTrips, i);
+											numSavedTrips--; // update count of number of trips in trips array
+										}
 									}
+									// remove client from array
+									deleteIndexInArray(clients, numSavedClients, index);
+									numSavedClients--;
+									System.out.println("\nClient deleted successfully!\n");
+								}catch(EntityNotFoundException e) {
+									System.err.println(e.getMessage());
 								}
-								// remove client from array
-								deleteIndexInArray(clients, numSavedClients, index);
-								numSavedClients--;
-								System.out.println("\nClient deleted successfully!\n");
-								break;
+								break;								
 							case 4: // List all clients
 								if (numSavedClients == 0) {
 									System.out.println("There are no saved clients.\n");
 								}
-								printArray(clients, numSavedClients);
+								else {
+									printArray(clients, numSavedClients);
+								}								
 								break;
 							case 5: // Back to Main Menu
 								System.out.println("Returning to main menu...\n");
@@ -519,14 +522,15 @@ public class Driver_A1_COMP249 {
 								} else {
 									System.out.println("Here is the list of current clients: ");
 									printArray(clients, numSavedClients);
-									System.out.print("Enter the index of the client associated with this trip: ");
-									indexOfClient = keyboard.nextInt();
-									if (indexOfClient >= numSavedClients) {
-										// no client at that index. empty index in array
-										System.out.println("Invalid index. Returning to previous menu...\n");
-										break;
+									System.out.print("Enter the ID of the client associated with this trip: ");
+									ID = keyboard.next();
+									try {
+										indexOfClient = findObjectByID(clients, ID);
+										clientOfTrip = clients[indexOfClient];
+									}catch(EntityNotFoundException e) {
+										System.err.println(e.getMessage() + "\n");
+										break; //client not found - trip cannot be created - exit menu option
 									}
-									clientOfTrip = clients[indexOfClient];
 								}
 								System.out.println("\nWhat type of accommodation you would like to add?");
 								accommodationChoice = validateMenuOption(accommodationTypeMenu,
@@ -542,15 +546,16 @@ public class Driver_A1_COMP249 {
 								} else {
 									System.out.println("Here is the list of offered " + accommodationType + "s: ");
 									printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
-									System.out.print("Enter the index of the " + accommodationType
+									System.out.print("Enter the ID of the " + accommodationType
 											+ " you wish to add to this trip: ");
-									indexOfAccommodation = keyboard.nextInt();
-									if (indexOfAccommodation >= numSavedAccommodations[accommodationChoice]) {
-										// no accommodation at that index. empty index in array
-										System.out.println("Invalid index. Returning to previous menu...\n");
-										break;
+									ID = keyboard.next();
+									try {
+										indexOfAccommodation = findObjectByID(accommodationArray, ID);
+										accommodationOfTrip = accommodationArray[indexOfAccommodation];
+									}catch(EntityNotFoundException e) {
+										System.err.println(e.getMessage() + "\n");
+										break; //accommodation not found - exit current menu option
 									}
-									accommodationOfTrip = accommodationArray[indexOfAccommodation];
 								}
 								System.out.println("What type of transportation you would like to add?");
 								transportChoice = validateMenuOption(transportationTypeMenu,
@@ -565,28 +570,26 @@ public class Driver_A1_COMP249 {
 									transportOfTrip = null;
 								} else {
 									System.out.println("Here is the list of offered transportations: ");
-									System.out.print(
-											"Enter the index of the " + transportType
-													+ " you wish to add to this trip: ");
-									indexOfTransport = keyboard.nextInt();
-									if (indexOfTransport >= numSavedTransports[transportChoice]) {
-										// no transportation at that index. empty index in array
-										System.out.println("Invalid index. Returning to previous menu...\n");
-										break;
+									System.out.print("Enter the ID of the " + transportType + " you wish to add to this trip: ");
+									ID = keyboard.next();
+									try {
+										indexOfTransport = findObjectByID(transportArray, ID);
+										transportOfTrip = transportArray[indexOfTransport];
+										try {
+											trips[numSavedTrips] = new Trip(destination, duration, basePrice, clientOfTrip,
+											accommodationOfTrip, transportOfTrip);
+											numSavedTrips++;
+											System.out.println("\nTrip added successfully!\n");
+										}catch(InvalidTripDataException e) {
+											System.err.println(e.getMessage() + " Failed to create Trip.");
+										}catch(InvalidAccommodationDataException e) {
+											System.err.println(e.getMessage() + " Failed to create Trip.");
+										}catch(InvalidTransportDataException e) {
+											System.err.println(e.getMessage() + " Failed to create Trip.");
+										}
+									}catch(EntityNotFoundException e) {
+										System.err.println(e.getMessage() + "\n");
 									}
-									transportOfTrip = transportArray[indexOfTransport];
-								}
-								try {
-									trips[numSavedTrips] = new Trip(destination, duration, basePrice, clientOfTrip,
-									accommodationOfTrip, transportOfTrip);
-									numSavedTrips++;
-									System.out.println("\nTrip added successfully!\n");
-								}catch(InvalidTripDataException e) {
-									System.err.println(e.getMessage() + " Failed to create Trip.");
-								}catch(InvalidAccommodationDataException e) {
-									System.err.println(e.getMessage() + " Failed to create Trip.");
-								}catch(InvalidTransportDataException e) {
-									System.err.println(e.getMessage() + " Failed to create Trip.");
 								}
 								break;
 							case 2:// Edit Trip
@@ -596,13 +599,14 @@ public class Driver_A1_COMP249 {
 									break;
 								}
 								System.out.println("\nHere is the list of current trips:");
-								printArray(trips, numSavedTrips);
-								System.out.println("Enter the index of the trip you wish to edit: ");
-								indexOfTrip = keyboard.nextInt();
-								if (indexOfTrip >= numSavedTrips) {
-									// no trip at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
+								printIDs(trips, numSavedTrips);
+								System.out.println("Enter the ID of the trip you wish to edit: ");
+								ID = keyboard.next();
+								try {
+									indexOfTrip = findObjectByID(trips, ID);
+								}catch(EntityNotFoundException e) {
+									System.err.println(e.getMessage());
+									break; //trip not found - exit menu option since unable to edit trip
 								}
 								Trip tripToEdit = trips[indexOfTrip];
 								subMenuOption = validateMenuOption(tripEditMenu, TRIP_EDIT_MENU_MAX, !ZERO_ACCEPTED); // Print trip menu and prompt user for choice. Validate input
@@ -623,7 +627,6 @@ public class Driver_A1_COMP249 {
 										}catch(InvalidTripDataException e) {
 											System.err.println(e.getMessage() + " Failed to edit trip duration.");
 										}
-										
 										break;
 									case 3: // edit base price
 										System.out.print("Enter new base price: ");
@@ -637,26 +640,23 @@ public class Driver_A1_COMP249 {
 										break;
 									case 4: // edit client //GET CLIENT BY ID!!!!
 										System.out.println("\nHere is the list of current clients: ");
-										printArray(names, numSavedClients);
-										System.out.print(
-												"Enter the index of the client you wish to associate with this trip:");
-										indexOfClient = keyboard.nextInt();
-										if (indexOfClient >= numSavedClients) {
-											// no client at that index. empty index in array
-											System.out.println("Invalid index. Returning to previous menu...\n");
-											break;
-										}
+										printArray(clients, numSavedClients);
+										System.out.print("Enter the ID of the client you wish to associate with this trip:");
+										ID = keyboard.next();
 										try {
-											tripToEdit.setClient(clients[indexOfClient]);
-											tripUpdated = true;
-										}catch(InvalidTripDataException e) {
-											System.err.println(e.getMessage() + " Failed to edit client.");
+											indexOfClient = findObjectByID(clients, ID);
+											try {
+												tripToEdit.setClient(clients[indexOfClient]);
+												tripUpdated = true;
+											}catch(InvalidTripDataException e) {
+												System.err.println(e.getMessage() + " Failed to edit client.");
+											}
+										}catch(EntityNotFoundException e) {
+											System.err.println(e.getMessage() + "\n");
 										}
-										
 										break;
 									case 5: // edit accommodation
-										System.out.println(
-												"What kind of accommodation would you like to replace the current one with? ");
+										System.out.println("What kind of accommodation would you like to replace the current one with? ");
 										accommodationChoice = validateMenuOption(accommodationTypeMenu,
 												ACCOMMODATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
 										if (accommodationChoice == ACCOMMODATION_TYPE_MENU_MAX)
@@ -667,31 +667,25 @@ public class Driver_A1_COMP249 {
 											System.out.println("There are no saved " + accommodationType + "s.\n");
 											break;
 										}
-										System.out
-												.println("\nHere is the list of current " + accommodationType
-														+ "s offered: ");
+										System.out.println("\nHere is the list of current " + accommodationType + "s offered: ");
 										printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
-										System.out.print("Enter the index of the " + accommodationType
-												+ " you wish to associate with this trip:");
-										indexOfAccommodation = keyboard.nextInt();
-										if (indexOfAccommodation >= numSavedAccommodations[accommodationChoice]) {
-											// no accommodation at that index. empty index in array
-											System.out.println("Invalid index. Returning to previous menu...\n");
-											break;
-										}
+										System.out.print("Enter the ID of the " + accommodationType + " you wish to associate with this trip:");
+										ID = keyboard.next();
 										try {
-											tripToEdit.setAccommodation(accommodationArray[indexOfAccommodation]);
-											tripUpdated = true;
-										}catch(InvalidAccommodationDataException e) {
-											System.err.println(e.getMessage() + "Failed to edit Accommodation.");
+											indexOfAccommodation = findObjectByID(accommodationArray, ID);
+											try {
+												tripToEdit.setAccommodation(accommodationArray[indexOfAccommodation]);
+												tripUpdated = true;
+											}catch(InvalidAccommodationDataException e) {
+												System.err.println(e.getMessage() + "Failed to edit Accommodation.");
+											}
+										}catch(EntityNotFoundException e) {
+											System.err.println(e.getMessage() + "\n");
 										}
-										
 										break;
 									case 6: // edit transportation
-										System.out.println(
-												"What kind of transportation would you like to replace the current one with? ");
-										transportChoice = validateMenuOption(transportationTypeMenu,
-												TRANSPORTATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
+										System.out.println("What kind of transportation would you like to replace the current one with? ");
+										transportChoice = validateMenuOption(transportationTypeMenu, TRANSPORTATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
 										if (transportChoice == TRANSPORTATION_TYPE_MENU_MAX)
 											break; // last option is return to main menu
 										transportType = transportTypes[transportChoice];
@@ -703,27 +697,24 @@ public class Driver_A1_COMP249 {
 										System.out.println(
 												"\nHere is the list of current " + transportType + "s offered: ");
 										printArray(transportArray, numSavedTransports[transportChoice]);
-										System.out.print("Enter the index of the " + transportType
-												+ " you wish to associate with this trip:");
-										indexOfTransport = keyboard.nextInt();
-										if (indexOfTransport >= numSavedTransports[transportChoice]) {
-											// no transport at that index. empty index in array
-											System.out.println("Invalid index. Returning to previous menu...\n");
-											break;
-										}
+										System.out.print("Enter the ID of the " + transportType + " you wish to associate with this trip:");
+										ID = keyboard.next();
 										try {
-											tripToEdit.setTransportation(transportArray[indexOfTransport]);
-											tripUpdated = true;
-										}catch(InvalidTransportDataException e) {
-											System.err.println(e.getMessage() + "Failed to edit Transportation.");
+											indexOfTransport = findObjectByID(transportArray, ID);
+											try {
+												tripToEdit.setTransportation(transportArray[indexOfTransport]);
+												tripUpdated = true;
+											}catch(InvalidTransportDataException e) {
+												System.err.println(e.getMessage() + "Failed to edit Transportation.");
+											}
+										}catch(EntityNotFoundException e) {
+											System.err.println(e.getMessage() + "\n");
 										}
 										break;
 									case 7:
 										System.out.println("Returning to main menu...\n");
-										// no need for default case since the validateMenuOption function ensures a
-										// valid input
+										// no need for default case since the validateMenuOption function ensures a valid input
 								}
-
 								// Success message
 								if (tripUpdated == true) {
 									System.out.println("\nTrip updated successfully!\n");
@@ -740,16 +731,16 @@ public class Driver_A1_COMP249 {
 								System.out.println("\nHere is the list of current trips:");
 								// print all trips in trips array
 								printArray(trips, numSavedTrips);
-								System.out.print("Enter the index of the trip you wish to cancel: ");
-								index = keyboard.nextInt();
-								if (index >= numSavedTrips) {
-									// no trip at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
+								System.out.print("Enter the ID of the trip you wish to cancel: ");
+								ID = keyboard.next();
+								try {
+									index = findObjectByID(trips, ID);
+									deleteIndexInArray(trips, numSavedTrips, index);
+									numSavedTrips--;
+									System.out.println("\nTrip canceled successfully!\n");
+								}catch(EntityNotFoundException e) {
+									System.err.println(e.getMessage() + "\n");
 								}
-								deleteIndexInArray(trips, numSavedTrips, index);
-								numSavedTrips--;
-								System.out.println("\nTrip canceled successfully!\n");
 								break;
 							case 4:// List all trips
 								if (numSavedTrips == 0) {
@@ -764,19 +755,13 @@ public class Driver_A1_COMP249 {
 								}
 								System.out.println("Here is the list of clients: ");
 								printArray(clients, numSavedClients);
-								System.out.print("Enter the index of the client whose trips you wish to see: ");
-								indexOfClient = keyboard.nextInt();
-								if (indexOfClient >= numSavedClients) {
-									// no client at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
-								}
-								Client client = clients[indexOfClient]; // for ease of reading
+								System.out.print("Enter the ID of the client whose trips you wish to see: ");
+								ID = keyboard.next();
 								for (int i = 0; i < numSavedTrips; i++) {
-									if (trips[i].getClient().equals(client)) {
-										System.out.println(trips[i]);
-										System.out.println();
-									}
+										if (trips[i].getClient().CLIENT_ID.equals(ID)) {
+											System.out.println(trips[i]);
+											System.out.println();
+										}
 								}
 								break;
 							case 6:
@@ -786,13 +771,10 @@ public class Driver_A1_COMP249 {
 					}
 					subMenuOption = 0; // reset to 0 since all other subMenuOptions use the same variable
 				}
-
 				// Transportation Management
 				else if (option == 3) {
-
 					while (subMenuOption != TRANSPORTATION_MANAGEMENT_MENU_MAX) {
-						subMenuOption = validateMenuOption(transportationManagementMenu,
-								TRANSPORTATION_MANAGEMENT_MENU_MAX, !ZERO_ACCEPTED);
+						subMenuOption = validateMenuOption(transportationManagementMenu, TRANSPORTATION_MANAGEMENT_MENU_MAX, !ZERO_ACCEPTED);
 						int transportChoice; // transportChoice menu option
 						String transportType; // string of transport type chosen
 						Transportation[] transportArray; // transport array to work with
@@ -815,16 +797,11 @@ public class Driver_A1_COMP249 {
 						// Transport management menu options
 						switch (subMenuOption) {
 							case 1:// Add a transportation option
-								System.out
-										.println("\nWhat is the type of transportation option you would like to add?");
-								transportChoice = validateMenuOption(transportationTypeMenu,
-										TRANSPORTATION_TYPE_MENU_MAX,
-										ZERO_ACCEPTED);
+								System.out.println("\nWhat is the type of transportation option you would like to add?");
+								transportChoice = validateMenuOption(transportationTypeMenu, TRANSPORTATION_TYPE_MENU_MAX, ZERO_ACCEPTED);
 								transportType = transportTypes[transportChoice];
 								transportArray = transports[transportChoice];
-								System.out.println(
-										"Enter the following information in order to add a " + transportType
-												+ " option.");
+								System.out.println("Enter the following information in order to add a " + transportType + " option.");
 								System.out.print("Company name: ");
 								discard = keyboard.nextLine();
 								companyName = keyboard.nextLine();
@@ -832,7 +809,6 @@ public class Driver_A1_COMP249 {
 								departureCity = keyboard.nextLine();
 								System.out.print("Arrival city: ");
 								arrivalCity = keyboard.nextLine();
-
 								// Initialize based on flight, train, or bus:
 								// FLIGHT
 								if (transportChoice == numSavedFlightsIndex) {
@@ -847,8 +823,7 @@ public class Driver_A1_COMP249 {
 										transportCreated = true;
 									} catch(InvalidTransportDataException e) {
 										System.err.println(e.getMessage() + " Failed to create Flight.");
-									}
-									
+									}	
 								}
 								// TRAIN
 								else if (transportChoice == numSavedTrainsIndex) {
@@ -865,7 +840,6 @@ public class Driver_A1_COMP249 {
 									}catch(InvalidTransportDataException e) {
 										System.err.println(e.getMessage() + " Failed to create Train.");
 									}
-									
 								}
 								// BUS
 								else if (transportChoice == numSavedBusesIndex) {
@@ -900,17 +874,15 @@ public class Driver_A1_COMP249 {
 								}
 								System.out.println("Here is the list of current " + transportType + "s:");
 								printArray(transportArray, numSavedTransports[transportChoice]);
-								System.out
-										.println("Enter the index of the " + transportType
-												+ " you would like to remove: ");
-								index = keyboard.nextInt();
-								if (index >= numSavedTransports[transportChoice]) {
-									// no transport at that index. empty index in array
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
+								System.out.println("Enter the ID of the " + transportType + " you would like to remove: ");
+								ID = keyboard.next();
+								try {
+									index = findObjectByID(transportArray, ID);
+									deleteIndexInArray(transportArray, numSavedTransports[transportChoice], index);
+									numSavedTransports[transportChoice]--;
+								}catch(EntityNotFoundException e) {
+									System.err.println(e.getMessage() + "\n");
 								}
-								deleteIndexInArray(transportArray, numSavedTransports[transportChoice], index);
-								numSavedTransports[transportChoice]--;
 								break;
 							case 3:// List transportation options by type (Flight, Train, Bus)
 								System.out.println("Flights:");
@@ -940,8 +912,7 @@ public class Driver_A1_COMP249 {
 				// Accommodation Management
 				else if (option == 4) {
 					while (subMenuOption != ACCOMMODATION_MANAGEMENT_MENU_MAX) {
-						subMenuOption = validateMenuOption(accommodationManagementMenu,
-								ACCOMMODATION_MANAGEMENT_MENU_MAX, !ZERO_ACCEPTED);
+						subMenuOption = validateMenuOption(accommodationManagementMenu, ACCOMMODATION_MANAGEMENT_MENU_MAX, !ZERO_ACCEPTED);
 						int accommodationChoice; // int from accommodations type menu. same as numSavedHotelsIndex or
 													// numSavedHostelsIndex
 						String accommodationType;
@@ -958,6 +929,9 @@ public class Driver_A1_COMP249 {
 								accommodationChoice = validateMenuOption(accommodationTypeMenu,
 										ACCOMMODATION_TYPE_MENU_MAX,
 										ZERO_ACCEPTED);
+								if(accommodationChoice == 2) {
+									break; //option 2 is return to previous menu - so exit current menu option
+								}
 								accommodationType = accommodationTypes[accommodationChoice];
 								accommodationArray = accommodations[accommodationChoice];
 								System.out.println(
@@ -1011,17 +985,16 @@ public class Driver_A1_COMP249 {
 								}
 								System.out.println("Here is the list of current " + accommodationType + "s offered");
 								printArray(accommodationArray, numSavedAccommodations[accommodationChoice]);
-								System.out.print(
-										"Enter the index of the " + accommodationType + " you would like to remove: ");
-								index = keyboard.nextInt();
-								if (index >= numSavedAccommodations[accommodationChoice]) {
-									// no item at that index. return to previous menu
-									System.out.println("Invalid index. Returning to previous menu...\n");
-									break;
+								System.out.print("Enter the ID of the " + accommodationType + " you would like to remove: ");
+								ID = keyboard.next();
+								try {
+									index = findObjectByID(accommodationArray, ID);
+									deleteIndexInArray(accommodationArray, numSavedAccommodations[accommodationChoice], index);
+									numSavedAccommodations[accommodationChoice]--;
+									System.out.println(accommodationType + " deleted successfully!");
+								}catch(EntityNotFoundException e) {
+									System.err.println(e.getMessage() + "\n");
 								}
-								deleteIndexInArray(accommodationArray, numSavedAccommodations[accommodationChoice],
-										index);
-								numSavedAccommodations[accommodationChoice]--;
 								break;
 							case 3:// List accommodations by type
 								System.out.println("Hotels: ");
@@ -1078,8 +1051,6 @@ public class Driver_A1_COMP249 {
 								}catch(InvalidAccommodationDataException e) {
 									System.err.println(e.getMessage() + "Failed to calculate trip cost.");
 								}
-								
-								
 								break;
 							case 3:// Create a deep copy of the transportation array
 								try {
@@ -1191,6 +1162,71 @@ public class Driver_A1_COMP249 {
 		}	
 	}
 
+	//find findObjectByID methods (overloaded - one for client, trip, accommodation, transportation) 
+	public static int findObjectByID(Client[] array, String ID) throws EntityNotFoundException{
+		int index = -1;
+		for (int i = 0; i < array.length; i++) {
+			if(array[i] == null) {
+				break;
+			}
+			if (array[i].CLIENT_ID.equals(ID)) {
+				return i;
+			}
+		}
+		if(index == -1) {
+			throw new EntityNotFoundException("Client not found.");
+		}
+		return index;
+	}
+
+	public static int findObjectByID(Trip[] array, String ID) throws EntityNotFoundException {
+		int index = -1;
+		for (int i = 0; i < array.length; i++) {
+			if(array[i] == null) {
+				break;
+			}
+			if (array[i].TRIP_ID.equals(ID)) {
+				return i;
+			}
+		}
+		if(index == -1) {
+			throw new EntityNotFoundException("Trip not found.");
+		}
+		return index;
+	}
+
+	public static int findObjectByID(Transportation[] array, String ID) throws EntityNotFoundException {
+		int index = -1;
+		for (int i = 0; i < array.length; i++) {
+			if(array[i] == null) {
+				break;
+			}
+			if (array[i].TRANSPORT_ID.equals(ID)) {
+				return i;
+			}
+		}
+		if(index == -1) {
+			throw new EntityNotFoundException("Transport not found.");
+		}
+		return index;
+	}
+
+	public static int findObjectByID(Accommodation[] array, String ID) throws EntityNotFoundException {
+		int index = -1;
+		for (int i = 0; i < array.length; i++) {
+			if(array[i] == null) {
+				break;
+			}
+			if (array[i].ACCOMMODATION_ID.equals(ID)) {
+				return i;
+			}
+		}
+		if(index == -1) {
+			throw new EntityNotFoundException("Accommodation not found.");
+		}
+		return index;
+	}
+
 	public static void deleteIndexInArray(Object[] array, int afterLastIndex, int index) {
 		// afterLastIndex is the variable that keeps track of the number of items in the
 		// array
@@ -1216,17 +1252,6 @@ public class Driver_A1_COMP249 {
 		return index;
 	}
 
-	public static int findObjectInArray(Object[] array, Object obj) {
-		int index = -1;
-		// can traverse the full array since null can be passed to .equals() method of
-		// any of the classes being used
-		for (int i = 0; i < array.length; i++) {
-			if (array[i].equals(obj)) {
-				return i;
-			}
-		}
-		return index;
-	}
 
 	public static void findMostExpensiveTrip(Trip[] trips, int numSavedTrips) throws InvalidAccommodationDataException {
 		Trip mostExpensiveTrip = trips[0];
