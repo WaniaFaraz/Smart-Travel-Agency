@@ -1,3 +1,9 @@
+//-----------------------------------------------------------------------------
+//Assignment 2
+//Written by:
+// 		Wania Faraz 40332781
+//		Zahira Atmani
+//-----------------------------------------------------------------------------
 package exceptions;
 
 public class DuplicateEmailException extends RuntimeException {

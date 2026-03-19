@@ -1,6 +1,8 @@
 //-----------------------------------------------------------------------------
-//Assignment 1
-//Written by Wania Faraz 40332781
+//Assignment 2
+//Written by:
+// 		Wania Faraz 40332781
+//		Zahira Atmani
 //-----------------------------------------------------------------------------
 package travelPackage;
 
@@ -16,10 +18,9 @@ public class Hostel extends Accommodation {
 	// Constructors
 	public Hostel(String name, String location, double pricePerNight, int numOfBeds) throws InvalidAccommodationDataException {
 		super(name, location, pricePerNight);
-		if(pricePerNight > 150) {
-			throw new InvalidAccommodationDataException("Max price for Hostel is $150.");
-		}
+		setPricePerNight(pricePerNight); //special condition for hostels (but not hotels) : max price $150, so validation happens in the overridden setPricePerNight()
 		setNumOfBeds(numOfBeds);
+		setPricePerNight(pricePerNight);
 	}
 
 	public Hostel(Hostel other) throws InvalidAccommodationDataException {
@@ -40,8 +41,23 @@ public class Hostel extends Accommodation {
 	}
 
 	public void setNumOfBeds(int numOfBeds) {
+		
 		this.numOfBeds = numOfBeds;
 	}
+
+	@Override
+	public void setPricePerNight(double pricePerNight) throws InvalidAccommodationDataException {
+		//sets the price per night for hostels
+		//throws InvalidAccommodationDataException if price exceeds max of $150
+		if(pricePerNight <= 0) {
+			throw new InvalidAccommodationDataException("Price per night must be greater than $0.");
+		}
+		if(pricePerNight > 150) {
+			throw new InvalidAccommodationDataException("Max price for Hostel is $150.");
+		}
+		this.pricePerNight = pricePerNight;
+	}
+	
 
 	// Other Methods
 	@Override

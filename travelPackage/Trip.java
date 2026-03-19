@@ -1,6 +1,8 @@
 //-----------------------------------------------------------------------------
-//Assignment 1
-//Written by Wania Faraz 40332781
+//Assignment 2
+//Written by:
+// 		Wania Faraz 40332781
+//		Zahira Atmani
 //-----------------------------------------------------------------------------
 package travelPackage;
 

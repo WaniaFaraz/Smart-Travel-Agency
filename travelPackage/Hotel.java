@@ -1,6 +1,8 @@
 //-----------------------------------------------------------------------------
-//Assignment 1
-//Written by Wania Faraz 40332781
+//Assignment 2
+//Written by:
+// 		Wania Faraz 40332781
+//		Zahira Atmani
 //-----------------------------------------------------------------------------
 package travelPackage;
 
@@ -9,7 +11,6 @@ import exceptions.InvalidAccommodationDataException;
 public class Hotel extends Accommodation {
 
 	private static final String ACCOMMODATION_TYPE = "HOTEL";
-	private static final double HOTEL_SERVICE_SURCHARGE = 0.1;
 
 	private double starRating;
 
@@ -75,7 +76,7 @@ public class Hotel extends Accommodation {
 			throw new InvalidAccommodationDataException("Stay must be at least 1 day.");
 		}
 		double cost;
-		cost = super.calculateCost(numberOfDays) * (1 + HOTEL_SERVICE_SURCHARGE);
+		cost = super.calculateCost(numberOfDays);
 		return cost;
 	}
 
