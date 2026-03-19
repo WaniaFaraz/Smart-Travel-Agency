@@ -5,6 +5,8 @@
 package travelPackage;
 
 import clientPackage.*;
+import exceptions.InvalidClientDataException;
+import exceptions.InvalidTripDataException;
 
 public class Trip {
 	private static String tripIDFF = "T2001"; // FF stands for first five
@@ -19,46 +21,59 @@ public class Trip {
 	private Transportation transportation;
 
 	// Constructors
-	public Trip(String destination, int duration, double basePrice, Client client, Accommodation accommodation, Transportation transportation) {
-		try {
-			if(basePrice < 100)
-				throw InvalidTripDataException("Invalid base price. Must be greater than $100.");
-			if(duration < 1 || duration > 20)
-				throw InvalidTripDataException("Duration must be 1-20 days.");
-			
-		}
+	public Trip(String destination, int duration, double basePrice, Client client, Accommodation accommodation, Transportation transportation) throws InvalidTripDataException {
+		//Use setters to instantiate object since those will validate parameters
+		try { //only duration and base price generate exceptions. Everything within try block so that invalid trip is not created
+			setDuration(duration);
+			setBasePrice(basePrice);
 
-		this.destination = destination;
-		this.duration = duration;
-		this.basePrice = basePrice;
-		this.client = client; // Updating this client should update all references of this client. Also,
-								// changing this client SHOULD change the original client. So no need for deep
-								// copy
-
-		// setting transportation and accommodation - copy required so that changing one
-		// client's accommodation or transportation does not affect other clients
-		this.transportation = transportation.copy();
-		this.accommodation = accommodation.copy();
-
-		// tripID
-		String tripNum = String.format("%04d", tripNumber);
-		TRIP_ID = tripIDFF + tripNum;
-		tripNumber++;
+			setClient(client);
+			setDestination(destination);
+			setAccommodation(accommodation);
+			setTransportation(transportation);
+			//tripID
+			String tripNum = String.format("%04d", tripNumber);
+			TRIP_ID = tripIDFF + tripNum;
+			tripNumber++;
+		} catch (InvalidTripDataException e) {
+			throw new InvalidTripDataException(e.getMessage() + " Trip not created.");
+		}	
 	}
 
-	public Trip() {
-		this(null, 0, 0, new Client(), null, null);
+	public Trip() throws InvalidTripDataException, InvalidClientDataException{
+		this("no destination", 0, 100, new Client(), null, null);
 	}
 
-	public Trip(Trip other) {
+	public Trip(Trip other) throws InvalidTripDataException, InvalidClientDataException{
 		// creating a copy of the client since the constructor does not copy. no need to
-		// create new transportations and accommodations since the constructor copies
-		// anyway
+		// create new transportations and accommodations since the constructor copies anyway
 		this(other.destination, other.duration, other.basePrice, new Client(other.client), other.accommodation,
 				other.transportation);
 	}
 
 	// Accessors and Mutators
+	public void setDestination(String destination) {
+		this.destination = destination;
+	}
+
+	public void setDuration(int duration) throws InvalidTripDataException {
+		if(duration < 1 || duration > 20) {
+			throw new InvalidTripDataException("Duration must be between 1 and 20 days.");
+		}
+		this.duration = duration;
+	}
+
+	public void setBasePrice(double basePrice) throws InvalidTripDataException {
+		if(basePrice < 100) {
+			throw new InvalidTripDataException("Base price must be a minimum of $100.00");
+		}
+		this.basePrice = basePrice;
+	}
+
+	public void setClient(Client client) throws InvalidTripDataException {
+		this.client = client; //no need to create new so that client can directly be edited from the trip
+	}
+
 	public void setAccommodation(Accommodation accommodation) {
 		this.accommodation = accommodation.copy();
 	}
@@ -67,8 +82,8 @@ public class Trip {
 		this.transportation = transportation.copy();
 	}
 
-	public String getTripID() {
-		return TRIP_ID;
+	public String getDestination() {
+		return destination;
 	}
 
 	public int getDuration() {
@@ -83,24 +98,16 @@ public class Trip {
 		return client; // no need for new so that a client can be edited by getting it from the trip
 	}
 
-	public void setDestination(String destination) {
-		this.destination = destination;
+	public Accommodation getAccommodation() {
+		return accommodation; //no need for new so that an accommodation can be edited by getting it from the trip
 	}
 
-	public void setDuration(int duration) {
-		this.duration = duration;
+	public Transportation geTransportation() {
+		return transportation; //no need for new so that a transportation can be edited by getting it from the trip
 	}
 
-	public void setBasePrice(double basePrice) {
-		this.basePrice = basePrice;
-	}
-
-	public void setClient(Client client) {
-		this.client = new Client(client);
-	}
-
-	public String getDestination() {
-		return destination;
+	public String getTripID() {
+		return TRIP_ID;
 	}
 
 	public int getDurationInDays() {

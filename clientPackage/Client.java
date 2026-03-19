@@ -26,23 +26,27 @@ public class Client {
 	public Client(String firstName, String lastName, String emailAddress) throws InvalidClientDataException {
 		// Constructor
 		//using the set methods, since they will throw an exception if the arguments are invalid - object will not be created
-		setFirstName(firstName);
-		setLastName(lastName);
-		setEmailAddress(emailAddress);
-		// generate ID
-		String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more
+		//putting everything in a try block so that object is not created if there is an issue
+		try{
+			setFirstName(firstName);
+			setLastName(lastName);
+			setEmailAddress(emailAddress);
+			// generate ID
+			String clientNum = String.format("%04d", clientNumber); // make the last digits take up 4 spaces - more
 																// possibility of IDs
-		CLIENT_ID = clientIDFF + clientNum;
-		clientNumber++;
-
+			CLIENT_ID = clientIDFF + clientNum;
+			clientNumber++;
+		}catch(InvalidClientDataException e) {
+			throw new InvalidClientDataException(e.getMessage()); //to pass error on to main
+		}
 	}
 
 	public Client() throws InvalidClientDataException {
-		this(null, null, null);
+		this("No first name", "No last name", "example@gmail.com");
 	}
 
 	public Client(Client other) throws InvalidClientDataException {
-		this(other.firstName, other.lastName, other.emailAddress);
+		this(other.firstName, other.lastName, other.emailAddress); //should never throw an exception because copying a valid client only
 	}
 
 	// Accessor and Mutator Methods
