@@ -1,3 +1,17 @@
+/*
+* -----------------------------------------------------------------------------------
+* Assignment 2
+* Written by Wania Faraz 
+*            Zahira Atmani 40350242
+* -----------------------------------------------------------------------------------
+* The purpose of this class is to handle the persistence of Accommodation objects in the Smart Travel system.
+* It provides methods that saves accommodation data into a csv file, load accommodation data from a csv file.
+*
+*
+*
+*/
+
+
 package persistence;
 
 	
@@ -21,9 +35,8 @@ import travelPackage.Hostel;
 	  
 	    // save accommodations to file
 	
-	    // this will writes all valid accommodation objects from the
-	    // array into a CSV file.
-	    
+	    // this will writes all valid accommodation objects from the array into a CSV file
+	   
 
 	    public static void saveAccommodations(Accommodation[] accommodations, int accommodationCount, String filePath)
 	            throws IOException {
@@ -50,8 +63,6 @@ import travelPackage.Hostel;
 	    // objects (Hotel or Hostel) based on the first attribute.
 	    
 	    // the method returns the number of valid accommodations loaded.
-
-	    
 
 	    public static int[] loadAccommodations(Accommodation[] accommodations, String filePath) throws IOException {
 
@@ -90,8 +101,6 @@ import travelPackage.Hostel;
 	                }
 
 	                // create the correct subclass object
-	             
-
 	               
 	                if (type.equalsIgnoreCase("HOTEL")) {
 
