@@ -45,6 +45,7 @@ abstract public class Transportation {
 	}
 
 	// Accessor and Mutator Methods
+	public abstract String getTransportType();
 	public String getTransportID() {
 		return TRANSPORT_ID;
 	}

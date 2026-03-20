@@ -10,7 +10,7 @@ import exceptions.InvalidTransportDataException;
 
 public class Bus extends Transportation {
 
-	private static String TRANSPORT_TYPE = "BUS";
+	public static final String TRANSPORT_TYPE = "BUS";
 	private static final double SURCHARGE_PER_STOP = 3.50;
 
 	private int numberOfStops;

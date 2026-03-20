@@ -13,7 +13,7 @@ public class ClientFileManager {
 	
 	public static void saveClients(Client[] clients, int clientCount, String filepath) throws IOException {
 		PrintWriter pw = new PrintWriter(new FileWriter(filepath));
-		
+				
 		for (int i = 0; i < clientCount; i++) {
 			if (clients[i] != null) {
 				pw.println(clients[i].getClientID() + ";" +

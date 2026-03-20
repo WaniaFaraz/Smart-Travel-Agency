@@ -171,4 +171,10 @@ public class Trip {
 		return cost;
 	}
 
+	public double getTotalCost(Client client, Accommodation accommodation, Transportation transport) throws InvalidAccommodationDataException {
+		double total;
+		total = client.getAmountSpent() + accommodation.calculateCost(duration) + transportation.calculateCost(duration);
+		return total;
+	}
+
 }

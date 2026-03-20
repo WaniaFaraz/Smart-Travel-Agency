@@ -15,3 +15,114 @@ Count:  9
  8: Invalid Trip Exception: Record number 13 in trips file. Trip Error: Invalid tripId: X6008
  9: Invalid Trip Exception: Record number 14 in trips file. Entity not found: ID = Accommodation not found: A4104
 ================================================================================================================================
+Invalid client line: C1008;Bob Brown;bob.brown@australia.com| Reason: Invalid number of fields.
+Unexpected error while loading accommodation line: HOTEL;A4001;Hilton Rome;Rome;280.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4002;Rome Backpackers;Rome;55.00;6 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4003;Grand Rio;Rio;320.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4004;Kyoto Imperial;Kyoto;410.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4005;Tokyo Youth;Tokyo;60.00;8 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4006;MGM Grand;Las Vegas;290.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4007;W New York;NYC;450.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4008;Barcelona Budget;Barcelona;48.00;6 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4009;Paris Budget;Paris;52.00;8 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4010;Tokyo Hilton;Tokyo;380.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOME;A4010;Tokyo Hilton;Tokyo;380.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3001;Alitalia;JFK;FCO;850.00;23.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3002;Shinkansen;Tokyo;Kyoto;250.00;HighSpeed | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3003;Greyhound;NYC;Boston;75.00;3 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3004;LATAM;JFK;GIG;950.00;32.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3005;Renfe;Madrid;Barcelona;120.00;AVE | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3006;Blablacar;Rome;Milan;45.00;1 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3007;ANA;JFK;NRT;1200.00;32.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3008;Amtrak;NYC;DC;89.00;Acela | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3009;AirFrance;YUL;CDG;750.00;25.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3010;VIA;Toronto;Montreal;60.00;2 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: CRUISE;TR3010;VIA;Toronto;Montreal;60.00;2 | Reason: Cannot read the array length because "transportations" is null
+Missing referenced object in trip line: T2001;C1001;A4001;TR3001;Paris;5;150.00 | Reason: Accommodation ID not found: A4001
+Missing referenced object in trip line: T2002;C1005;;TR3002;Paris;3;100.00 | Reason: Transportation ID not found: TR3002
+Missing referenced object in trip line: T2003;C1002;A4002;TR3003;Venice;7;200.00 | Reason: Accommodation ID not found: A4002
+Missing referenced object in trip line: T2004;C1009;A4003;;Paris;4;175.00 | Reason: Accommodation ID not found: A4003
+Missing referenced object in trip line: T2005;C1006;;TR3004;Rome;6;125.00 | Reason: Transportation ID not found: TR3004
+Missing referenced object in trip line: T2006;C1003;A4004;TR3005;Tokyo;8;225.00 | Reason: Accommodation ID not found: A4004
+Missing referenced object in trip line: T2007;C1001;A4005;;Paris;10;300.00 | Reason: Accommodation ID not found: A4005
+Missing referenced object in trip line: T2008;C1004;;TR3006;London;5;90.00 | Reason: Transportation ID not found: TR3006
+Missing referenced object in trip line: T2009;C1007;A4006;TR3007;Rome;7;275.00 | Reason: Accommodation ID not found: A4006
+Missing referenced object in trip line: T2010;C1005;A4003;T5003;Madrid;-2;250.00 | Reason: Accommodation ID not found: A4003
+Missing referenced object in trip line: T2007;C1006;A4005;T5005;Rome;5;180.00 | Reason: Accommodation ID not found: A4005
+Missing referenced object in trip line: T2008;C9999;A4006;T5006;NYC;8;300.00 | Reason: Client ID not found: C9999
+Missing referenced object in trip line: X6008;C1007;A4007;T5007;LA;10;400.00 | Reason: Accommodation ID not found: A4007
+Missing referenced object in trip line: T2011;C1003;A4104;TR3005;Tokyo;8;225.00 | Reason: Accommodation ID not found: A4104
+Invalid client line: C1008;Bob Brown;bob.brown@australia.com| Reason: Invalid number of fields.
+Unexpected error while loading accommodation line: HOTEL;A4001;Hilton Rome;Rome;280.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4002;Rome Backpackers;Rome;55.00;6 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4003;Grand Rio;Rio;320.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4004;Kyoto Imperial;Kyoto;410.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4005;Tokyo Youth;Tokyo;60.00;8 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4006;MGM Grand;Las Vegas;290.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4007;W New York;NYC;450.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4008;Barcelona Budget;Barcelona;48.00;6 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4009;Paris Budget;Paris;52.00;8 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4010;Tokyo Hilton;Tokyo;380.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOME;A4010;Tokyo Hilton;Tokyo;380.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3001;Alitalia;JFK;FCO;850.00;23.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3002;Shinkansen;Tokyo;Kyoto;250.00;HighSpeed | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3003;Greyhound;NYC;Boston;75.00;3 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3004;LATAM;JFK;GIG;950.00;32.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3005;Renfe;Madrid;Barcelona;120.00;AVE | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3006;Blablacar;Rome;Milan;45.00;1 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3007;ANA;JFK;NRT;1200.00;32.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3008;Amtrak;NYC;DC;89.00;Acela | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3009;AirFrance;YUL;CDG;750.00;25.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3010;VIA;Toronto;Montreal;60.00;2 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: CRUISE;TR3010;VIA;Toronto;Montreal;60.00;2 | Reason: Cannot read the array length because "transportations" is null
+Missing referenced object in trip line: T2001;C1001;A4001;TR3001;Paris;5;150.00 | Reason: Accommodation ID not found: A4001
+Missing referenced object in trip line: T2002;C1005;;TR3002;Paris;3;100.00 | Reason: Transportation ID not found: TR3002
+Missing referenced object in trip line: T2003;C1002;A4002;TR3003;Venice;7;200.00 | Reason: Accommodation ID not found: A4002
+Missing referenced object in trip line: T2004;C1009;A4003;;Paris;4;175.00 | Reason: Accommodation ID not found: A4003
+Missing referenced object in trip line: T2005;C1006;;TR3004;Rome;6;125.00 | Reason: Transportation ID not found: TR3004
+Missing referenced object in trip line: T2006;C1003;A4004;TR3005;Tokyo;8;225.00 | Reason: Accommodation ID not found: A4004
+Missing referenced object in trip line: T2007;C1001;A4005;;Paris;10;300.00 | Reason: Accommodation ID not found: A4005
+Missing referenced object in trip line: T2008;C1004;;TR3006;London;5;90.00 | Reason: Transportation ID not found: TR3006
+Missing referenced object in trip line: T2009;C1007;A4006;TR3007;Rome;7;275.00 | Reason: Accommodation ID not found: A4006
+Missing referenced object in trip line: T2010;C1005;A4003;T5003;Madrid;-2;250.00 | Reason: Accommodation ID not found: A4003
+Missing referenced object in trip line: T2007;C1006;A4005;T5005;Rome;5;180.00 | Reason: Accommodation ID not found: A4005
+Missing referenced object in trip line: T2008;C9999;A4006;T5006;NYC;8;300.00 | Reason: Client ID not found: C9999
+Missing referenced object in trip line: X6008;C1007;A4007;T5007;LA;10;400.00 | Reason: Accommodation ID not found: A4007
+Missing referenced object in trip line: T2011;C1003;A4104;TR3005;Tokyo;8;225.00 | Reason: Accommodation ID not found: A4104
+Invalid client line: C1008;Bob Brown;bob.brown@australia.com| Reason: Invalid number of fields.
+Unexpected error while loading accommodation line: HOTEL;A4001;Hilton Rome;Rome;280.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4002;Rome Backpackers;Rome;55.00;6 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4003;Grand Rio;Rio;320.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4004;Kyoto Imperial;Kyoto;410.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4005;Tokyo Youth;Tokyo;60.00;8 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4006;MGM Grand;Las Vegas;290.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4007;W New York;NYC;450.00;5 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4008;Barcelona Budget;Barcelona;48.00;6 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOSTEL;A4009;Paris Budget;Paris;52.00;8 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOTEL;A4010;Tokyo Hilton;Tokyo;380.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading accommodation line: HOME;A4010;Tokyo Hilton;Tokyo;380.00;4 | Reason: Cannot read the array length because "accommodations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3001;Alitalia;JFK;FCO;850.00;23.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3002;Shinkansen;Tokyo;Kyoto;250.00;HighSpeed | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3003;Greyhound;NYC;Boston;75.00;3 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3004;LATAM;JFK;GIG;950.00;32.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3005;Renfe;Madrid;Barcelona;120.00;AVE | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3006;Blablacar;Rome;Milan;45.00;1 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3007;ANA;JFK;NRT;1200.00;32.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: TRAIN;TR3008;Amtrak;NYC;DC;89.00;Acela | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: FLIGHT;TR3009;AirFrance;YUL;CDG;750.00;25.0 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: BUS;TR3010;VIA;Toronto;Montreal;60.00;2 | Reason: Cannot read the array length because "transportations" is null
+Unexpected error while loading transportation line: CRUISE;TR3010;VIA;Toronto;Montreal;60.00;2 | Reason: Cannot read the array length because "transportations" is null
+Missing referenced object in trip line: T2001;C1001;A4001;TR3001;Paris;5;150.00 | Reason: Accommodation ID not found: A4001
+Missing referenced object in trip line: T2002;C1005;;TR3002;Paris;3;100.00 | Reason: Transportation ID not found: TR3002
+Missing referenced object in trip line: T2003;C1002;A4002;TR3003;Venice;7;200.00 | Reason: Accommodation ID not found: A4002
+Missing referenced object in trip line: T2004;C1009;A4003;;Paris;4;175.00 | Reason: Accommodation ID not found: A4003
+Missing referenced object in trip line: T2005;C1006;;TR3004;Rome;6;125.00 | Reason: Transportation ID not found: TR3004
+Missing referenced object in trip line: T2006;C1003;A4004;TR3005;Tokyo;8;225.00 | Reason: Accommodation ID not found: A4004
+Missing referenced object in trip line: T2007;C1001;A4005;;Paris;10;300.00 | Reason: Accommodation ID not found: A4005
+Missing referenced object in trip line: T2008;C1004;;TR3006;London;5;90.00 | Reason: Transportation ID not found: TR3006
+Missing referenced object in trip line: T2009;C1007;A4006;TR3007;Rome;7;275.00 | Reason: Accommodation ID not found: A4006
+Missing referenced object in trip line: T2010;C1005;A4003;T5003;Madrid;-2;250.00 | Reason: Accommodation ID not found: A4003
+Missing referenced object in trip line: T2007;C1006;A4005;T5005;Rome;5;180.00 | Reason: Accommodation ID not found: A4005
+Missing referenced object in trip line: T2008;C9999;A4006;T5006;NYC;8;300.00 | Reason: Client ID not found: C9999
+Missing referenced object in trip line: X6008;C1007;A4007;T5007;LA;10;400.00 | Reason: Accommodation ID not found: A4007
+Missing referenced object in trip line: T2011;C1003;A4104;TR3005;Tokyo;8;225.00 | Reason: Accommodation ID not found: A4104

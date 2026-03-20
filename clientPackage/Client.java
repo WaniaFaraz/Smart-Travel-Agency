@@ -23,6 +23,7 @@ public class Client {
 	private String firstName;
 	private String lastName;
 	private String emailAddress;
+	private double amountSpent;
 
 	// Constructors
 	public Client(String firstName, String lastName, String emailAddress) throws InvalidClientDataException {
@@ -89,6 +90,10 @@ public class Client {
 		}
 	}
 
+	public void setAmountSpent(double amount) {
+		amountSpent = amount;
+	}
+
 	public String getClientID() {
 		//simple method name so that getID() can be used for all objects without thinking of class
 		return CLIENT_ID;
@@ -104,6 +109,10 @@ public class Client {
 
 	public String getEmailAddress() {
 		return emailAddress;
+	}
+
+	public double getAmountSpent() {
+		return amountSpent;
 	}
 
 	// Other Methods

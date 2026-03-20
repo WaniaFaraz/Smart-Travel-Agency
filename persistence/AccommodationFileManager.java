@@ -102,7 +102,7 @@ import travelPackage.Hostel;
 	                            pricePerNight,
 	                            numberOfNights
 	                    );
-
+						System.out.println("hotel added");
 	                    count++;
 	                }
 
@@ -116,7 +116,7 @@ import travelPackage.Hostel;
 	                            pricePerNight,
 	                            numberOfNights
 	                    );
-
+						System.out.println("hostel added");
 	                    count++;
 	                }
 
