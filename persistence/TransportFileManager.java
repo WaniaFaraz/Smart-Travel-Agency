@@ -27,11 +27,11 @@ public class TransportFileManager {
 	}
 	//load transportations from file
 	//this will read a csv file and reconstructs the transport objects based on the first column
-	public static int loadTransportations(Transportation[] transportations, String filePath) throws IOException {
+	public static int[] loadTransportations(Transportation[] transportations, String filePath) throws IOException {
    //open the file for reading
         BufferedReader br = new BufferedReader(new FileReader(filePath));
         String line;
-        int count = 0;
+        int count = 0, flightCount = 0, trainCount = 0, busCount = 0;
         
     //read the file line by line
         while ((line = br.readLine()) != null) {
@@ -49,7 +49,7 @@ public class TransportFileManager {
                 String arrival = parts[4];
                 double cost = Double.parseDouble(parts[5]);
                 //make sure the array doesnt overflow
-                if (count >= transportations.length) {
+                if (flightCount + trainCount + busCount >= transportations.length) {
                     ErrorLogger.log("Transportation array is full. Remaining lines were skipped.");
                     break;
                 }
@@ -60,6 +60,7 @@ public class TransportFileManager {
                     transportations[count] = new Flight(
                             transportID, company, departure, arrival, cost, luggageAllowance);
                     count++;
+                    flightCount++;
                 }
 
                 else if (type.equalsIgnoreCase("TRAIN")) {
@@ -67,6 +68,7 @@ public class TransportFileManager {
                     transportations[count] = new Train(
                             transportID, company, departure, arrival, cost, trainType);
                     count++;
+                    trainCount++;
                 }
 
                 else if (type.equalsIgnoreCase("BUS")) {
@@ -74,6 +76,7 @@ public class TransportFileManager {
                     transportations[count] = new Bus(
                             transportID, company, departure, arrival, cost, numberOfStops);
                     count++;
+                    busCount++;
                 }
 
                 else {//if the transport type is unknown
@@ -90,7 +93,8 @@ public class TransportFileManager {
         }
 
         br.close();//close file after reading
-        return count;//return how many transports were successfully loaded
+        int[] counts = {flightCount, trainCount, busCount};
+        return counts;//return how many transports were successfully loaded
 
 	}
 }

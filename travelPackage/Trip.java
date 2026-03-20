@@ -91,11 +91,23 @@ public class Trip {
 	}
 
 	public void setAccommodation(Accommodation accommodation) throws InvalidAccommodationDataException{
-		this.accommodation = accommodation.copy();
+		if(accommodation == null) {
+			this.accommodation = null;
+		}
+		else {
+			this.accommodation = accommodation.copy();
+		}
+		
 	}
 
 	public void setTransportation(Transportation transportation) throws InvalidTransportDataException {
-		this.transportation = transportation.copy();
+		if(transportation == null) {
+			this.transportation = null;
+		}
+		else {
+			this.transportation = transportation.copy();
+		}
+		
 	}
 
 	public String getDestination() {

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 import clientPackage.Client;
+import exceptions.DuplicateEmailException;
 import exceptions.InvalidClientDataException;
 
 public class ClientFileManager {
@@ -48,12 +49,22 @@ public class ClientFileManager {
 					ErrorLogger.log("Client array is full. Remaining lines were skipped.");
 					break;
 				}
+
+				//check for duplicate email
+				for (int i = 0; i< clients.length; i++) {
+					if (clients[i] != null && clients[i].getEmailAddress().equalsIgnoreCase(emailAddress)) {
+						throw new DuplicateEmailException("A client with this email already exist.");
+					}
+				}
 				Client c = new Client(firstName, lastName, emailAddress);
 				clients[count] = c;
 				count++;
 			}
 			catch (InvalidClientDataException e) {
 				ErrorLogger.log("Invalid client line: "+ line + "| Reason: "+ e.getMessage());
+			}
+			catch (DuplicateEmailException e) {
+				ErrorLogger.log("Invalid client line: " + line + "| Reason: " + e.getMessage());
 			}
 			catch (Exception e) {
 				ErrorLogger.log("Unexpected error while loading client line: "+ line + "| Reason: "+ e.getMessage());

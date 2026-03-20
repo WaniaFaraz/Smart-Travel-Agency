@@ -53,13 +53,13 @@ import travelPackage.Hostel;
 
 	    
 
-	    public static int loadAccommodations(Accommodation[] accommodations, String filePath) throws IOException {
+	    public static int[] loadAccommodations(Accommodation[] accommodations, String filePath) throws IOException {
 
 	        // open the file for reading
 	        BufferedReader br = new BufferedReader(new FileReader(filePath));
 
 	        String line;
-	        int count = 0;
+	        int count = 0, hotelCount = 0, hostelCount = 0;
 
 	        // read file one line at a time
 	        while ((line = br.readLine()) != null) {
@@ -84,7 +84,7 @@ import travelPackage.Hostel;
 	                int numberOfNights = Integer.parseInt(parts[5]); //starRating for hotel (int as well)
 
 	                // prevent array overflow
-	                if (count >= accommodations.length) {
+	                if ((count) >= accommodations.length) {
 	                    ErrorLogger.log("Accommodation array is full. Remaining lines were skipped.");
 	                    break;
 	                }
@@ -102,8 +102,8 @@ import travelPackage.Hostel;
 	                            pricePerNight,
 	                            numberOfNights
 	                    );
-						System.out.println("hotel added");
-	                    count++;
+						count++;
+	                    hotelCount++;
 	                }
 
 	             
@@ -116,8 +116,8 @@ import travelPackage.Hostel;
 	                            pricePerNight,
 	                            numberOfNights
 	                    );
-						System.out.println("hostel added");
-	                    count++;
+						count++;
+	                    hostelCount++;
 	                }
 
 	                // if type is unknown
@@ -145,9 +145,11 @@ import travelPackage.Hostel;
 
 	        // close file after reading
 	        br.close();
+			
 
 	        // return the number of successfully loaded accommodations
-	        return count;
+			int[] counts = {hotelCount, hostelCount};
+	        return counts;
 	   
 	    }
 

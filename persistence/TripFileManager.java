@@ -11,9 +11,7 @@ import exceptions.EntityNotFoundException;
 import exceptions.InvalidTripDataException;
 
 import clientPackage.Client;
-import travelPackage.Accommodation;
-import travelPackage.Transportation;
-import travelPackage.Trip;
+import travelPackage.*;
 
 public class TripFileManager {
 	
@@ -95,17 +93,22 @@ public class TripFileManager {
 	                    
 	                    
 	                    //create a trip object
-	                    trips[count] = new Trip(
-	                            tripID,
-	                            destination,
-	                            durationDays,
-	                            cost,
-	                            foundClient,
-	                            foundAccommodation,
-	                            foundTransportation
-	                    );
+						if(foundAccommodation != null && foundTransportation != null) {
+							trips[count] = new Trip(
+									tripID,
+									destination,
+									durationDays,
+									cost,
+									foundClient,
+									foundAccommodation,
+									foundTransportation
+							);
+							 count++;	
+						}
+						
+	                    
 
-	                    count++;
+	                   
 	                    //if trip data is invalid
 	            	} catch (InvalidTripDataException e) {
 	            		ErrorLogger.log("Invalid trip line: " + line + " | Reason: " + e.getMessage());
@@ -118,6 +121,7 @@ public class TripFileManager {
 	                //if any unexpected error
 	            	} catch (Exception e) {
 	                    ErrorLogger.log("Unexpected error while loading trip line: " + line + " | Reason: " + e.getMessage());
+						e.printStackTrace();				
 	                }
 	            	
 	            }

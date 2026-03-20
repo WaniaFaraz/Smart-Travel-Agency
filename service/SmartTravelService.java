@@ -40,12 +40,16 @@ public class SmartTravelService {
 	public Accommodation[] hotels;
 	public Accommodation[] hostels;
 	public Accommodation[][] accommodations = {hotels, hostels};
-	public Accommodation[] unsortedAccommodations;
+	public Accommodation[] unsortedAccommodations = new Accommodation[50];
 	public Transportation[] flights;
 	public Transportation[] trains;
 	public Transportation[] buses;
 	public Transportation[][] transportations = {flights, trains, buses};
-	public Transportation[] unsortedTransports;
+	public Transportation[] unsortedTransports = new Transportation[50];
+
+	//arrays to store accommodation subclass and transportation subclass counts
+	private int[] accommodationsCountArray; //order: hotels, hostels
+	private int[] transportationsCountArray; //order: flights, trains, buses
 	
 	//counters for number of objects stored in each array
 	private int clientCount;
@@ -65,7 +69,7 @@ public class SmartTravelService {
 		flights = new Flight[50];
 		trains = new Train[50];
 		buses = new Bus[50];
-		hotels = new Hostel[50];
+		hotels = new Hotel[50];
 		hostels = new Hostel[50];
 		
 		clientCount = 0;
@@ -115,16 +119,36 @@ public class SmartTravelService {
     }
 
     public int getTripCount() {
-        return tripCount;
+    	return tripCount;
     }
 
     public int getAccommodationCount() {
         return accommodationCount;
     }
 
+	public int getHotelCount() {
+		return hotelCount;
+	}
+
+	public int getHostelCount() {
+		return hostelCount;
+	}
+
     public int getTransportCount() {
         return transportCount;
     }
+
+	public int getFlightCount() {
+		return flightCount;
+	}
+
+	public int getTrainCount() {
+		return trainCount;
+	}
+
+	public int getBusCount() {
+		return busCount;
+	}
 
 	public void setClientCount(int clientCount) {
 		//for when a client is removed, and is decremented in the driver
@@ -135,7 +159,6 @@ public class SmartTravelService {
 		//for when trip count has been changed and needs updating
 		this.tripCount = tripCount;
 	}
-	
 	
 	// method: add a client to the system
 	public void addClient(Client client) throws InvalidClientDataException, DuplicateEmailException {
@@ -250,13 +273,20 @@ public class SmartTravelService {
 		try {
 			clientCount = ClientFileManager.loadClients(clients, folderPath + "clients.csv");
 			
-			accommodationCount = AccommodationFileManager.loadAccommodations(unsortedAccommodations, folderPath + "accommodations.csv");
+			accommodationsCountArray = AccommodationFileManager.loadAccommodations(unsortedAccommodations, folderPath + "accommodations.csv");
+			hotelCount = accommodationsCountArray[0];
+			hostelCount = accommodationsCountArray[1];
+			accommodationCount = hostelCount + hotelCount;
 			
-			transportCount = TransportFileManager.loadTransportations(unsortedTransports, folderPath + "transports.csv");
+			transportationsCountArray = TransportFileManager.loadTransportations(unsortedTransports, folderPath + "transports.csv");
+			flightCount = transportationsCountArray[0];
+			trainCount = transportationsCountArray[1];
+			busCount = transportationsCountArray[2];
+			transportCount = flightCount + trainCount + busCount;
 			
 			tripCount = TripFileManager.loadTrips(trips, folderPath + "trips.csv", clients, clientCount, unsortedAccommodations, accommodationCount, unsortedTransports, transportCount);
 			
-			System.out.println("All data loaded successfully."); //print the message once its done
+			System.out.println("All data loaded successfully.\n"); //print the message once its done
 
 			sortAccommodations(); //sort unsortedAccommodations into hotels and hostels
 			sortTransportations(); //sort unsortedTransportations into hotels and hostels
