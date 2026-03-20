@@ -27,34 +27,7 @@ public class TripFileManager {
 
 	            // make sure current element is not null
 	            if (trips[i] != null) {
-
-	                // get IDs of linked objects
-	                String clientID = trips[i].getClient().getClientID();
-
-	                // accommodation and transportation may be optional,
-	                // so check if they exist before accessing their IDs
-	                String accommodationID = "";
-	                String transportID = "";
-
-	                if (trips[i].getAccommodation() != null) {
-	                    accommodationID = trips[i].getAccommodation().getAccommodationID();
-	                }
-
-	                if (trips[i].getTransportation() != null) {
-	                    transportID = trips[i].getTransportation().getTransportID();
-	                }
-	                
-	                // write trip data into the CSV file
-	                pw.println(trips[i].getTripID() + ";"
-	                        + clientID + ";"
-	                        + accommodationID + ";"
-	                        + transportID + ";"
-	                        + trips[i].getDestination() + ";"
-	                        + trips[i].getDurationInDays() + ";"
-	                        + trips[i].getBasePrice());
-	
-	
-
+					pw.println(trips[i]);
                   }
 	        }
 	        pw.close();

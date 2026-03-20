@@ -68,9 +68,9 @@ public class Driver_A1_COMP249 {
 				flight2 = new Flight("British Airways", "London", "Santiago", 23, 300);
 				flight3 = new Flight("British Airways", "London", "Santiago",23, 300);
 
-				train1 = new Train("VIA Rail", "Montreal", "Toronto", "Intercity", "Economy", 30);
-				train2 = new Train("VIA Rail", "Montreal", "Halifax", "Transcontinental", "Sleeper", 40);
-				train3 = new Train("VIA Rail", "Montreal", "Halifax", "Transcontinental", "Sleeper", 40);
+				train1 = new Train("VIA Rail", "Montreal", "Toronto", 30, "Intercity");
+				train2 = new Train("VIA Rail", "Montreal", "Halifax", 40, "Transcontinental");
+				train3 = new Train("VIA Rail", "Montreal", "Halifax", 40, "Transcontinental");
 
 				bus1 = new Bus("Orleans Express", "Montreal", "Ottawa", 4, 10);
 				bus2 = new Bus("FlixBus", "Vancouver", "Calgary", 3, 15);
@@ -831,7 +831,7 @@ public class Driver_A1_COMP249 {
 									System.out.print("Base fare: ");
 									baseFare = keyboard.nextDouble();
 									transportArray[numSavedTransports[transportChoice]] = new Train(companyName,
-											departureCity, arrivalCity, trainType, seatClass, baseFare);
+											departureCity, arrivalCity, baseFare, trainType);
 									transportCreated = true;
 								}
 								// BUS
