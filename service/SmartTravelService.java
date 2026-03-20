@@ -55,7 +55,7 @@ public class SmartTravelService {
 	public SmartTravelService() {
 		clients = new Client[100];
 		trips = new Trip[200];
-		accommodations = new Accomodation[50];
+		accommodations = new Accommodation[50];
 		transportations = new Transportation[50];
 		
 		
