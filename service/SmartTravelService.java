@@ -1,5 +1,23 @@
+/*
+* -----------------------------------------------------------------------------------
+* Assignment 2
+* Written by Wania Faraz 
+*            Zahira Atmani 40350242
+* -----------------------------------------------------------------------------------
+* The purpose of this class is to act as a main control for the Smart Travel App.
+* It manages all the data, including clients, trips, accommodations and transportations.
+* It's also responsible for: 
+*               1) Storing data: maintain arrays and counters for all items
+*               2) Business logic: adds clients (with validation) and trips following the required rules
+*               3) Search: find items by ID and handle missing info with exceptions
+*               4) Persistence: loads and save data by using the Manager files
+*               5) Calculations: computes the total trip cost
+*/
+
+
 package service;
 
+// import all the required packages, exceptions and persistence files 
 import clientPackage.Client;
 
 import java.io.IOException;
@@ -18,6 +36,7 @@ import travelPackage.Accommodation;
 import travelPackage.Transportation;
 import travelPackage.Trip;
 
+//
 public class SmartTravelService {
 
   //arrays to store all objects 
@@ -79,7 +98,7 @@ public class SmartTravelService {
     }
 	
 	
-	//add a client 
+	// method: add a client to the system
 	public void addClient(String firstName, String lastName, String emailAddress) throws InvalidClientDataException, DuplicateEmailException {
 		
 		//check if array is full
@@ -96,72 +115,76 @@ public class SmartTravelService {
 			
 			//create and store client
 			clients[clientCount] = new Client(firstName, lastName, emailAddress);
-			clientCount++;
+			clientCount++; //increment by 1
 		}
 		
-		//check if client exist
+		//method: check if client exist
 		public boolean clientExists(String clientID) {
 			
+			//loop thru the client array
 			for(int i = 0; i < clientCount; i++) {
 				if (clients[i] != null && clients[i].getClientID().equals(clientID)) {
-					return true;
+					return true; //return true if found
 				}
 				
 			}
-			return false;
+			return false; //return false if client doesnt exist
 		}
 		
-		//find client by ID
+		//method: find client by ID
 		public Client findClientById(String clientID) throws EntityNotFoundException {
+			//loop thru the array
 	        for (int i = 0; i < clientCount; i++) {
 	            if (clients[i] != null && clients[i].getClientID().equals(clientID)) {
-	                return clients[i];
+	                return clients[i]; //return the matching client
 	            }
 	        }
 
-	        throw new EntityNotFoundException("Client ID not found: " + clientID);
+	        throw new EntityNotFoundException("Client ID not found: " + clientID); //throw exception if not found
 	    }
 		
-		//find accommodation by ID
+		//method: find accommodation by ID
 		public Accommodation findAccommodationById(String accommodationID)
 	            throws EntityNotFoundException {
-
+           //loop thru the accommodation array
 	        for (int i = 0; i < accommodationCount; i++) {
 	            if (accommodations[i] != null &&
 	                accommodations[i].getAccommodationID().equals(accommodationID)) {
-	                return accommodations[i];
+	                return accommodations[i]; //return the accommodation if found
 	            }
 	        }
 
-	        throw new EntityNotFoundException("Accommodation ID not found: " + accommodationID);
+	        throw new EntityNotFoundException("Accommodation ID not found: " + accommodationID); //if not found, throw the exception
 	    }
 		
-		//find transportation by ID
+		//method: find transportation by ID
 		public Transportation findTransportationById(String transportID)
 	            throws EntityNotFoundException {
-
+            //loop thru the transportation array
 	        for (int i = 0; i < transportCount; i++) {
 	            if (transportations[i] != null &&
 	                transportations[i].getTransportID().equals(transportID)) {
-	                return transportations[i];
+	                return transportations[i]; //return the matching transportation object
 	            }
 	        }
 
-	        throw new EntityNotFoundException("Transportation ID not found: " + transportID);
+	        throw new EntityNotFoundException("Transportation ID not found: " + transportID); //if not found, throw the exception
 	    }
 		
-		//find trip by ID
+		//method: find trip by ID
 		public Trip findTripById(String tripID) throws EntityNotFoundException {
+
+			//loop thru the trip array
 	        for (int i = 0; i < tripCount; i++) {
 	            if (trips[i] != null && trips[i].getTripID().equals(tripID)) {
-	                return trips[i];
+	                return trips[i]; //return the trip object if found
 	            }
 	        }
 
-	        throw new EntityNotFoundException("Trip ID not found: " + tripID);
+	        throw new EntityNotFoundException("Trip ID not found: " + tripID); //throw exception if trip not found
 	    }
 		
-		//create Trip
+		//method: create Trip to store in the system
 		public void createTrip(String clientID, String accommodationID, String transportID, String destination, int duration, double basePrice) throws InvalidTripDataException, EntityNotFoundException {
 			
 			//check if array is full
@@ -194,12 +217,13 @@ public class SmartTravelService {
 			
 			//create and store trip
 			trips[tripCount] = new Trip(foundClient, foundAccommodation, foundTransportation, destination, duration, basePrice);
-			tripCount++;
+			tripCount++; //increment by 1
 		}
 		
 		//load all data method
 		
 		public void loadAllData(String folderPath) {
+			//call the file manager to load clients, accommodations, transportations, trips
 			try {
 				clientCount = ClientFileManager.loadClients(clients, folderPath + "clients.csv");
 				
@@ -209,9 +233,9 @@ public class SmartTravelService {
 				
 				tripCount = TripFileManager.loadTrips(trips, folderPath + "trips.csv", clients, clientCount, accommodations, accommodationCount, transportations, transportCount);
 				
-				System.out.println("All data loaded successfully.");
+				System.out.println("All data loaded successfully."); //print the message once its done
 				
-			} catch (IOException e) {
+			} catch (IOException e) { //
 				System.out.println("Error while loading data: "+ e.getMessage());
 				
 			}
@@ -220,35 +244,37 @@ public class SmartTravelService {
 		//save all data method
 		
 		public void saveAllData(String folderPath) {
+
+			// call upon manager file to save data into the csv files for clients
 			try {
 				ClientFileManager.saveClients(
 	                    clients,
 	                    clientCount,
 	                    folderPath + "clients.csv"
 	            );
-
+                // call upon manager file to save data into the csv files for accomodations
 	            AccommodationFileManager.saveAccommodations(
 	                    accommodations,
 	                    accommodationCount,
 	                    folderPath + "accommodations.csv"
 	            );
-
+                // call upon manager file to save data into the csv files for transportations
 	            TransportFileManager.saveTransportations(
 	                    transportations,
 	                    transportCount,
 	                    folderPath + "transports.csv"
 	            );
-
+               //// call upon manager file to save data into the csv files for trips
 	            TripFileManager.saveTrips(
 	                    trips,
 	                    tripCount,
 	                    folderPath + "trips.csv"
 	            );
 
-	            System.out.println("All data saved successfully.");
+	            System.out.println("All data saved successfully."); //print message once its done
 				
 			} catch(IOException e) {
-				System.out.println("Error while saving data: "+ e.getMessage());
+				System.out.println("Error while saving data: "+ e.getMessage()); //print a message if there's an error
 				
 			}
 		}
@@ -258,10 +284,10 @@ public class SmartTravelService {
 			
 			//check if index is invalid
 			if (index < 0 || index >= tripCount || trips[index] == null) {
-				return -1;
+				return -1; //returns -1 if index is not valid
 				}
 			
-			return trips[index].getTotalCost();
+			return trips[index].getTotalCost(); //if index is valid, return the full trip cost
 	
 		
 	}
