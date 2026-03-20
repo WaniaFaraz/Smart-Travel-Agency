@@ -36,6 +36,14 @@ abstract public class Accommodation {
 		this("no name", "No location", 10);
 	}
 
+	//constructor that takes ID for loadAccommodations
+	public Accommodation(String ID, String name, String location, double pricePerNight) throws InvalidAccommodationDataException {
+		ACCOMMODATION_ID = ID;
+		setName(name);
+		setLocation(location);
+		setPricePerNight(pricePerNight);
+	}
+	
 	//Accessors and Mutators
 	public String getAccommodationID() {
 		//simple method name so that getID() can be used for all objects without thinking of class

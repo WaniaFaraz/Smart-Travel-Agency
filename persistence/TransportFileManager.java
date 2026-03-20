@@ -8,10 +8,7 @@ import java.io.PrintWriter;
 //import custom exception
 import exceptions.InvalidTransportDataException;
 //import transportation classes
-import travelPackage.Transportation;
-import travelPackage.Flight;
-import travelPackage.Train;
-import travelPackage.Bus;
+import travelPackage.*;
 
 
 public class TransportFileManager {
@@ -23,41 +20,7 @@ public class TransportFileManager {
 		//loop thru all valid transportations in the array
 		for (int i = 0; i < transportCount; i++) {
 			if (transportations[i] != null) {//check if the array slot is not empty
-				//if the object is a Flight
-				if (transportations[i] instanceof Flight) {
-					//cast the object to Flight so we can have access
-					Flight f = (Flight) transportations[i];
-					//write the flight data into the csv file
-					pw.println("FLIGHT" + ";"
-                            + f.getTransportID() + ";"
-                            + f.getCompanyName() + ";"
-                            + f.getDepartureCity() + ";"
-                            + f.getArrivalCity() + ";"
-                            + f.calculateCost() + ";"
-                            + f.getLuggageAllowance()); //specific method to Flight
-				} 
-				//if the object is Train
-				else if (transportations[i] instanceof Train) {
-                    Train t = (Train) transportations[i];
-                    pw.println("TRAIN" + ";"
-                            + t.getTransportID() + ";"
-                            + t.getCompanyName() + ";"
-                            + t.getDepartureCity() + ";"
-                            + t.getArrivalCity() + ";"
-                            + t.calculateCost() + ";"
-                            + t.getTrainType());//specific method to Train
-                }
-				//if the object is Bus
-				else if (transportations[i] instanceof Bus) {
-                    Bus b = (Bus) transportations[i];
-                    pw.println("BUS" + ";"
-                            + b.getTransportID() + ";"
-                            + b.getCompanyName() + ";"
-                            + b.getDepartureCity() + ";"
-                            + b.getArrivalCity() + ";"
-                            + b.calculateCost() + ";"
-                            + b.getNumberOfStops());//specific method to Bus
-                }
+                pw.println(transportations[i]); //calls appropriate toString() method
 			}
 		}
 		pw.close();//close the file after writing

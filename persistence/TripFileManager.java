@@ -50,7 +50,7 @@ public class TripFileManager {
 	                        + accommodationID + ";"
 	                        + transportID + ";"
 	                        + trips[i].getDestination() + ";"
-	                        + trips[i].getDurationDays() + ";"
+	                        + trips[i].getDurationInDays() + ";"
 	                        + trips[i].getBasePrice());
 	
 	
@@ -103,7 +103,7 @@ public class TripFileManager {
 	                    Accommodation foundAccommodation = null;
 	                    //if the accommodation object does exist
 	                    if (!accommodationID.equals("")) {
-	                    	foundAccommodation = foundAccommodationByID(accommodations, accommodationCount, accommodationID);
+	                    	foundAccommodation = findAccommodationByID(accommodations, accommodationCount, accommodationID);
 	                    }
 	                    
 	                    //find the transportation object, and it may be optional
@@ -124,12 +124,12 @@ public class TripFileManager {
 	                    //create a trip object
 	                    trips[count] = new Trip(
 	                            tripID,
-	                            foundClient,
-	                            foundAccommodation,
-	                            foundTransportation,
 	                            destination,
 	                            durationDays,
-	                            cost
+	                            cost,
+	                            foundClient,
+	                            foundAccommodation,
+	                            foundTransportation
 	                    );
 
 	                    count++;

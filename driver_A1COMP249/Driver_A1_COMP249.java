@@ -64,9 +64,9 @@ public class Driver_A1_COMP249 {
 				client4 = new Client("Bob", "Ross", "bobross@gmail.com");
 
 				//Transportation creation
-				flight1 = new Flight("The Emirates Group", "Toronto", "Dubai", "Emirates Airlines", 25, 250);
-				flight2 = new Flight("International Airlines Group", "London", "Santiago", "British Airways",23, 300);
-				flight3 = new Flight("International Airlines Group", "London", "Santiago", "British Airways",23, 300);
+				flight1 = new Flight("Emirates Airlines", "Toronto", "Dubai", 25, 250);
+				flight2 = new Flight("British Airways", "London", "Santiago", 23, 300);
+				flight3 = new Flight("British Airways", "London", "Santiago",23, 300);
 
 				train1 = new Train("VIA Rail", "Montreal", "Toronto", "Intercity", "Economy", 30);
 				train2 = new Train("VIA Rail", "Montreal", "Halifax", "Transcontinental", "Sleeper", 40);
@@ -262,7 +262,7 @@ public class Driver_A1_COMP249 {
 					\t2. Client's last name
 					\t3. Client's email address
 					\t4. Back to previous menu
-					Please enter your choice here: """;
+					Please enter your choice here: """ +" ";
 			final int CLIENT_EDIT_MENU_MAX = 4;
 
 			String tripManagementMenu = """
@@ -274,7 +274,7 @@ public class Driver_A1_COMP249 {
 					\t5. List all trips for a specific client
 					\t6. Back to Main Menu
 
-					Please select an option from the above menu: """;
+					Please select an option from the above menu:""" + " ";
 			final int TRIP_MANAGEMENT_MENU_MAX = 6;
 
 			String tripEditMenu = """
@@ -411,7 +411,7 @@ public class Driver_A1_COMP249 {
 											clients[index].setFirstName(firstName);
 											clientUpdated = true;
 										}catch(InvalidClientDataException e) {
-											System.err.println(e.getMessage() + " Failed to edit client first name.");
+											System.err.println(e.getMessage() + " Failed to edit client first name\n.");
 										}
 										break;
 									case 2: // edit last name
@@ -421,7 +421,7 @@ public class Driver_A1_COMP249 {
 											clients[index].setLastName(lastName);
 											clientUpdated = true;
 										}catch(InvalidClientDataException e) {
-											System.err.println(e.getMessage() + " Failed to edit client last name.");
+											System.err.println(e.getMessage() + " Failed to edit client last name.\n");
 										}
 										break;
 									case 3: // edit email address
@@ -431,7 +431,7 @@ public class Driver_A1_COMP249 {
 											clients[index].setEmailAddress(emailAddress);
 											clientUpdated = true;
 										} catch(InvalidClientDataException e) {
-											System.err.println("Failed to edit client email address.");
+											System.err.println("Failed to edit client email address.\n");
 										}
 										break;
 									case 4:
@@ -784,7 +784,6 @@ public class Driver_A1_COMP249 {
 						String departureCity;
 						String arrivalCity;
 						// Flight variables
-						String airlineName;
 						double luggageAllowance;
 						double ticketPrice;
 						// Train variables
@@ -812,14 +811,12 @@ public class Driver_A1_COMP249 {
 								// Initialize based on flight, train, or bus:
 								// FLIGHT
 								if (transportChoice == numSavedFlightsIndex) {
-									System.out.print("Airline name: ");
-									airlineName = keyboard.nextLine();
 									System.out.print("Luggage Allowance: ");
-									luggageAllowance = keyboard.nextInt();
+									luggageAllowance = keyboard.nextDouble();
 									System.out.print("Ticket price: ");
 									ticketPrice = keyboard.nextDouble();
 									try{
-										transportArray[numSavedTransports[transportChoice]] = new Flight(companyName, departureCity, arrivalCity, airlineName, luggageAllowance, ticketPrice);
+										transportArray[numSavedTransports[transportChoice]] = new Flight(companyName, departureCity, arrivalCity, luggageAllowance, ticketPrice);
 										transportCreated = true;
 									} catch(InvalidTransportDataException e) {
 										System.err.println(e.getMessage() + " Failed to create Flight.");
@@ -833,13 +830,9 @@ public class Driver_A1_COMP249 {
 									seatClass = keyboard.next();
 									System.out.print("Base fare: ");
 									baseFare = keyboard.nextDouble();
-									try{
-										transportArray[numSavedTransports[transportChoice]] = new Train(companyName,
+									transportArray[numSavedTransports[transportChoice]] = new Train(companyName,
 											departureCity, arrivalCity, trainType, seatClass, baseFare);
-										transportCreated = true;
-									}catch(InvalidTransportDataException e) {
-										System.err.println(e.getMessage() + " Failed to create Train.");
-									}
+									transportCreated = true;
 								}
 								// BUS
 								else if (transportChoice == numSavedBusesIndex) {
@@ -849,7 +842,7 @@ public class Driver_A1_COMP249 {
 									busFare = keyboard.nextDouble();
 									try{
 										transportArray[numSavedTransports[transportChoice]] = new Bus(companyName,
-											departureCity, arrivalCity, numberOfStops, busFare);
+											departureCity, arrivalCity, busFare, numberOfStops);
 										transportCreated = true;
 									}catch(InvalidTransportDataException e) {
 										System.err.println(e.getMessage() + " Failed to create Bus.");

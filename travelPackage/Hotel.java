@@ -28,6 +28,13 @@ public class Hotel extends Accommodation {
 		this(null, null, 0, 0);
 	}
 
+	//constructor that takes ID - for loadAccommodations
+	public Hotel(String ID, String name, String location, double pricePerNight, double starRating) throws InvalidAccommodationDataException {
+		super(ID, name, location, pricePerNight);
+		setStarRating(starRating);
+		
+	}
+
 	// Accessors and Mutators
 	public String getAccommodationType() {
 		return ACCOMMODATION_TYPE;

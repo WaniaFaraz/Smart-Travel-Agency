@@ -13,41 +13,42 @@ public class Flight extends Transportation {
 	public static final String TRANSPORT_TYPE = "FLIGHT";
 	private double ticketPrice;
 
-	private String airlineName;
 	private double luggageAllowance; // unit of kg
 
 	// Constructors
-	public Flight(String companyName, String departureCity, String arrivalCity, String airlineName, double luggageAllowance, double ticketPrice) throws InvalidTransportDataException {
+	public Flight(String companyName, String departureCity, String arrivalCity, double ticketPrice, double luggageAllowance) throws InvalidTransportDataException {
 		super(companyName, departureCity, arrivalCity);
-		setAirlineName(airlineName);
 		setLuggageAllowance(luggageAllowance);
 		setTicketPrice(ticketPrice);
 	}
 
 	public Flight(Flight other) throws InvalidTransportDataException {
-		this(other.getCompanyName(), other.getDepartureCity(), other.getArrivalCity(), other.airlineName,
-				other.luggageAllowance,other.ticketPrice);
+		this(other.getCompanyName(), other.getDepartureCity(), other.getArrivalCity(),other.ticketPrice, other.luggageAllowance);
 	}
 
 	public Flight() throws InvalidTransportDataException {
-		this("no company", "no departure city", "no arrival city", "no airline", 0, 100);
+		this("no company", "no departure city", "no arrival city", 100, 0);
 	}
+
+	//constructor that takes ID for loadAccommodations - so new ID is not generated
+		public Flight(String ID, String companyName, String departureCity, String arrivalCity, double ticketPrice, double luggageAllowance) throws InvalidTransportDataException {
+			super(ID, companyName, departureCity, arrivalCity);
+			setTicketPrice(ticketPrice);
+			setLuggageAllowance(luggageAllowance);
+		}
+
 
 	// Accessors and Mutators
 	public String getTransportType() {
 		return TRANSPORT_TYPE;
 	}
 
-	public String getAirlineName() {
-		return airlineName;
-	}
-
 	public double getLuggageAllowance() {
 		return luggageAllowance;
 	}
 
-	public void setAirlineName(String airlineName) {
-		this.airlineName = airlineName;
+	public double getTicketPrice() {
+		return ticketPrice;
 	}
 
 	public void setLuggageAllowance(double luggageAllowance) throws InvalidTransportDataException {
@@ -83,8 +84,7 @@ public class Flight extends Transportation {
 			return false;
 		} else {
 			Flight other = (Flight) obj;
-			return (super.equals((Transportation) other) && (luggageAllowance == other.luggageAllowance)
-					&& airlineName.equalsIgnoreCase(other.airlineName));
+			return (super.equals((Transportation) other) && (luggageAllowance == other.luggageAllowance));
 		}
 	}
 

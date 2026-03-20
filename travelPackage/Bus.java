@@ -18,19 +18,28 @@ public class Bus extends Transportation {
 
 
 	// Constructors
-	public Bus(String companyName, String departureCity, String arrivalCity, int numberOfStops, double busFare) throws InvalidTransportDataException {
+	public Bus(String companyName, String departureCity, String arrivalCity, double busFareint, int numberOfStops) throws InvalidTransportDataException {
 		super(companyName, departureCity, arrivalCity);
 		setNumberOfStops(numberOfStops);
+		setBusFare(busFare);
 	}
 
 	public Bus(Bus other) throws InvalidTransportDataException{
-		this(other.getCompanyName(), other.getDepartureCity(), other.getArrivalCity(), 
-				other.numberOfStops, other.busFare);
+		this(other.getCompanyName(), other.getDepartureCity(), other.getArrivalCity(), other.busFare, 
+				other.numberOfStops);
 	}
 
 	public Bus() throws InvalidTransportDataException {
 		this("no company", "no departure city", "no arrival city", 1, 10);
 	}
+
+	//constructor that takes ID for loadAccommodations - so new ID is not generated
+	public Bus(String ID, String companyName, String departureCity, String arrivalCity,  double busFare, int numberOfStops) throws InvalidTransportDataException{
+		super(ID, companyName, departureCity, arrivalCity);
+		setNumberOfStops(numberOfStops);
+		setBusFare(busFare);
+	}
+
 
 	// Accessor and Mutator Methods
 	public String getTransportType() {

@@ -36,6 +36,14 @@ abstract public class Transportation {
 		this("no company name", "no departure city", "no arrival city");
 	}
 
+	//constructor that takes ID for loadAccommodations - so new ID is not generated
+	public Transportation(String ID, String companyName, String departureCity, String arrivalCity) {
+		TRANSPORT_ID = ID;
+		this.companyName = companyName;
+		this.departureCity = departureCity;
+		this.arrivalCity = arrivalCity;
+	}
+
 	// Accessor and Mutator Methods
 	public String getTransportID() {
 		return TRANSPORT_ID;

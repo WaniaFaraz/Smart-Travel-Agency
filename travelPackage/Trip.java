@@ -27,20 +27,18 @@ public class Trip {
 	// Constructors
 	public Trip(String destination, int duration, double basePrice, Client client, Accommodation accommodation, Transportation transportation) throws InvalidTripDataException, InvalidAccommodationDataException, InvalidTransportDataException {
 		//Use setters to instantiate object since those will validate parameters
-		try { //only duration and base price generate exceptions. Everything within try block so that invalid trip is not created
-			setDuration(duration);
-			setBasePrice(basePrice);
+		//only duration and base price generate exceptions. Everything within try block so that invalid trip is not created
+		setDuration(duration);
+		setBasePrice(basePrice);
 
-			setClient(client);
-			setDestination(destination);
-			setAccommodation(accommodation);
-			setTransportation(transportation);
-			//tripID
-			TRIP_ID = tripIDF + tripNumber;
-			tripNumber++;
-		} catch (InvalidTripDataException e) {
-			throw new InvalidTripDataException(e.getMessage() + " Trip not created.");
-		}	
+		setClient(client);
+		setDestination(destination);
+		setAccommodation(accommodation);
+		setTransportation(transportation);
+		//tripID
+		TRIP_ID = tripIDF + tripNumber;
+		tripNumber++;
+			
 	}
 
 	public Trip() throws InvalidTripDataException, InvalidClientDataException, InvalidAccommodationDataException, InvalidTransportDataException{
@@ -52,6 +50,21 @@ public class Trip {
 		// create new transportations and accommodations since the constructor copies anyway
 		this(other.destination, other.duration, other.basePrice, new Client(other.client), other.accommodation,
 				other.transportation);
+	}
+
+	//constructor that takes ID - to create trip with correct ID
+	public Trip(String ID, String destination, int duration, double basePrice, Client client, Accommodation accommodation, Transportation transportation) throws InvalidTripDataException, InvalidAccommodationDataException, InvalidTransportDataException {
+		//Use setters to instantiate object since those will validate parameters
+		//only duration and base price generate exceptions. Everything within try block so that invalid trip is not created
+		TRIP_ID = ID;
+		setDuration(duration);
+		setBasePrice(basePrice);
+
+		setClient(client);
+		setDestination(destination);
+		setAccommodation(accommodation);
+		setTransportation(transportation);
+		
 	}
 
 	// Accessors and Mutators
@@ -105,7 +118,7 @@ public class Trip {
 		return accommodation; //no need for new so that an accommodation can be edited by getting it from the trip
 	}
 
-	public Transportation geTransportation() {
+	public Transportation getTransportation() {
 		return transportation; //no need for new so that a transportation can be edited by getting it from the trip
 	}
 

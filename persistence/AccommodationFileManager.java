@@ -36,39 +36,7 @@ import travelPackage.Hostel;
 
 	            // make sure current element is not null
 	            if (accommodations[i] != null) {
-
-	                // if the object is a Hotel
-	            
-	                if (accommodations[i] instanceof Hotel) {
-
-	                    // cast object to Hotel
-	                    Hotel h = (Hotel) accommodations[i];
-
-	                    // write hotel information to the CSV file
-	                    pw.println("HOTEL" + ";"
-	                            + h.getAccommodationID() + ";"
-	                            + h.getName() + ";"
-	                            + h.getLocation() + ";"
-	                            + h.getPricePerNight() + ";"
-	                            + h.getStarRating());
-	                }
-
-	          
-	                // if the object is a Hostel
-	              
-	                else if (accommodations[i] instanceof Hostel) {
-
-	                    // cast object to Hostel
-	                    Hostel h = (Hostel) accommodations[i];
-
-	                    // write hostel information to the CSV file
-	                    pw.println("HOSTEL" + ";"
-	                            + h.getAccommodationID() + ";"
-	                            + h.getName() + ";"
-	                            + h.getLocation() + ";"
-	                            + h.getPricePerNight() + ";"
-	                            + h.getNumOfBeds());
-	                }
+					pw.println(accommodations[i]);
 	            }
 	        }
 
@@ -113,7 +81,7 @@ import travelPackage.Hostel;
 	                String name = parts[2];
 	                String location = parts[3];
 	                double pricePerNight = Double.parseDouble(parts[4]);
-	                int numberOfNights = Integer.parseInt(parts[5]);
+	                int numberOfNights = Integer.parseInt(parts[5]); //starRating for hotel (int as well)
 
 	                // prevent array overflow
 	                if (count >= accommodations.length) {

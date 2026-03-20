@@ -31,6 +31,13 @@ public class Hostel extends Accommodation {
 		this("no name", "no location", 1, 0);
 	}
 
+	//constructor that takes ID - for loadAccommodations
+	public Hostel(String ID, String name, String location, double pricePerNight, int numOfBeds) throws InvalidAccommodationDataException {
+		super(ID, name, location, pricePerNight);
+		setPricePerNight(pricePerNight); //special condition for hostels
+		setNumOfBeds(numOfBeds);
+	}
+
 	// Accessors and Mutators
 	public String getAccommodationType() {
 		return ACCOMMODATION_TYPE;
