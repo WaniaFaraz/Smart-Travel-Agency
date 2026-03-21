@@ -1,12 +1,27 @@
+/*
+* ----------------------------------------------------------------------------------
+* Assignment 2
+* Written by Wania Faraz
+*            Zahira Atmani 40350242
+* ----------------------------------------------------------------------------------
+* This class is responsible for handling the persistence of Transportation objects using CSV files.
+* It provides methods for saving transportation objects into a file, loading transportation objects from a file.
+* 
+*
+*/
+
 package persistence;
+
 //import classes needed for file reading and writing
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 //import custom exception
 import exceptions.InvalidTransportDataException;
+
 //import transportation classes
 import travelPackage.*;
 
@@ -48,13 +63,14 @@ public class TransportFileManager {
                 String departure = parts[3];
                 String arrival = parts[4];
                 double cost = Double.parseDouble(parts[5]);
+				
                 //make sure the array doesnt overflow
                 if (flightCount + trainCount + busCount >= transportations.length) {
                     ErrorLogger.log("Transportation array is full. Remaining lines were skipped.");
                     break;
                 }
              //create object based on transport type
-                
+                // create flight object
                 if (type.equalsIgnoreCase("FLIGHT")) {
                     double luggageAllowance = Double.parseDouble(parts[6]);
                     transportations[count] = new Flight(
@@ -62,7 +78,7 @@ public class TransportFileManager {
                     count++;
                     flightCount++;
                 }
-
+               //create train object
                 else if (type.equalsIgnoreCase("TRAIN")) {
                     String trainType = parts[6];
                     transportations[count] = new Train(
@@ -70,7 +86,7 @@ public class TransportFileManager {
                     count++;
                     trainCount++;
                 }
-
+               //create bus object
                 else if (type.equalsIgnoreCase("BUS")) {
                     int numberOfStops = Integer.parseInt(parts[6]);
                     transportations[count] = new Bus(
@@ -82,10 +98,11 @@ public class TransportFileManager {
                 else {//if the transport type is unknown
                     throw new InvalidTransportDataException("Unknown transportation type: " + type);
                 }
-
+            //catch invalid transport data
             } catch (InvalidTransportDataException e) {//if validation fails
                 ErrorLogger.log("Invalid transportation line: " + line + " | Reason: " + e.getMessage());
-            } catch (NumberFormatException e) {//if numeric conversion fails
+			//catch number conversion errors
+            } catch (NumberFormatException e) {
                 ErrorLogger.log("Number format error in transportation line: " + line + " | Reason: " + e.getMessage());
             } catch (Exception e) {//catch other unexpected error
                 ErrorLogger.log("Unexpected error while loading transportation line: " + line + " | Reason: " + e.getMessage());
