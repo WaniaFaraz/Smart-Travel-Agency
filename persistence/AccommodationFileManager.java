@@ -101,16 +101,15 @@ import travelPackage.Hostel;
 	                }
 
 	                // create the correct subclass object
-	               
 	                if (type.equalsIgnoreCase("HOTEL")) {
-
-	                    accommodations[count] = new Hotel(
+						    accommodations[count] = new Hotel(
 	                            accommodationID,
 	                            name,
 	                            location,
 	                            pricePerNight,
 	                            numberOfNights
 	                    );
+
 						count++;
 	                    hotelCount++;
 	                }

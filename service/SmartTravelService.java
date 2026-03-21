@@ -292,7 +292,7 @@ public class SmartTravelService {
 			sortTransportations(); //sort unsortedTransportations into hotels and hostels
 			
 		} catch (IOException e) { //
-			System.out.println("Error while loading data: "+ e.getMessage());
+			System.out.println("Error while loading data: " + e.getMessage());
 			
 		}
 
@@ -384,7 +384,7 @@ public class SmartTravelService {
 			if(acc == null) continue;
 			else if (acc.getAccommodationType().equals("HOTEL")) {
 				hotels[hotelCount] = acc;
-				hostelCount++;
+				hotelCount++;
 			}
 			else if(acc.getAccommodationType().equals("HOSTEL")) {
 				hostels[hostelCount] = acc;

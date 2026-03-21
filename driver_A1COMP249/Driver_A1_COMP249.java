@@ -61,6 +61,7 @@ public class Driver_A1_COMP249 {
 		int HOTELS_INDEX = 0; // index of numSavedAccommodations where hotels are stored
 		int HOSTELS_INDEX = 1; // index of numSavedAccommodations where hotels are stored
 
+		boolean dataLoaded = false; //to keep track of whether the data has been loaded
 
 		String mainMenu = """
 				1. Client Management
@@ -905,20 +906,25 @@ public class Driver_A1_COMP249 {
 			}
 			//List All Data Summary (Prints all trip data)
 			else if(option == 6) {
-				Trip[] tripArray = service.getTrips();
-				for(int i = 0; i<tripArray.length; i++) {
-					Trip trip = tripArray[i];
-					Client client = trip.getClient();
-					Accommodation accommodation = trip.getAccommodation();
-					Transportation transport = trip.getTransportation();
-					System.out.println("Trip " + (i+1));
-					System.out.println("-------------------------");
-					System.out.println(trip);
-					System.out.println("Client: " + client);
-					System.out.println("Accommodation: " + accommodation);
-					System.out.println("Transportation: " + transport);
-					System.out.println("\n\n");
-					
+				int count = 0;
+				for(int i = 0; i<trips.length; i++) {
+					Trip trip = trips[i];
+					if(trip != null) {
+						Client client = trip.getClient();
+						Accommodation accommodation = trip.getAccommodation();
+						Transportation transport = trip.getTransportation();
+						System.out.println("Trip " + (i+1));
+						System.out.println("-------------------------");
+						System.out.println(trip);
+						System.out.println("Client: " + client);
+						System.out.println("Accommodation: " + accommodation);
+						System.out.println("Transportation: " + transport);
+						System.out.println("\n\n");
+						count++;
+					}
+				}
+				if(count == 0) { //no trips were printed
+					System.out.println("\nThere are no saved trips.\n");
 				}
 			}
 			//Load All Data (output/data/*.csv)
@@ -933,11 +939,34 @@ public class Driver_A1_COMP249 {
 				numSavedTransports[BUSES_INDEX] = service.getBusCount();
 				numSavedAccommodations[HOTELS_INDEX] = service.getHotelCount();
 				numSavedAccommodations[HOSTELS_INDEX] = service.getHostelCount();
+				dataLoaded = true;
 
 			}
 			//Save All Data (output/data/*.csv)
 			else if(option == 8) {
-				service.saveAllData("output/data/");
+				int response;
+				boolean saveData = true;
+				if(!dataLoaded) {
+					saveData = false; //dont save data yet. decide
+					System.out.println("Data has not been loaded. All previously saved information that has not been loaded will be lost.");
+					System.out.println("Are you sure you would like to save information at this stage?");
+					System.out.print("1. Yes\n2. No\nChoice: ");
+					response = keyboard.nextInt();
+					if(response == 1) {
+						saveData = true;
+					}
+					else if(response == 2) {
+						System.out.println("\nData will not be saved.");
+						System.out.println("Returning to main menu...\n");
+					}
+					else {
+						System.out.println("\nInvalid selection. Returning to main menu...\n");
+					}
+				}
+				if(saveData) {
+					service.saveAllData("output/data/");
+				}
+				
 			}
 			//Run predefined scenario
 			else if(option == 9) {
