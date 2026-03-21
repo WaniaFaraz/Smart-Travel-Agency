@@ -1,7 +1,22 @@
+/*
+* ----------------------------------------------------------------------------------
+* Assignment 2
+* Written by Wania Faraz
+*            Zahira Atmani 40350242
+* ----------------------------------------------------------------------------------
+* This class is responsible for handling the persistence of Trip objects in the Smart Travel system.
+* It provides methods for saving trips, loading trips from csv file to memory. A trip is always linked to a client
+* and optional accommodation and transportation.
+*
+* 
+*
+*/
+
+
 package persistence;
 
+//import classes for file reading and writing
 import java.io.BufferedReader;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,7 +29,7 @@ import clientPackage.Client;
 import travelPackage.*;
 
 public class TripFileManager {
-	
+	//save all valid trips into a csv file
 	public static void saveTrips(Trip[] trips, int tripCount, String filePath) throws IOException {
 
 	        // open file for writing
@@ -47,13 +62,13 @@ public class TripFileManager {
 	            while ((line = br.readLine()) != null) {
 	            	
 	            	try {
-	            		
+	            		//split the line using ; as a separator
 	            		String[] parts = line.split(";");
-	            		
+	            		//a valid trip must have 7 attributes
 	            		if (parts.length != 7) {
 	            			throw new InvalidTripDataException("Invalid number of fields.");
 	            		}
-	            		
+	            		//extract trip attributes from the line
 	            		String tripID = parts[0];
 	                    String clientID = parts[1];
 	                    String accommodationID = parts[2];
@@ -62,7 +77,7 @@ public class TripFileManager {
 	                    int durationDays = Integer.parseInt(parts[5]);
 	                    double cost = Double.parseDouble(parts[6]);
 	                    
-	                    
+	                    //prevent array overflow
 	                    if (count >= trips.length) {
 	                        ErrorLogger.log("Trip array is full. Remaining lines were skipped.");
 	                        break;
@@ -131,37 +146,38 @@ public class TripFileManager {
 	        }
 	        //find client by ID
 	        public static Client findClientByID(Client[] clients, int clientCount, String clientID) throws EntityNotFoundException {
-
+                //search for a client in the client array
 	            for (int i = 0; i < clientCount; i++) {
 	                if (clients[i] != null && clients[i].getClientID().equals(clientID)) {
-	                    return clients[i];
+	                    return clients[i]; //returns the matching client object
 	                }
 	            }
+				//throw exception if not found
 	            throw new EntityNotFoundException("Client ID not found: "+ clientID);
 	        }
 	        
 	        //find accommodation by ID
 	        public static Accommodation findAccommodationByID(Accommodation[] accommodations, int accommodationCount, String accommodationID) throws EntityNotFoundException {
-	        	
+	        	//search for accomodation thru the accommodation array
 	        	for (int i = 0; i < accommodationCount; i++) {
 	                if (accommodations[i] != null &&
 	                    accommodations[i].getAccommodationID().equals(accommodationID)) {
-	                    return accommodations[i];
+	                    return accommodations[i]; //return the accommodation object
 	                }
 	            }
-
+               //throw exception if not found
 	            throw new EntityNotFoundException("Accommodation ID not found: " + accommodationID);
 	        }
 	        //find transportation by ID
 	        public static Transportation findTransportationByID(Transportation[] transportations, int transportCount, String transportID) throws EntityNotFoundException {
-	        	
+	        	//search transportation through the transportation array
 	        	for (int i = 0; i < transportCount; i++) {
 	                if (transportations[i] != null &&
 	                    transportations[i].getTransportID().equals(transportID)) {
-	                    return transportations[i];
+	                    return transportations[i];//return the matched transportation
 	                }
 	            }
-
+                //throw exception if not found
 	            throw new EntityNotFoundException("Transportation ID not found: " + transportID);
 	        }
 	        
