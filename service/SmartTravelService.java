@@ -1,7 +1,7 @@
 /*
 * -----------------------------------------------------------------------------------
 * Assignment 2
-* Written by Wania Faraz 
+* Written by Wania Faraz 40332781
 *            Zahira Atmani 40350242
 * -----------------------------------------------------------------------------------
 * The purpose of this class is to act as a main control for the Smart Travel App.
