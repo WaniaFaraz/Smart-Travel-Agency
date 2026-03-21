@@ -73,7 +73,7 @@ abstract public class Accommodation {
 
 	public void setPricePerNight(double pricePerNight) throws InvalidAccommodationDataException {
 		if(pricePerNight <= 0) {
-			throw new InvalidAccommodationDataException("Price per night must be greater than $0.");
+			throw new InvalidAccommodationDataException("Price per night must be greater than $0. Price per night: " + pricePerNight + " Acc:" + toString());
 		}
 		this.pricePerNight = pricePerNight;
 	}

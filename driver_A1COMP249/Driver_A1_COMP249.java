@@ -325,7 +325,7 @@ public class Driver_A1_COMP249 {
 				int indexOfClient, indexOfAccommodation, indexOfTransport; // index of client in clients array associated with trip 
 																			// (same for accommodation and transport)
 				Client clientOfTrip; // reference to actual client taken from array. for visual simplicity
-				int amountSpent; //for updating the client amountSpent attribute
+				double amountSpent; //for updating the client amountSpent attribute
 				Accommodation accommodationOfTrip; // reference to accommodation from array or from trip (visual
 													// simplicity)
 				int accommodationChoice; // int selection from accommodation type menu
@@ -361,6 +361,7 @@ public class Driver_A1_COMP249 {
 								try {
 									indexOfClient = findObjectByID(clients, ID);
 									clientOfTrip = clients[indexOfClient];
+
 								}catch(EntityNotFoundException e) {
 									System.err.println(e.getMessage() + "\n");
 									break; //client not found - trip cannot be created - exit menu option
@@ -403,16 +404,24 @@ public class Driver_A1_COMP249 {
 								System.out.println("There are no saved " + transportType + "s.");
 								transportOfTrip = null;
 							} else {
-								System.out.println("Here is the list of offered transportations: ");
+								System.out.println("Here is the list of offered " + transportChoice + "s: ");
+								printArray(transportArray, numSavedTransports[transportChoice]);
 								System.out.print("Enter the ID of the " + transportType + " you wish to add to this trip: ");
 								ID = keyboard.next();
 								try {
 									indexOfTransport = findObjectByID(transportArray, ID);
 									transportOfTrip = transportArray[indexOfTransport];
 									try {
-										trips[numTrips] = new Trip(destination, duration, basePrice, clientOfTrip,
+										Trip trip;
+										trip = new Trip(destination, duration, basePrice, clientOfTrip,
 										accommodationOfTrip, transportOfTrip);
+										service.createTrip(trip);
 										numTrips++;
+										service.setTripCount(numTrips);
+										amountSpent = clientOfTrip.getAmountSpent();
+										double amount = trips[numTrips-1].calculateTotalCost();
+										amountSpent += amount;
+										clientOfTrip.setAmountSpent(amountSpent);
 										System.out.println("\nTrip added successfully!\n");
 									}catch(InvalidTripDataException e) {
 										System.err.println(e.getMessage() + " Failed to create Trip.");
@@ -433,7 +442,7 @@ public class Driver_A1_COMP249 {
 								break;
 							}
 							System.out.println("\nHere is the list of current trips:");
-							printIDs(trips, numTrips);
+							printArray(trips, numTrips);
 							System.out.println("Enter the ID of the trip you wish to edit: ");
 							ID = keyboard.next();
 							try {
@@ -571,6 +580,7 @@ public class Driver_A1_COMP249 {
 								index = findObjectByID(trips, ID);
 								deleteIndexInArray(trips, numTrips, index);
 								numTrips--;
+								service.setTripCount(numTrips);
 								System.out.println("\nTrip canceled successfully!\n");
 							}catch(EntityNotFoundException e) {
 								System.err.println(e.getMessage() + "\n");
@@ -591,11 +601,16 @@ public class Driver_A1_COMP249 {
 							printArray(clients, numClients);
 							System.out.print("Enter the ID of the client whose trips you wish to see: ");
 							ID = keyboard.next();
+							boolean tripFound = false;
 							for (int i = 0; i < numTrips; i++) {
 									if (trips[i].getClient().CLIENT_ID.equals(ID)) {
+										tripFound = true;
 										System.out.println(trips[i]);
 										System.out.println();
 									}
+							}
+							if(!tripFound) {
+								System.out.println("\nThere are no trips associated with this client ID.\n");
 							}
 							break;
 						case 6:
@@ -681,6 +696,7 @@ public class Driver_A1_COMP249 {
 							}
 							if(transportCreated == true) {
 								numSavedTransports[transportChoice]++;
+								service.setTransportCount(numSavedTransports[transportChoice]);
 								System.out.println("\nTransport option added successfully!\n");
 							}
 							break;
@@ -744,7 +760,7 @@ public class Driver_A1_COMP249 {
 					// General accommodation variables
 					String name, location;
 					double pricePerNight;
-					double starRating; // Hotel variable
+					int starRating; // Hotel variable
 					int numOfBeds; // Hostel variable
 					boolean accommodationCreated = false; //to decide whether or not to print success message
 					switch (subMenuOption) {
@@ -771,7 +787,7 @@ public class Driver_A1_COMP249 {
 							// Specific accommodation type variables and initialization
 							if (accommodationChoice == HOTELS_INDEX) { // Hotel
 								System.out.print("Star rating: ");
-								starRating = keyboard.nextDouble();
+								starRating = keyboard.nextInt();
 								try {
 									hotels[numSavedAccommodations[HOTELS_INDEX]] = new Hotel(name, location,
 										pricePerNight, starRating);
@@ -793,6 +809,7 @@ public class Driver_A1_COMP249 {
 							}
 							if(accommodationCreated) {
 								numSavedAccommodations[accommodationChoice]++;
+								service.setAccommodationCount(numSavedAccommodations[accommodationChoice]);
 								System.out.println("Accommodation added successfully!\n");
 							}
 							break;
@@ -864,16 +881,20 @@ public class Driver_A1_COMP249 {
 							}
 							System.out.println("Here is the list of trips");
 							printArray(trips, numTrips);
-							index = validateMenuOption(
-									"\nEnter the index of the trip you would like to calculate the cost of:",
-									numTrips - 1, ZERO_ACCEPTED);
-							Trip trip = trips[index];
+							System.out.print("\nEnter the ID of the trip you would like to calculate the cost of: ");
+							ID = keyboard.next();
 							try {
-								double cost = trip.calculateTotalCost();
-								String display = String.format("\nThe trip you selected costs $%.2f.", cost);
-								System.out.println(display);
-							}catch(InvalidAccommodationDataException e) {
-								System.err.println(e.getMessage() + "Failed to calculate trip cost.");
+								index = findObjectByID(trips, ID);
+								Trip trip = trips[index];
+								try {
+									double cost = trip.calculateTotalCost();
+									String display = String.format("\nThe trip you selected costs $%.2f.\n", cost);
+									System.out.println(display);
+								}catch(InvalidAccommodationDataException e) {
+									System.err.println(e.getMessage() + "Failed to calculate trip cost.");
+								}
+							}catch(EntityNotFoundException e){
+								System.out.println("\nTrip not found.\n");
 							}
 							break;
 						case 3:// Create a deep copy of the transportation array
@@ -895,6 +916,7 @@ public class Driver_A1_COMP249 {
 								System.out.println("\nDeep copy created successfully!\n");
 							}catch(InvalidAccommodationDataException e) {
 								System.err.println(e.getMessage() + " Failed to copy array.");
+								e.printStackTrace();
 							}
 							break;
 						case 5:// Back to main menu
@@ -1175,42 +1197,7 @@ public class Driver_A1_COMP249 {
 		}
 	}
 
-	//printIDs method - multiple overloaded method to print IDs depending on type of object
-	public static void printIDs(Client[] array, int afterLastIndex) {
-		//prints the IDs of all client objects in the array
-		int i = 0;
-		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
-		for(i=0; i<=length; i++) {
-			System.out.println(array[i].CLIENT_ID);
-		}
-	}
-
-	public static void printIDs(Transportation[] array, int afterLastIndex) {
-		//prints the IDs of all transportation objects in the array
-		int i = 0;
-		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
-		for(i=0; i<=length; i++) {
-			System.out.println(array[i].TRANSPORT_ID);
-		}	
-	}
-
-	public static void printIDs(Accommodation[] array, int afterLastIndex) {
-		//prints the IDs of all accommodation objects in the array
-		int i = 0;
-		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
-		for(i=0; i<=length; i++) {
-			System.out.println(array[i].ACCOMMODATION_ID);
-		}	
-	}
-
-	public static void printIDs(Trip[] array, int afterLastIndex) {
-		//prints the IDs of all trip objects in the array
-		int i = 0;
-		int length = afterLastIndex-1; //location of the last object in the array - recall: partially filled arrays will be passed to this method
-		for(i=0; i<=length; i++) {
-			System.out.println(array[i].TRIP_ID);
-		}	
-	}
+	
 
 	//find findObjectByID methods (overloaded - one for client, trip, accommodation, transportation) 
 	public static int findObjectByID(Client[] array, String ID) throws EntityNotFoundException{

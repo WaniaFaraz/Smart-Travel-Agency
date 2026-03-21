@@ -38,19 +38,20 @@ import travelPackage.Hostel;
 	    // this will writes all valid accommodation objects from the array into a CSV file
 	   
 
-	    public static void saveAccommodations(Accommodation[] accommodations, int accommodationCount, String filePath)
+	    public static void saveAccommodations(Accommodation[][] accommodations, int accommodationCount, String filePath)
 	            throws IOException {
 
 	        // open the file for writing
 	        PrintWriter pw = new PrintWriter(new FileWriter(filePath));
 
 	        // loop thru all valid accommodations in the array
-	        for (int i = 0; i < accommodationCount; i++) {
-
-	            // make sure current element is not null
-	            if (accommodations[i] != null) {
-					pw.println(accommodations[i]);
-	            }
+	        for (int i = 0; i < accommodations.length; i++) {
+				for(int j =0; j<accommodations[i].length; j++) {
+					// make sure current element is not null
+					if (accommodations[i][j] != null) {
+						pw.println(accommodations[i][j]);
+					}
+				}
 	        }
 
 	        // close the file after writing

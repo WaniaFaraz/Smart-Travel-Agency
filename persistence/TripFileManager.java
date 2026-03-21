@@ -108,7 +108,7 @@ public class TripFileManager {
 	                    
 	                    
 	                    //create a trip object
-						if(foundAccommodation != null && foundTransportation != null) {
+						if(foundAccommodation != null || foundTransportation != null) {
 							trips[count] = new Trip(
 									tripID,
 									destination,

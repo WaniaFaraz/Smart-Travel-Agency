@@ -130,8 +130,26 @@ public class Trip {
 		return accommodation; //no need for new so that an accommodation can be edited by getting it from the trip
 	}
 
+	public String getAccommodationID() {
+		if(accommodation == null) {
+			return "";
+		}
+		else {
+			return accommodation.ACCOMMODATION_ID;
+		}
+	}
+
 	public Transportation getTransportation() {
 		return transportation; //no need for new so that a transportation can be edited by getting it from the trip
+	}
+
+	public String getTransportationID() {
+		if(transportation == null) {
+			return "";
+		}
+		else {
+			return transportation.TRANSPORT_ID;
+		}
 	}
 
 	public String getTripID() {
@@ -157,7 +175,8 @@ public class Trip {
 	public String toString() {
 		String display;
 		String formattedPrice = String.format("%.2f", basePrice);
-		display = String.join(";", TRIP_ID, client.CLIENT_ID, accommodation.ACCOMMODATION_ID, transportation.TRANSPORT_ID, destination, duration + "", formattedPrice);
+	
+		display = String.join(";", TRIP_ID, client.CLIENT_ID, getAccommodationID(), getTransportationID(), destination, duration + "", formattedPrice);
 		return display;
 	}
 
@@ -179,7 +198,14 @@ public class Trip {
 	}
 
 	public double calculateTotalCost() throws InvalidAccommodationDataException {
-		double cost = basePrice + accommodation.calculateCost(duration) + transportation.calculateCost(duration);
+		double accommodationCost = 0, transportationCost = 0;
+		if(accommodation != null) {
+			accommodationCost = accommodation.calculateCost(duration);
+		}
+		if(transportation != null) {
+			transportationCost = transportation.calculateCost(duration);
+		}
+		double cost = basePrice + accommodationCost + transportationCost;
 		return cost;
 	}
 

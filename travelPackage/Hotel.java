@@ -12,10 +12,10 @@ public class Hotel extends Accommodation {
 
 	private static final String ACCOMMODATION_TYPE = "HOTEL";
 
-	private double starRating;
+	private int starRating;
 
 	// Constructors
-	public Hotel(String name, String location, double pricePerNight, double starRating) throws InvalidAccommodationDataException {
+	public Hotel(String name, String location, double pricePerNight, int starRating) throws InvalidAccommodationDataException {
 		super(name, location, pricePerNight);
 		setStarRating(starRating);
 	}
@@ -25,11 +25,11 @@ public class Hotel extends Accommodation {
 	}
 
 	public Hotel() throws InvalidAccommodationDataException {
-		this(null, null, 0, 0);
+		this(null, null, 10, 1);
 	}
 
 	//constructor that takes ID - for loadAccommodations
-	public Hotel(String ID, String name, String location, double pricePerNight, double starRating) throws InvalidAccommodationDataException {
+	public Hotel(String ID, String name, String location, double pricePerNight, int starRating) throws InvalidAccommodationDataException {
 		super(ID, name, location, pricePerNight);
 		setStarRating(starRating);
 		
@@ -44,7 +44,7 @@ public class Hotel extends Accommodation {
 		return starRating;
 	}
 
-	public void setStarRating(double starRating) throws InvalidAccommodationDataException {
+	public void setStarRating(int starRating) throws InvalidAccommodationDataException {
 		if(starRating < 1 || starRating > 5) {
 			throw new InvalidAccommodationDataException("Star rating must be between 1 and 5 stars.");
 		}
@@ -73,7 +73,7 @@ public class Hotel extends Accommodation {
 			return false;
 		} else {
 			Hotel other = (Hotel) obj;
-			return (super.equals((Accommodation) other) && (starRating == starRating));
+			return (super.equals((Accommodation) other) && (starRating == other.starRating));
 		}
 	}
 

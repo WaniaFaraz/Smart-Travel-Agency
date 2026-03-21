@@ -159,6 +159,14 @@ public class SmartTravelService {
 		//for when trip count has been changed and needs updating
 		this.tripCount = tripCount;
 	}
+
+	public void setTransportCount(int transportCount) {
+		this.transportCount = transportCount;
+	}
+
+	public void setAccommodationCount (int accommodationCount) {
+		this.accommodationCount = accommodationCount;
+	}
 	
 	// method: add a client to the system
 	public void addClient(Client client) throws InvalidClientDataException, DuplicateEmailException {
@@ -236,7 +244,11 @@ public class SmartTravelService {
 	}
 	
 	//method: create Trip to store in the system
-	public void createTrip(String clientID, String accommodationID, String transportID, String destination, int duration, double basePrice) throws InvalidTripDataException, EntityNotFoundException, InvalidAccommodationDataException, InvalidTransportDataException {
+	public void createTrip(Trip trip) throws InvalidTripDataException, EntityNotFoundException, InvalidAccommodationDataException, InvalidTransportDataException {
+		String clientID = trip.getClient().getClientID();
+		String accommodationID = trip.getAccommodation().getAccommodationID();
+		String transportID = trip.getTransportation().getTransportID();
+
 		//check if array is full
 		if (tripCount >= trips.length) {
 			System.out.println("Trip array is full.");
@@ -261,15 +273,29 @@ public class SmartTravelService {
 			throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation");
 		}
 		
-		//create and store trip
-		trips[tripCount] = new Trip(destination, duration, basePrice, foundClient, foundAccommodation, foundTransportation );
 		tripCount++; //increment by 1
+	}
+
+	private void clearArray(Object[] array) {
+		//set every object in array to null
+		for(int i = 0; i<array.length; i++) {
+			array[i] = null;
+		}
 	}
 		
 	//load all data method
 	
 	public void loadAllData(String folderPath) {
 		//call the file manager to load clients, accommodations, transportations, trips
+		//empty all arrays before loading data
+		clearArray(clients);
+		clearArray(trips);
+		clearArray(flights);
+		clearArray(trains);
+		clearArray(buses);
+		clearArray(hotels);
+		clearArray(hostels);
+
 		try {
 			clientCount = ClientFileManager.loadClients(clients, folderPath + "clients.csv");
 			
@@ -301,6 +327,8 @@ public class SmartTravelService {
 	//save all data method
 	
 	public void saveAllData(String folderPath) {
+		Transportation[][] transpt = {flights, trains, buses};
+		Accommodation[][] acc = {hotels, hostels};
 
 		// call upon manager file to save data into the csv files for clients
 		try {
@@ -311,31 +339,17 @@ public class SmartTravelService {
 			);
 			// call upon manager file to save data into the csv files for hotels and hostels
 			AccommodationFileManager.saveAccommodations(
-					hotels,
-					hotelCount,
-					folderPath + "accommodations.csv"
-			);
-			AccommodationFileManager.saveAccommodations(
-					hostels,
-					hostelCount,
+					acc,
+					accommodationCount,
 					folderPath + "accommodations.csv"
 			);
 			// call upon manager file to save data into the csv files for flights, trains and buses
 			TransportFileManager.saveTransportations(
-					flights,
-					flightCount,
+					transpt,
+					transportCount,
 					folderPath + "transports.csv"
 			);
-			TransportFileManager.saveTransportations(
-					trains,
-					trainCount,
-					folderPath + "transports.csv"
-			);
-			TransportFileManager.saveTransportations(
-					buses,
-					busCount,
-					folderPath + "transports.csv"
-			);
+			
 			//// call upon manager file to save data into the csv files for trips
 			TripFileManager.saveTrips(
 					trips,

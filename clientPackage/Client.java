@@ -48,6 +48,14 @@ public class Client {
 																	// valid client only
 	}
 
+	//constructor that takes ID - to create trip with correct ID
+	public Client(String ID, String firstName, String lastName, String emailAddress) throws InvalidClientDataException {
+		CLIENT_ID = ID;
+		setFirstName(firstName);
+		setLastName(lastName);
+		setEmailAddress(emailAddress);
+	}
+
 	// Accessor and Mutator Methods
 	public void setFirstName(String firstName) throws InvalidClientDataException {
 		// validate first name

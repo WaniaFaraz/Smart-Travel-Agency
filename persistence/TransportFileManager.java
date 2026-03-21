@@ -29,14 +29,16 @@ import travelPackage.*;
 public class TransportFileManager {
 	// save transportations to file
 	//this will take the transportation array and write all valid transportation objects into a csv file
-	public static void saveTransportations(Transportation[] transportations, int transportCount, String filePath) throws IOException {
+	public static void saveTransportations(Transportation[][] transportations, int transportCount, String filePath) throws IOException {
 		//open the file for writing
 		PrintWriter pw = new PrintWriter(new FileWriter(filePath));
 		//loop thru all valid transportations in the array
-		for (int i = 0; i < transportCount; i++) {
-			if (transportations[i] != null) {//check if the array slot is not empty
-                pw.println(transportations[i]); //calls appropriate toString() method
+		for (int i = 0; i < transportations.length; i++) {
+            for(int j = 0; j < transportations[i].length; j++) {
+                if (transportations[i][j] != null) {//check if the array slot is not empty
+                pw.println(transportations[i][j]); //calls appropriate toString() method
 			}
+            }	
 		}
 		pw.close();//close the file after writing
 	}
