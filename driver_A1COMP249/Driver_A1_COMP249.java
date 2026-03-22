@@ -73,11 +73,10 @@ public class Driver_A1_COMP249 {
 				7. Load All Data (output/data/*.csv)
 				8. Save All Data (output/data/*.csv)
 				9. Run predefined scenario
-				10. Generate Dashboard <-- HTML + charts
 				0. Exit
 
 				Please select an option from the above menu:""" + " ";
-		final int MAIN_MENU_MAX = 10;
+		final int MAIN_MENU_MAX = 9;
 
 		String clientManagementMenu = """
 				Client Management Menu
@@ -1147,10 +1146,6 @@ public class Driver_A1_COMP249 {
 					}
 					
 				}
-			}
-			//Generate Dashboard
-			else if(option == 10) {
-
 			}
 			//Exit
 			else if (option == 0) {
