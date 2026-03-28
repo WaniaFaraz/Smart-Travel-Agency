@@ -132,7 +132,7 @@ public class DashboardGenerator {
         
         for (int i = 0; i < service.getClientCount(); i++) {
             Client client = service.getClient(i);
-            double spent = client.getTotalSpent();
+            double spent = client.getAmountSpent();
             out.println("                    <tr>");
             out.println("                        <td><strong>" + client.getClientId() + "</strong></td>");
             out.println("                        <td>" + client.getFirstName() + " " + client.getLastName() + "</td>");
@@ -170,7 +170,7 @@ public class DashboardGenerator {
             out.println("                        <td><strong>" + trip.getTripId() + "</strong></td>");
             out.println("                        <td>" + trip.getClientId() + "</td>");
             out.println("                        <td>" + trip.getDestination() + "</td>");
-            out.println("                        <td>" + trip.getDurationInDays() + "</td>");
+            out.println("                        <td>" + trip.getDuration() + "</td>");
             out.println("                        <td>$" + String.format("%.2f", service.calculateTripTotal(i)) + "</td>");
             out.println("                    </tr>");
         }
