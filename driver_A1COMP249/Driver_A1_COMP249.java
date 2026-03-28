@@ -12,6 +12,8 @@ import travelPackage.*;
 import exceptions.*;
 import service.SmartTravelService;
 
+import visualization.DashboardGenerator;
+
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -73,10 +75,11 @@ public class Driver_A1_COMP249 {
 				7. Load All Data (output/data/*.csv)
 				8. Save All Data (output/data/*.csv)
 				9. Run predefined scenario
+			   10. Generate Dashboard (HTML + charts)
 				0. Exit
 
 				Please select an option from the above menu:""" + " ";
-		final int MAIN_MENU_MAX = 9;
+		final int MAIN_MENU_MAX = 10;
 
 		String clientManagementMenu = """
 				Client Management Menu
@@ -1146,6 +1149,10 @@ public class Driver_A1_COMP249 {
 					}
 					
 				}
+			}
+			// dashboard generator
+			else if (option == 10){
+				DashboardGenerator.generateDashboard(service);
 			}
 			//Exit
 			else if (option == 0) {
