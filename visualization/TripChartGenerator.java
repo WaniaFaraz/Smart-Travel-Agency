@@ -16,7 +16,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
 import service.SmartTravelService;
-import travel.Trip;
+import travelPackage.Trip;
 
 import java.io.File;
 import java.io.IOException;
