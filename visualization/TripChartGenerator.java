@@ -87,7 +87,7 @@ public class TripChartGenerator {
      */
     public static void generateCostBarChart(SmartTravelService service) throws IOException {
         
-    	Trip[] trips = service.getAllTrips();
+    	Trip[] trips = service.getTrips();
     	int count = service.getTripCount();
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < count; i++) {
@@ -114,7 +114,7 @@ public class TripChartGenerator {
      */
     public static void generateDestinationPieChart(SmartTravelService service) throws IOException {
         
-    	Trip[] trips = service.getAllTrips();
+    	Trip[] trips = service.getTrips();
     	int count = service.getTripCount();
     	DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
 
@@ -149,11 +149,11 @@ public class TripChartGenerator {
      */
     public static void generateDurationLineChart(SmartTravelService service) throws IOException {
         
-    	Trip[] trips = service.getAllTrips();
+    	Trip[] trips = service.getTrips();
     	int count = service.getTripCount();
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < count; i++) {
-            dataset.addValue(trips[i].getDurationInDays(), "Duration (days)", trips[i].getTripId());
+            dataset.addValue(trips[i].getDuration(), "Duration (days)", trips[i].getTripId());
         }
 
         JFreeChart chart = ChartFactory.createLineChart(
