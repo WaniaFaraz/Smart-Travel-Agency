@@ -19,8 +19,8 @@ package visualization;
  */
 
 import service.SmartTravelService;
-import client.Client;
-import travel.Trip;
+import clientPackage.Client;
+import travelPackage.Trip;
 
 import java.io.File;
 import java.io.PrintWriter;
