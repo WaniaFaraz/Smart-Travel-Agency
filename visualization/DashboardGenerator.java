@@ -228,11 +228,26 @@ public class DashboardGenerator {
         double totalRevenue = 0.0;
         
 		//ADD CODE
+		double avgCost = 0.0;
+
+		for (int i = 0; i < tripCount; i++){
+			totalRevenue += service.calculateTripTotal(i);
+		}
+		avgCost = totalRevenue / tripCount;
+
         
         // 2. Average Duration (days)
         double totalDays = 0.0, avgDuration =0.0;
         
 		//ADD CODE
+		for (int i = 0; i < tripCount; i++){
+			totalDays += service.getTrip(i).getDuration();
+		}
+		avgDuration = totalDays / tripCount;
+
+		//most visited destination
+		String mostVisited = findMostVisitedDestination(service);
+		int visitCount = countDestinationVisits(service, mostVisited);
     	
         
         out.println("        <section class='stats-section'>");
@@ -298,6 +313,25 @@ public class DashboardGenerator {
     private static String findMostVisitedDestination(SmartTravelService service) {
         
 		//ADD CODE
+		if (service.getTripCount() == 0){
+			return "N/A";
+		}
+
+		String mostVisited = service.getTrip(0).getDestination();
+		int maxCount = countDestinationVisits(service, mostVisited);
+
+		for (int i = 1; i < service.getTripCount(); i++){
+			String currentDestination = service.getTrip(i).getDestination();
+			int currentCount = countDestinationVisits(service, currentDestination);
+
+			if (currentCount > maxCount){
+				maxCount = currentCount;
+				mostVisited = currentDestination;
+			}
+		}
+		return mostVisited;
+			
+			
     }
 
     /**
@@ -306,6 +340,14 @@ public class DashboardGenerator {
     private static int countDestinationVisits(SmartTravelService service, String destination) {
         
 		//ADD CODE
+		int count = 0;
+
+		for (int i = 0; i < service.getTripCount(); i++){
+			if (service.getTrip(i).getDestination().equalsIgnoreCase(destination)){
+				count++;
+			}
+		}
+		return count;
     }
 
     
