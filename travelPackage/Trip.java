@@ -12,7 +12,11 @@ import exceptions.InvalidClientDataException;
 import exceptions.InvalidTransportDataException;
 import exceptions.InvalidTripDataException;
 
-public class Trip {
+import interfaces.Identifiable;
+import interfaces.Billable;
+import interfaces.CsvPersistable;
+
+public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<Trip>{
 	private static String tripIDF = "T"; // FF stands for first
 	public final String TRIP_ID;
 	private static int tripNumber = 2001; //last 4 digits of trip ID. incremented by 1 after each initialization
@@ -168,6 +172,41 @@ public class Trip {
 
 	public double getDistance() {
 		return 0;
+	}
+	//methods to implement interface identifiable
+	@Override
+	public String getId(){
+		return getTripId();
+	}
+
+	//return the total cost of the trip with the billable interface
+	@Override
+	publid double getTotalCost(){
+		try {
+			return calculateTotalCost();
+		} catch (Exception e){
+			return basePrice;
+		}
+	}
+	//convert trip to csv format with csvpersistable interface
+	@Override
+	public String toCsvRow(){
+		return toString();
+	}
+	//method to sort Trip by total cost
+	@Override
+	public int compareTo(Trip other){
+		return Double.compare(other.getTotalCost(), this.getTotalCost());
+	}
+	//method to create trip object from csv row
+	public static Trip fromCsvRow(String csvLine, Client client, Accommodation accommodation, Transportation transportation) throws InvalidTripDataException, InvalidAccommodationDataException, InvalidTransportDataException{
+
+		String[] parts = csvLine.split(";");
+
+		if (parts.length != 7){
+			throw new InvalidTripDataException("Invalid trip CSV format.");
+		}
+		return new Trip(parts[0], parts[4], Integer.parseInt(parts[5]), Double.parseDouble(parts[6]), client, accommodation, transportation);
 	}
 
 	// Other Methods
