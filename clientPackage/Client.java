@@ -12,9 +12,12 @@
  */
 package clientPackage;
 
+import interfaces.Identifiable;
+import interfaces.CsvPersistable;
+
 import exceptions.InvalidClientDataException;
 
-public class Client {
+public class Client implements Identifiable, CsvPersistable, Comparable<Client> {
 	private static String clientIDF = "C"; // F stands for first
 	private static int clientNumber = 1001; // will be the last 4 digits of the client Id. incremented by 1 each time a
 											// client is initialized
@@ -122,6 +125,22 @@ public class Client {
 	public double getAmountSpent() {
 		return amountSpent;
 	}
+	//methods required by interfaces
+	@Override
+	public String getId(){
+		return getClientID();
+	}
+
+	//method that convers object into Csv format for the CsvPersistable interface
+	@Override
+	public String toCsvRow(){
+		return CLIENT_ID + ";" + firstName + ";" + lastName + ";" + emailAddress;
+	}
+	//method that will sort clients by total amount spent
+	@Override
+	public int compareTo(Client other){
+		return Double.compare(other.amountSpent, this.amountSpent);
+	}
 
 	// Other Methods
 	@Override
@@ -144,5 +163,16 @@ public class Client {
 
 		}
 
+	}
+
+	//method to create a client object from CSV row
+	public static Client fromCsvRow(String csvLine) throws InvalidClientDataException{
+
+		String[] parts = csvLine.split(";");
+
+		if (parts.length != 4){
+			throw new InvalidClientDataException("Invalid client CSV format.");
+		}
+		return new Client(parts[0], parts[1], parts[2], parts[3]);
 	}
 }
