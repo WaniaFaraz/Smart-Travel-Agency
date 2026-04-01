@@ -7,9 +7,12 @@
 
 package travelPackage;
 
+import interfaces.Identifiable;
+import interfaces.CsvPersistable;
+
 import exceptions.InvalidAccommodationDataException;
 
-abstract public class Accommodation {
+abstract public class Accommodation implements Identifiable, CsvPersistable, Comparable<Accommodation> {
 	private static String accommodationIDF = "A"; // F stands for first
 	public final String ACCOMMODATION_ID;
 	private static int accommodationNumber = 4001;
@@ -77,6 +80,20 @@ abstract public class Accommodation {
 		}
 		this.pricePerNight = pricePerNight;
 	}
+	//method to return accommodation id with identifiable interface
+	@Override
+	public String getId(){
+		return getAccommodationID();
+	}
+	//method to sort accommodations by price per night
+	@Override
+	public int compareTo(Accommodation other){
+		return Double.compare(other.pricePerNight, this.pricePerNight);
+	}
+	//method to convert accommodation object to csv format
+	@Override
+	public abstract String toCsvRow();
+	
 
 	// Other Methods
 	public abstract Accommodation copy() throws InvalidAccommodationDataException; // required because cannot use copy constructor of this class since abstract
