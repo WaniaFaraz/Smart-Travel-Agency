@@ -56,6 +56,30 @@ public class Hotel extends Accommodation {
 	public Accommodation copy() throws InvalidAccommodationDataException {
 		return new Hotel(this);
 	}
+	//method to implement identifiable interface
+	@Override
+	public String toCsvRow(){
+		return toString();
+	}
+	//method to reconstruct a hotel
+	public static Hotel fromCsvRow(String csvLine) throws InvalidAccommodationDataException{
+		String[] parts = csvLine.split(";");
+
+		if (parts.length != 6){
+			throw new InvalidAccommodationDataException("Invalid Hotel Csv format.");
+			
+		}
+		if (!parts[0].equalsIgnoreCase("HOTEL")){
+			throw new InvalidAccommodationDataException("CSV row is not a Hotel record.");
+		}
+		String id = parts[1];
+		String name = parts[2];
+		String location = parts[3];
+		double pricePerNight = Double.parseDouble(parts[4]);
+		int starRating = Integer.parseInt(parts[5]);
+
+		return new Hotel(id, name, location, pricePerNight, starRating);
+	}
 
 	@Override
 	public String toString() {
