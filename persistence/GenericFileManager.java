@@ -1,5 +1,9 @@
 /*
-* 
+* * ----------------------------------------------------------------------------------
+* Assignment 3
+* Written by Wania Faraz 40332781
+*            Zahira Atmani 40350242
+* ----------------------------------------------------------------------------------
 *
 * this file replaces the multiple file managers with one generic class that can handle any object
 * implementing CsvPersistable. It has load objects from CSV files, save objects to CSV files.
