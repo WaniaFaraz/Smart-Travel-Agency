@@ -71,6 +71,30 @@ public class Hostel extends Accommodation {
 	public Accommodation copy() throws InvalidAccommodationDataException {
 		return new Hostel(this);
 	}
+	//method to return unique id with interface identifiable
+	@Override
+	public String toCsvRow(){
+		return toString();
+	}
+	@Override
+	public static Hostel fromCsvRow(String csvLine) throws InvalidAccommodationDataException{
+		String[] parts = csvLine.split(";");
+
+		if (parts.length != 6) {
+			throw new InvalidAccommodationDataException("Invalid Hostel CSV format.");
+		}
+		if (!parts[0].equalsIgnoreCase("HOSTEL")){
+			throw new InvalidAccommodationDataException("CSV row is a Hostel record.");
+		}
+
+		String id = parts[1];
+		String name = parts[2];
+		String location = parts[3];
+		double pricePerNight = Double.parseDouble(parts[4]);
+		int numOfBeds = Integer.parseInt(parts[5]);
+
+		return new Hostel(id, name, location, pricePerNight, numOfBeds);
+	}
 
 	@Override
 	public String toString() {
