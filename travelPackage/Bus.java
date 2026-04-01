@@ -60,6 +60,34 @@ public class Bus extends Transportation {
 	public void setBusFare(double busFare) {
 		this.busFare = busFare;
 	}
+	@Override
+	public double getBasePrice(){
+		return busFare;
+	}
+	//convert object to csv format
+	@Override
+	public String toCsvRow(){
+		return toString();
+	}
+	//method fromCsvRow to reconstruct bus object
+	public static Bus fromCsvRow(String csvLine) throws InvalidTransportDataException{
+		String[] parts = csvLine.split(";");
+
+		if (parts.length != 7){
+			throw new InvalidTransportDataException("Invalid Bus CSV format");
+		}
+		if (!parts[0].equalsIgnoreCase("BUS")){
+			throw new InvalidTransportDataException("CSV row is not a Bus record.");
+		}
+		String id = parts[1];
+		String companyName = parts[2];
+		String departureCity = parts[3];
+		String arrivalCity = parts[4];
+		double busFare = Double.parseDouble(parts[5]);
+		int numberOfStops = Integer.parseInt(parts[6]);
+
+		return new Bus(id, companyName, departureCity, arrivalCity, busFare, numberOfStops);
+	}
 
 	// Other Methods
 	public Transportation copy() throws InvalidTransportDataException {
