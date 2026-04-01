@@ -54,6 +54,34 @@ public class Train extends Transportation {
 	public void setBaseFare(double baseFare) {
 		this.baseFare = baseFare;
 	}
+	@Override
+	public double getBasePrice(){
+		return baseFare;
+	}
+	//convert the object to csv format
+	@Override
+	public String toCsvRow(){
+		return toString();
+	}
+	//method fromCsvRow
+	public static Train fromCsvRow(String csvLine) throws InvalidTransportDataException{
+		String[] parts = csvLine.split(";");
+
+		if (parts.length != 7){
+			throw new InvalidTransportDataException("Invalid Train CSV format.");
+		}
+		if (!parts[0].equalsIgnoreCase("TRAIN"){
+			throw new InvalidTransportDataException("CSV row is not a Train record");
+		}
+		String id = parts[1];
+		String companyName = parts[2];
+		String departureCity = parts[3];
+		String arrivalCity = parts[4];
+		double baseFare = Double.parseDouble(parts[5]);
+		String trainType = parts[6];
+
+		return new Train(id, companyName, departureCity, arrivalCity, baseFare, trainType);
+	}
 
 	// Other Methods
 	@Override
