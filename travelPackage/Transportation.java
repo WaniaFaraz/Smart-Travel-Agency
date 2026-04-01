@@ -7,9 +7,12 @@
 
 package travelPackage;
 
+import interfaces.Identifiable;
+import interfaces.CsvPersistable;
+
 import exceptions.InvalidTransportDataException;
 
-abstract public class Transportation {
+abstract public class Transportation implements Identifiable, CsvPersistable, Comparable<Transportation> {
 	private static String transportIDF = "TR"; // F stands for first
 	public final String TRANSPORT_ID; // assigned automatically
 	private static int transportNumber = 3001;
@@ -73,6 +76,22 @@ abstract public class Transportation {
 	public void setArrivalCity(String arrivalCity) {
 		this.arrivalCity = arrivalCity;
 	}
+	//return the id with identifiable interface
+	@Override
+	public String getId(){
+		return getTransportID();
+	}
+	public abstract double getBasePrice();
+
+	//method to sort transportation object based on base price
+	@Override
+	public int compareTo(Transportation other){
+		return Double.compare(other.getBasePrice(), this.getBasePrice());
+	}
+
+	//abstract method for toCsvRow
+	@Override
+	public abstract String toCsvRow();
 
 	// Other Methods
 	public abstract double calculateCost(int numberOfDays); // required because cannot use copy constructor of this
