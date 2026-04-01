@@ -60,6 +60,36 @@ public class Flight extends Transportation {
 	public void setTicketPrice(double ticketPrice) {
 		this.ticketPrice = ticketPrice;
 	}
+	@Override
+	public double getBasePrice(){
+		return ticketPrice;
+	}
+	//implement the method toCsvRow
+	@Override
+	public String toCsvRow(){
+		return toString();
+	}
+	//fromCsvRow method
+	public static Flight fromCsvRow(String csvLine) throws InvalidTransportDataException{
+		String[] parts = csvLine.split(";");
+
+		if (parts.length != 7){
+			throw new InvalidTransportDataException("Invalid Flight CSV format.");
+		}
+		if (!parts[0].equalsIgnoreCase("FLIGHT"){
+			throw new InvalidTransportDataException(CSV row is not a Flight record.");
+		}
+		String id = parts[1];
+		String companyName = parts[2];
+		String departureCity = parts[3];
+		String arrivalCity = parts[4];
+		double ticketPrice = Double.parseDouble(parts[5]);
+		double luggageAllowance = Double.parseDouble(parts[6]);
+
+		return new Flight(id, companyName, departureCity, arrivalCity, ticketPrice, luggageAllowance);
+			
+	}
+	
 
 	// Other Methods
 	@Override
