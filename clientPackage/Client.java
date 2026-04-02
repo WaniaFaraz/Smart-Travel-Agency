@@ -134,7 +134,7 @@ public class Client implements Identifiable, CsvPersistable, Comparable<Client> 
 	//method that convers object into Csv format for the CsvPersistable interface
 	@Override
 	public String toCsvRow(){
-		return CLIENT_ID + ";" + firstName + ";" + lastName + ";" + emailAddress;
+		return toString();
 	}
 	//method that will sort clients by total amount spent
 	@Override
