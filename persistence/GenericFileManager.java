@@ -17,7 +17,7 @@ import java.util.List;
 
 import clientPackage.Client;
 import interfaces.CsvPersistable;
-import travelPackage;
+import travelPackage.*;
 
 public class GenericFileManager {
 
@@ -45,13 +45,13 @@ public class GenericFileManager {
 
       try {
         //convert csv line into object
-        Object obj = parseLine(line, clazz)
+        Object obj = parseLine(line, clazz);
        //cast object to the correct type
         if (clazz.isInstance(obj)){
           items.add(clazz.cast(obj));
         }
         
-      } catch (IOException e){
+      } catch (Exception e){
         //log invalid lines
         ErrorLogger.log("Invalid line: "+ line + "|" + e.getMessage()); 
       }
