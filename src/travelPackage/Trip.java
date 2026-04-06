@@ -13,10 +13,11 @@ import exceptions.InvalidTransportDataException;
 import exceptions.InvalidTripDataException;
 
 import interfaces.Identifiable;
+import interfaces.Printable;
 import interfaces.Billable;
 import interfaces.CsvPersistable;
 
-public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<Trip>{
+public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<Trip>, Printable{
 	private static String tripIDF = "T"; // FF stands for first
 	public final String TRIP_ID;
 	private static int tripNumber = 2001; //last 4 digits of trip ID. incremented by 1 after each initialization

@@ -76,8 +76,8 @@ public class Flight extends Transportation {
 		if (parts.length != 7){
 			throw new InvalidTransportDataException("Invalid Flight CSV format.");
 		}
-		if (!parts[0].equalsIgnoreCase("FLIGHT"){
-			throw new InvalidTransportDataException(CSV row is not a Flight record.");
+		if (!parts[0].equalsIgnoreCase("FLIGHT")){
+			throw new InvalidTransportDataException("CSV row is not a Flight record.");
 		}
 		String id = parts[1];
 		String companyName = parts[2];

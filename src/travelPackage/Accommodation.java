@@ -7,12 +7,11 @@
 
 package travelPackage;
 
-import interfaces.Identifiable;
-import interfaces.CsvPersistable;
+import interfaces.*;
 
 import exceptions.InvalidAccommodationDataException;
 
-abstract public class Accommodation implements Identifiable, CsvPersistable, Comparable<Accommodation> {
+abstract public class Accommodation implements Identifiable, CsvPersistable, Comparable<Accommodation>, Printable {
 	private static String accommodationIDF = "A"; // F stands for first
 	public final String ACCOMMODATION_ID;
 	private static int accommodationNumber = 4001;

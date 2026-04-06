@@ -12,12 +12,11 @@
  */
 package clientPackage;
 
-import interfaces.Identifiable;
-import interfaces.CsvPersistable;
+import interfaces.*;
 
 import exceptions.InvalidClientDataException;
 
-public class Client implements Identifiable, CsvPersistable, Comparable<Client> {
+public class Client implements Identifiable, CsvPersistable, Comparable<Client>, Printable {
 	private static String clientIDF = "C"; // F stands for first
 	private static int clientNumber = 1001; // will be the last 4 digits of the client Id. incremented by 1 each time a
 											// client is initialized

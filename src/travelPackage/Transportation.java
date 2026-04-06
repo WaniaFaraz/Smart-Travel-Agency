@@ -8,11 +8,12 @@
 package travelPackage;
 
 import interfaces.Identifiable;
+import interfaces.Printable;
 import interfaces.CsvPersistable;
 
 import exceptions.InvalidTransportDataException;
 
-abstract public class Transportation implements Identifiable, CsvPersistable, Comparable<Transportation> {
+abstract public class Transportation implements Identifiable, CsvPersistable, Comparable<Transportation>, Printable {
 	private static String transportIDF = "TR"; // F stands for first
 	public final String TRANSPORT_ID; // assigned automatically
 	private static int transportNumber = 3001;
