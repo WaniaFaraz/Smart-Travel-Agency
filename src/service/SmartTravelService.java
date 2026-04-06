@@ -24,12 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.*;
-
-import persistence.AccommodationFileManager;
-import persistence.ClientFileManager;
-import persistence.TransportFileManager;
-import persistence.TripFileManager;
-
+import persistence.*;
 import travelPackage.*;
 
 //
@@ -41,6 +36,12 @@ public class SmartTravelService {
 	public List<Accommodation> accommodations;
 	public List<Transportation> transports;
 
+	//Lists for the recent history?Should they go here
+	private RecentList<Client> recentClients;
+	private RecentList<Trip> recentTrips;
+	private RecentList<Accommodation> recentAccommodations;
+	private RecentList<Transportation> recentTransports;
+
 	// constructor
 	public SmartTravelService() {
 		clients = new ArrayList<>();
@@ -51,6 +52,7 @@ public class SmartTravelService {
 	}
 
 	// getters
+	//getters for the whole list
 	public List<Client> getClients() {
 		return clients;
 	}
@@ -62,8 +64,6 @@ public class SmartTravelService {
 	public List<Accommodation> getAccommodations() {
 		return accommodations;
 	}
-
-	
 
 	public List<Transportation> getTransportations() {
 		return transports;
@@ -80,6 +80,7 @@ public class SmartTravelService {
 		}
 		// create and store client
 		clients.add(client);
+		recentClients.addRecent(client);
 	}
 
 	// method: check if client exist
@@ -179,6 +180,12 @@ public class SmartTravelService {
 		trips = new ArrayList<>();
 		accommodations = new ArrayList<>();
 		transports = new ArrayList<>();
+
+		//DECIDE HOW TO DO THE RECENT CLIENTS, TRIPS, ...
+		recentClients = new RecentList<>();
+		recentTrips = new RecentList<>();
+		recentAccommodations = new RecentList<>();
+		recentTransports = new RecentList<>();;
 
 		try {
 			ClientFileManager.loadClients(clients, folderPath + "clients.csv");

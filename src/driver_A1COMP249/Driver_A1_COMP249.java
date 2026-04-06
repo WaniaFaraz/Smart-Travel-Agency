@@ -1153,28 +1153,21 @@ public class Driver_A1_COMP249 {
 
 
 	public static <T extends Printable> void printArray(List<T> list) {
-		int i = 0;
-		for (i = 0; i <= list.size(); i++) {
-			System.out.println(i + ". " + list.get(i));
+		int count = 1;
+		for(Printable item:list) {
+			System.out.println(count + ". " + item);
+			count++;
 			System.out.println();
 		}
 	}
 	//find findObjectByID methods 
-	public static <T extends Identifiable> int findObjectByID(List<T> array, String ID) throws EntityNotFoundException {
-		int index = -1;
-		for (int i = 0; i < array.size(); i++) {
-			Identifiable object = array.get(i);
-			if(array.get(i) == null) {
-				break;
-			}
-			if (object.getId().equals(ID)) {
-				return i;
-			}
+	public static <T extends Identifiable> int findObjectByID(List<T> list, String ID) throws EntityNotFoundException {
+		int index = 0;
+		for(Identifiable item:list) {
+			if (item.getId().equals(ID)) return index;
+			index++;
 		}
-		if(index == -1) {
-			throw new EntityNotFoundException("Transport not found.");
-		}
-		return index;
+		throw new EntityNotFoundException("Transport not found."); //item has not been found since loop is over and nothing was returned
 	}
 
 	public static int indexOfTripOfClient(List<Trip> trips, Client client) {
