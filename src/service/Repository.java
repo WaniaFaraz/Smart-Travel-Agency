@@ -12,9 +12,6 @@ import exceptions.*;
 public class Repository<T extends Identifiable & Comparable<? super T>> {
     //Generic list - contains all data
     private List<T> list;
-	// Lists for the recent history
-	private RecentList<T> recentsList;
-	
     
     // 1. Add items (mirrors main List) public void add(T item); 
     // 2. ID-based lookup (throws EntityNotFoundException) public T findById(String id); 
@@ -31,7 +28,10 @@ public class Repository<T extends Identifiable & Comparable<? super T>> {
 
     public void add(T item) {
         list.add(item);
-        recentsList.addRecent(item); //to keep track of the history
+    }
+
+    public void remove(int index) {
+        list.remove(index);
     }
 
     public T findById(String Id) throws EntityNotFoundException{
@@ -81,29 +81,4 @@ public class Repository<T extends Identifiable & Comparable<? super T>> {
         }
         return copy; //shallow copy - only used in sorting methods
     }
-
-    public List<T> getSortedDiscarded() {
-        //using the comparable interface
-        List<T> returnList = new ArrayList<>();
-        List<T> copiedOriginal = list; //create a copy since items will be removed in this method
-        T keep;
-        T compare;
-        int originalSize = copiedOriginal.size();
-        for(int i = 0; i<originalSize; i++){
-            //start: keep to be the first item in the list
-            keep = copiedOriginal.get(0);
-            for(int j=0; j < copiedOriginal.size(); j++){
-                //compare keep to each item in the array
-                compare = copiedOriginal.get(j);
-                if(keep.compareTo(compare) < 0) {
-                    keep = copiedOriginal.get(j); //store the "larger" one in keep
-                }
-            }
-            //keep should have the current largest
-            int index = copiedOriginal.indexOf(keep); //find the index of keep - which is the largest item
-            returnList.add(copiedOriginal.remove(index)); //remove the largest item and store it at the end of the return list
-        }
-        return returnList;
-    }
-
 }

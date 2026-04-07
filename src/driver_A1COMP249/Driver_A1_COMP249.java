@@ -16,6 +16,7 @@ import interfaces.*;
 import visualization.DashboardGenerator;
 
 import java.io.IOException;
+import java.nio.file.SecureDirectoryStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -678,8 +679,46 @@ public class Driver_A1_COMP249 {
 					// prompt user to choose a menu option and validate input
 					subMenuOption = validateMenuOption(advancedAnalyticsMenu, ADVANCED_ANALYTICS_MENU_MAX, !ZERO_ACCEPTED);
 					System.out.println();
+					List<Trip> filteredTrips;
 					switch(subMenuOption) {
-						case 1: 
+						case 1: //Trips by destination
+							System.out.println("Enter a location to see trips with a matching destination: ");
+							String destination = keyboard.next();
+							filteredTrips = service.tripsWithDestination(destination);
+							System.out.println("\nTrips:\n");
+							for(Trip trip:filteredTrips) {
+								System.out.println(trip);
+							}	
+						case 2: //Trips by cost range
+							System.out.println("Enter a cost to see trips below that cost: ");
+							Double upperCost = keyboard.nextDouble();
+							System.out.println("\nTrips:\n");
+							filteredTrips = service.tripsWithinCostRange(upperCost);
+							for(Trip trip: filteredTrips) {
+								System.out.println(trip);
+							}
+						case 3: //Top Clients by spending
+							service.printTopClientsBySpending();
+						case 4: //Recent Trips
+							service.printRecentTrips();
+						case 5: //Smart sort collections
+							service.sortAll();
+							System.out.println("All collections successfully sorted!");
+							System.out.println("Would you like to see the sorted lists? (y/n)");
+							String ans = keyboard.next();
+							if(ans.equalsIgnoreCase("y")) {
+								System.out.println("\nClients:\n");
+								service.printClients();
+								System.out.println("\nTrips:\n");
+								service.printTrips();
+								System.out.println("\nAccommodations:\n");
+								service.printAccommodations();
+								System.out.println("\nTransports:\n");
+								service.printTransports();
+							}
+						case 6: //return to main menu
+							System.out.println("\nReturning to main menu...\n");
+							break;
 
 					}
 				}
