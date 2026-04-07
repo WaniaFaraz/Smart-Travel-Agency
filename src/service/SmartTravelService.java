@@ -67,11 +67,25 @@ public class SmartTravelService {
 		return transports;
 	}
 
+	//GET COUNTS
+	public int getClientCount() {
+		return clients.size();
+	}
+	public int getTripCount() {
+		return trips.size();
+	}
+	public int getAccommodationCount() {
+		return accommodations.size();
+	}
+	public int getTransportationCount() {
+		return transports.size();
+	}
+	
 	// method: add a client to the system
 	public void addClient(Client client) throws InvalidClientDataException, DuplicateEmailException {
 		// check for duplicate email
 		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i) != null && clients.get(i).getEmailAddress().equalsIgnoreCase(client.getEmailAddress())) {
+			if (clients.get(i) != null && clients.get(i).getEmail().equalsIgnoreCase(client.getEmail())) {
 				throw new DuplicateEmailException("A client with this email already exist.");
 			}
 		}

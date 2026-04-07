@@ -117,7 +117,7 @@ public class Client implements Identifiable, CsvPersistable, Comparable<Client>,
 		return lastName;
 	}
 
-	public String getEmailAddress() {
+	public String getEmail() {
 		return emailAddress;
 	}
 
@@ -128,6 +128,10 @@ public class Client implements Identifiable, CsvPersistable, Comparable<Client>,
 	@Override
 	public String getId(){
 		return getClientID();
+	}
+	public String getClientId() {
+		return getClientID(); //added since the driver from previous assignments uses a different spelling
+		//this one is for the HTML Dashboard generator
 	}
 
 	//method that convers object into Csv format for the CsvPersistable interface
