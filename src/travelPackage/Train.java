@@ -70,7 +70,7 @@ public class Train extends Transportation {
 		if (parts.length != 7){
 			throw new InvalidTransportDataException("Invalid Train CSV format.");
 		}
-		if (!parts[0].equalsIgnoreCase("TRAIN"){
+		if (!parts[0].equalsIgnoreCase("TRAIN")){
 			throw new InvalidTransportDataException("CSV row is not a Train record");
 		}
 		String id = parts[1];

@@ -177,12 +177,12 @@ public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<
 	//methods to implement interface identifiable
 	@Override
 	public String getId(){
-		return getTripId();
+		return getTripID();
 	}
 
 	//return the total cost of the trip with the billable interface
 	@Override
-	publid double getTotalCost(){
+	public double getTotalCost(){
 		try {
 			return calculateTotalCost();
 		} catch (Exception e){
