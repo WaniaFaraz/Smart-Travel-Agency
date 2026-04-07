@@ -36,7 +36,7 @@ public class SmartTravelService {
 	public List<Accommodation> accommodations;
 	public List<Transportation> transports;
 
-	//Lists for the recent history?Should they go here
+	// Lists for the recent history?Should they go here...
 	private RecentList<Client> recentClients;
 	private RecentList<Trip> recentTrips;
 	private RecentList<Accommodation> recentAccommodations;
@@ -48,11 +48,9 @@ public class SmartTravelService {
 		trips = new ArrayList<>();
 		accommodations = new ArrayList<>();
 		transports = new ArrayList<>();
-
 	}
 
 	// getters
-	//getters for the whole list
 	public List<Client> getClients() {
 		return clients;
 	}
@@ -71,7 +69,6 @@ public class SmartTravelService {
 
 	// method: add a client to the system
 	public void addClient(Client client) throws InvalidClientDataException, DuplicateEmailException {
-		
 		// check for duplicate email
 		for (int i = 0; i < clients.size(); i++) {
 			if (clients.get(i) != null && clients.get(i).getEmailAddress().equalsIgnoreCase(client.getEmailAddress())) {
@@ -115,7 +112,7 @@ public class SmartTravelService {
 			}
 		}
 		throw new EntityNotFoundException("Accommodation ID not found: " + accommodationID); // if not found, throw the
-																								// exception
+																								// // exception
 	}
 
 	// method: find transportation by ID
@@ -150,7 +147,7 @@ public class SmartTravelService {
 		String transportID = trip.getTransportation().getTransportID();
 
 		// find the client object
-		Client foundClient = findClientById(clientID); //if not found, an exception will be thrown
+		Client foundClient = findClientById(clientID); // if not found, an exception will be thrown
 		// if no ID is provided, then accommodation and transporation stays null
 		Accommodation foundAccommodation = null;
 		Transportation foundTransportation = null;
@@ -162,14 +159,11 @@ public class SmartTravelService {
 		if (transportID != null && !transportID.equals("")) {
 			foundTransportation = findTransportationById(transportID);
 		}
-
 		// one of them must exist
 		if (foundAccommodation == null && foundTransportation == null) {
 			throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation");
 		}
-
 	}
-
 
 	// load all data method
 
@@ -181,12 +175,11 @@ public class SmartTravelService {
 		accommodations = new ArrayList<>();
 		transports = new ArrayList<>();
 
-		//DECIDE HOW TO DO THE RECENT CLIENTS, TRIPS, ...
+		// DECIDE HOW TO DO THE RECENT CLIENTS, TRIPS, ...
 		recentClients = new RecentList<>();
 		recentTrips = new RecentList<>();
 		recentAccommodations = new RecentList<>();
-		recentTransports = new RecentList<>();;
-
+		recentTransports = new RecentList<>();
 		try {
 			ClientFileManager.loadClients(clients, folderPath + "clients.csv");
 			AccommodationFileManager.loadAccommodations(accommodations, folderPath + "accommodations.csv");
@@ -195,16 +188,12 @@ public class SmartTravelService {
 
 			System.out.println("All data loaded successfully.\n"); // print the message once its done
 
-
 		} catch (IOException e) { //
 			System.out.println("Error while loading data: " + e.getMessage());
-
 		}
-
 	}
 
 	// save all data method
-
 	public void saveAllData(String folderPath) {
 		// call upon manager file to save data into the csv files for clients
 		try {
@@ -220,23 +209,17 @@ public class SmartTravelService {
 			TransportFileManager.saveTransportations(
 					transports,
 					folderPath + "transports.csv");
-
 			//// call upon manager file to save data into the csv files for trips
 			TripFileManager.saveTrips(
 					trips,
 					folderPath + "trips.csv");
-
 			System.out.println("All data saved successfully."); // print message once its done
-
 		} catch (IOException e) {
 			System.out.println("Error while saving data: " + e.getMessage()); // print a message if there's an error
-
 		}
 	}
 	// calculate total trip cost at a given index
-
 	public double calculateTripTotal(int index) {
-
 		// check if index is invalid
 		if (index < 0 || index >= trips.size() || trips.get(index) == null) {
 			return -1; // returns -1 if index is not valid
@@ -246,13 +229,13 @@ public class SmartTravelService {
 		Transportation transport = trips.get(index).getTransportation();
 		Accommodation accommodation = trips.get(index).getAccommodation();
 		try {
-			return trips.get(index).getTotalCost(client, accommodation, transport); // if index is valid, return the full
-																				// trip cost
+			return trips.get(index).getTotalCost(client, accommodation, transport); // if index is valid, return the
+																					// full
+			// trip cost
 
 		} catch (InvalidAccommodationDataException e) {
 			System.err.println(e.getMessage());
 		}
 		return -1; // if error in try block
 	}
-
 }
