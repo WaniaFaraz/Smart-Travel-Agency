@@ -101,25 +101,31 @@ public class SmartTravelService {
 		return accommodations.get(i);
 	}
 
-	public Transportation geTransportation(int i) {
+	public Transportation getTransportation(int i) {
 		return transports.get(i);
 	}
 
 	// ADD METHODS - CREATES THE OBJECT AND ADDS IT TO THE APPROPRIATE ARRAY
 	// method: add a client to the system
-	public void addClient(String firstName, String lastName, String emailAddress)
-			throws InvalidClientDataException, DuplicateEmailException {
-		// check for duplicate email
-		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i) != null && clients.get(i).getEmail().equalsIgnoreCase(emailAddress)) {
-				throw new DuplicateEmailException("A client with this email already exist.");
+	public void addClient(String firstName, String lastName, String emailAddress) {
+		try {
+			// check for duplicate email
+			for (int i = 0; i < clients.size(); i++) {
+				if (clients.get(i) != null && clients.get(i).getEmail().equalsIgnoreCase(emailAddress)) {
+					throw new DuplicateEmailException("A client with this email already exists.");
+				}
 			}
+			// create and store client
+			Client client = new Client(firstName, lastName, emailAddress);
+			clients.add(client);
+			recentClients.addRecent(client);
+			clientRepo.add(client);
+		}catch(InvalidClientDataException e) {
+			System.err.println(e.getMessage() + " Failed to add client.\n");
+		}catch(DuplicateEmailException e) {
+			System.err.println(e.getMessage() + " Failed to add client.\n");
 		}
-		// create and store client
-		Client client = new Client(firstName, lastName, emailAddress);
-		clients.add(client);
-		recentClients.addRecent(client);
-		clientRepo.add(client);
+		
 	}
 
 	// method: create Trip to store in the system
@@ -167,6 +173,10 @@ public class SmartTravelService {
 				trips.add(trip);
 				recentTrips.addRecent(trip);
 				tripRepo.add(trip);
+				//Update amount spent for client
+				double amountSpent = foundClient.getAmountSpent();
+				amountSpent += trip.calculateTotalCost();
+				foundClient.setAmountSpent(amountSpent);
 			} catch (InvalidTripDataException e) {
 				System.err.println(e.getMessage() + " Failed to create trip. \n");
 			} catch (InvalidAccommodationDataException e) {
@@ -260,7 +270,7 @@ public class SmartTravelService {
 		}
 	}
 
-	public void deleteTrip(String ID) throws EntityNotFoundException {
+	public void deleteTrip(String ID){
 		try {
 			int index = deleteObject(trips, ID);
 			tripRepo.remove(index);
@@ -270,7 +280,7 @@ public class SmartTravelService {
 		}
 	}
 
-	public void deleteAccommodation(String ID) throws EntityNotFoundException {
+	public void deleteAccommodation(String ID){
 		try {
 			int index = deleteObject(accommodations, ID);
 			accommodationRepo.remove(index);
@@ -280,7 +290,7 @@ public class SmartTravelService {
 		}
 	}
 
-	public void deleteTransportation(String ID) throws EntityNotFoundException {
+	public void deleteTransportation(String ID){
 		try {
 			int index = deleteObject(transports, ID);
 			transportRepo.remove(index);

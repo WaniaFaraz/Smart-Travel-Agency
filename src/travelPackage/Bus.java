@@ -18,7 +18,7 @@ public class Bus extends Transportation {
 
 
 	// Constructors
-	public Bus(String companyName, String departureCity, String arrivalCity, double busFareint, int numberOfStops) throws InvalidTransportDataException {
+	public Bus(String companyName, String departureCity, String arrivalCity, double busFare, int numberOfStops) throws InvalidTransportDataException {
 		super(companyName, departureCity, arrivalCity);
 		setNumberOfStops(numberOfStops);
 		setBusFare(busFare);
