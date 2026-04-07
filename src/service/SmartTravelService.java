@@ -81,17 +81,94 @@ public class SmartTravelService {
 		return transports.size();
 	}
 	
+	//ADD METHODS - CREATES THE OBJECT AND ADDS IT TO THE APPROPRIATE ARRAY
 	// method: add a client to the system
-	public void addClient(Client client) throws InvalidClientDataException, DuplicateEmailException {
+	public void addClient(String firstName, String lastName, String emailAddress) throws InvalidClientDataException, DuplicateEmailException {
 		// check for duplicate email
 		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i) != null && clients.get(i).getEmail().equalsIgnoreCase(client.getEmail())) {
+			if (clients.get(i) != null && clients.get(i).getEmail().equalsIgnoreCase(emailAddress)) {
 				throw new DuplicateEmailException("A client with this email already exist.");
 			}
 		}
 		// create and store client
+		Client client = new Client(firstName, lastName, emailAddress);
 		clients.add(client);
 		recentClients.addRecent(client);
+	}
+	// method: create Trip to store in the system
+	public void createTrip(String destination, int duration, double basePrice, 
+							String clientId, String accommodationId, String transportId)
+							throws InvalidTripDataException, EntityNotFoundException,
+							InvalidAccommodationDataException, InvalidTransportDataException {
+		// find the client object
+		Client foundClient = findClientById(clientId); // if not found, an exception will be thrown
+		// if no ID is provided, then accommodation and transportation stays null
+		Accommodation foundAccommodation = null;
+		Transportation foundTransportation = null;
+		// find accommodation if ID is not empty
+		if (accommodationId != null && !accommodationId.equals("")) {
+			foundAccommodation = findAccommodationById(accommodationId);
+		}
+		// find transportation if ID is not empty
+		if (transportId != null && !transportId.equals("")) {
+			foundTransportation = findTransportationById(transportId);
+		}
+		// one of them must exist
+		if (foundAccommodation == null && foundTransportation == null) {
+			throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation");
+		}
+		//If at least a transportation or accommodation exists, create trip
+		Trip trip = new Trip(destination, duration, basePrice, foundClient, foundAccommodation, foundTransportation);
+		trips.add(trip);
+		recentTrips.addRecent(trip);
+	}
+	//Create and add accommodation
+	public void addHotel(String name, String location, double pricePerNight, int starRating) {
+		try {
+			Hotel hotel = new Hotel(name, location, pricePerNight, starRating);
+			accommodations.add(hotel);
+			recentAccommodations.addRecent(hotel);
+			System.out.println("Hotel added succesfully!\n");
+		}catch(InvalidAccommodationDataException e) {
+			System.err.println(e.getMessage() + " Failed to create hotel.\n");
+		}
+	}
+	public void addHostel(String name, String location, double pricePerNight, int numOfBeds) {
+		try {
+			Hostel hostel = new Hostel(name, location, pricePerNight, numOfBeds);
+			accommodations.add(hostel);
+			recentAccommodations.addRecent(hostel);
+			System.out.println("Hostel added succesfully!\n");
+		}catch(InvalidAccommodationDataException e) {
+			System.err.println(e.getMessage() + " Failed to create hostel.\n");
+		}
+	}
+	//Create and add transportation
+	public void addFlight(String companyName, String departureCity, String arrivalCity, double ticketPrice, double luggageAllowance) {
+		try {
+			Flight flight = new Flight(companyName, departureCity, arrivalCity, ticketPrice, luggageAllowance);
+			transports.add(flight);
+			recentTransports.addRecent(flight);
+			System.out.println("Flight added successfully!\n");
+		}catch(InvalidTransportDataException e) {
+			System.err.println(e.getMessage() + " Failed to create flight.\n");
+		}
+	}
+	public void addTrain(String companyName, String departureCity, String arrivalCity, double baseFare, String trainType) {
+		//creating a train does not throw an exception
+		Train train  = new Train(companyName, departureCity, arrivalCity, baseFare, trainType);
+		transports.add(train);
+		recentTransports.addRecent(train);
+		System.out.println("Train added successfully!\n");	
+	}
+	public void addBus(String companyName, String departureCity, String arrivalCity, double busFareint, int numberOfStops) {
+		try {
+			Bus bus = new Bus(companyName, departureCity, arrivalCity, busFareint, numberOfStops);
+			transports.add(bus);
+			recentTransports.addRecent(bus);
+		}catch(InvalidTransportDataException e) {
+			System.err.println(e.getMessage() + " Failed to create bus. \n");
+		}	
 	}
 
 	// method: check if client exist
@@ -105,7 +182,8 @@ public class SmartTravelService {
 		return false; // return false if client doesnt exist
 	}
 
-	// method: find client by ID
+	//FIND OBJECT B ADD AND RETURN INDEX
+	// method: find client by ID and return its index
 	public Client findClientById(String clientID) throws EntityNotFoundException {
 		// loop thru the array
 		for (int i = 0; i < clients.size(); i++) {
@@ -153,31 +231,7 @@ public class SmartTravelService {
 		throw new EntityNotFoundException("Trip ID not found: " + tripID); // throw exception if trip not found
 	}
 
-	// method: create Trip to store in the system
-	public void createTrip(Trip trip) throws InvalidTripDataException, EntityNotFoundException,
-			InvalidAccommodationDataException, InvalidTransportDataException {
-		String clientID = trip.getClient().getClientID();
-		String accommodationID = trip.getAccommodation().getAccommodationID();
-		String transportID = trip.getTransportation().getTransportID();
 
-		// find the client object
-		Client foundClient = findClientById(clientID); // if not found, an exception will be thrown
-		// if no ID is provided, then accommodation and transporation stays null
-		Accommodation foundAccommodation = null;
-		Transportation foundTransportation = null;
-		// find accommodation if ID is not empty
-		if (accommodationID != null && !accommodationID.equals("")) {
-			foundAccommodation = findAccommodationById(accommodationID);
-		}
-		// find transportation if ID is not empty
-		if (transportID != null && !transportID.equals("")) {
-			foundTransportation = findTransportationById(transportID);
-		}
-		// one of them must exist
-		if (foundAccommodation == null && foundTransportation == null) {
-			throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation");
-		}
-	}
 
 	// load all data method
 
