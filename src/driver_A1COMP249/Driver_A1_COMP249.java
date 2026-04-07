@@ -1192,26 +1192,9 @@ public class Driver_A1_COMP249 {
 		}
 	}
 
-	public static <T extends Printable> void printArray(List<T> list) {
-		int count = 1;
-		for (Printable item : list) {
-			System.out.println(count + ". " + item);
-			count++;
-			System.out.println();
-		}
-	}
 
-	// find findObjectByID methods
-	public static <T extends Identifiable> int findObjectByID(List<T> list, String ID) throws EntityNotFoundException {
-		int index = 0;
-		for (Identifiable item : list) {
-			if (item.getId().equals(ID))
-				return index;
-			index++;
-		}
-		throw new EntityNotFoundException("Transport not found."); // item has not been found since loop is over and
-																	// nothing was returned
-	}
+
+	
 
 	public static int indexOfTripOfClient(List<Trip> trips, Client client) {
 		// check the trips array to find the first trip that is associated to the given

@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.*;
+import interfaces.Identifiable;
+import interfaces.Printable;
 import persistence.*;
 import travelPackage.*;
 
@@ -50,40 +52,45 @@ public class SmartTravelService {
 		transports = new ArrayList<>();
 	}
 
-	// getters
-	public List<Client> getClients() {
-		return clients;
-	}
-
-	public List<Trip> getTrips() {
-		return trips;
-	}
-
-	public List<Accommodation> getAccommodations() {
-		return accommodations;
-	}
-
-	public List<Transportation> getTransportations() {
-		return transports;
-	}
-
-	//GET COUNTS
+	// GETTERS
+	// GET COUNTS
 	public int getClientCount() {
 		return clients.size();
 	}
+
 	public int getTripCount() {
 		return trips.size();
 	}
+
 	public int getAccommodationCount() {
 		return accommodations.size();
 	}
+
 	public int getTransportationCount() {
 		return transports.size();
 	}
-	
-	//ADD METHODS - CREATES THE OBJECT AND ADDS IT TO THE APPROPRIATE ARRAY
+
+	// GET OBJECT FROM INDEX
+	public Client getClient(int i) {
+		return clients.get(i);
+	}
+
+	public Trip getTrip(int i) {
+		return trips.get(i);
+	}
+
+	public Accommodation getAccommodation(int i) {
+		return accommodations.get(i);
+	}
+
+	public Transportation geTransportation(int i) {
+		return transports.get(i);
+	}
+
+	// ADD METHODS - CREATES THE OBJECT AND ADDS IT TO THE APPROPRIATE ARRAY
 	// method: add a client to the system
-	public void addClient(String firstName, String lastName, String emailAddress) throws InvalidClientDataException, DuplicateEmailException {
+	public void addClient(String firstName, String lastName, String emailAddress)
+			throws InvalidClientDataException, DuplicateEmailException {
 		// check for duplicate email
 		for (int i = 0; i < clients.size(); i++) {
 			if (clients.get(i) != null && clients.get(i).getEmail().equalsIgnoreCase(emailAddress)) {
@@ -95,80 +102,116 @@ public class SmartTravelService {
 		clients.add(client);
 		recentClients.addRecent(client);
 	}
+
 	// method: create Trip to store in the system
-	public void createTrip(String destination, int duration, double basePrice, 
-							String clientId, String accommodationId, String transportId)
-							throws InvalidTripDataException, EntityNotFoundException,
-							InvalidAccommodationDataException, InvalidTransportDataException {
+	public void createTrip(String destination, int duration, double basePrice,
+			String clientId, String accommodationId, String transportId) {
+		//FINDS THE CLIENT, ACCOMMODATION, AND TRANSPORTATION BY ID
+		//TRIP NOT CREATED IF: (CLIENT NOT FOUND) OR (TRANSPORT AND ACCOMMODATION NOT FOUND)
+		//IF TRIP IS NOT CREATED, EXEPTIONS HANDLED AND ERROR MESSAGE PRINTED
+		int clientIndex, transportIndex, accommodationIndex;
 		// find the client object
-		Client foundClient = findClientById(clientId); // if not found, an exception will be thrown
-		// if no ID is provided, then accommodation and transportation stays null
-		Accommodation foundAccommodation = null;
-		Transportation foundTransportation = null;
-		// find accommodation if ID is not empty
-		if (accommodationId != null && !accommodationId.equals("")) {
-			foundAccommodation = findAccommodationById(accommodationId);
+		try {
+			clientIndex = findObjectByID(clients, clientId);
+			Client foundClient = clients.get(clientIndex); // if not found, an exception will be thrown
+			// if no ID is provided, then accommodation and transportation stays null
+			Accommodation foundAccommodation = null;
+			Transportation foundTransportation = null;
+			//find accommodation
+			try {
+				if (accommodationId != null && !accommodationId.equals("")) {
+					accommodationIndex = findObjectByID(accommodations, accommodationId);
+					foundAccommodation = accommodations.get(accommodationIndex);
+				}
+			}catch (EntityNotFoundException e) {
+				foundAccommodation = null;
+				System.err.println(e.getMessage() + " Setting accommodation to null.\n");
+			}
+			try {
+				if (transportId != null && !transportId.equals("")) {
+					transportIndex = findObjectByID(transports, transportId);
+					foundTransportation = transports.get(transportIndex);
+				}
+			}catch (EntityNotFoundException e) {
+				foundTransportation = null;
+				System.err.println(e.getMessage() + " Setting transportation to null.\n");
+			}
+			//if no transport and no accommodation, throw exception
+			if (foundAccommodation == null && foundTransportation == null) {
+				throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation");
+			}
+			// If at least a transportation or accommodation exists, create trip
+			try {
+				Trip trip = new Trip(destination, duration, basePrice, foundClient, foundAccommodation, foundTransportation);
+				trips.add(trip);
+				recentTrips.addRecent(trip);
+			}catch(InvalidTripDataException e) {
+				System.err.println(e.getMessage() + " Failed to create trip. \n");
+			}catch(InvalidAccommodationDataException e) {
+				System.err.println(e.getMessage() + " Failed to create trip.\n");
+			}catch(InvalidTransportDataException e) {
+				System.err.println(e.getMessage() + " Failed to create trip.\n");
+			}
+		}catch (EntityNotFoundException e) {
+			System.err.println(e.getMessage() + " Failed to create trip. \n");
+		}catch(InvalidTripDataException e) {
+			System.err.println(e.getMessage() + " Failed to create trip.\n");
 		}
-		// find transportation if ID is not empty
-		if (transportId != null && !transportId.equals("")) {
-			foundTransportation = findTransportationById(transportId);
-		}
-		// one of them must exist
-		if (foundAccommodation == null && foundTransportation == null) {
-			throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation");
-		}
-		//If at least a transportation or accommodation exists, create trip
-		Trip trip = new Trip(destination, duration, basePrice, foundClient, foundAccommodation, foundTransportation);
-		trips.add(trip);
-		recentTrips.addRecent(trip);
 	}
-	//Create and add accommodation
+	// Create and add accommodation
 	public void addHotel(String name, String location, double pricePerNight, int starRating) {
 		try {
 			Hotel hotel = new Hotel(name, location, pricePerNight, starRating);
 			accommodations.add(hotel);
 			recentAccommodations.addRecent(hotel);
 			System.out.println("Hotel added succesfully!\n");
-		}catch(InvalidAccommodationDataException e) {
+		} catch (InvalidAccommodationDataException e) {
 			System.err.println(e.getMessage() + " Failed to create hotel.\n");
 		}
 	}
+
 	public void addHostel(String name, String location, double pricePerNight, int numOfBeds) {
 		try {
 			Hostel hostel = new Hostel(name, location, pricePerNight, numOfBeds);
 			accommodations.add(hostel);
 			recentAccommodations.addRecent(hostel);
 			System.out.println("Hostel added succesfully!\n");
-		}catch(InvalidAccommodationDataException e) {
+		} catch (InvalidAccommodationDataException e) {
 			System.err.println(e.getMessage() + " Failed to create hostel.\n");
 		}
 	}
-	//Create and add transportation
-	public void addFlight(String companyName, String departureCity, String arrivalCity, double ticketPrice, double luggageAllowance) {
+
+	// Create and add transportation
+	public void addFlight(String companyName, String departureCity, String arrivalCity, double ticketPrice,
+			double luggageAllowance) {
 		try {
 			Flight flight = new Flight(companyName, departureCity, arrivalCity, ticketPrice, luggageAllowance);
 			transports.add(flight);
 			recentTransports.addRecent(flight);
 			System.out.println("Flight added successfully!\n");
-		}catch(InvalidTransportDataException e) {
+		} catch (InvalidTransportDataException e) {
 			System.err.println(e.getMessage() + " Failed to create flight.\n");
 		}
 	}
-	public void addTrain(String companyName, String departureCity, String arrivalCity, double baseFare, String trainType) {
-		//creating a train does not throw an exception
-		Train train  = new Train(companyName, departureCity, arrivalCity, baseFare, trainType);
+
+	public void addTrain(String companyName, String departureCity, String arrivalCity, double baseFare,
+			String trainType) {
+		// creating a train does not throw an exception
+		Train train = new Train(companyName, departureCity, arrivalCity, baseFare, trainType);
 		transports.add(train);
 		recentTransports.addRecent(train);
-		System.out.println("Train added successfully!\n");	
+		System.out.println("Train added successfully!\n");
 	}
-	public void addBus(String companyName, String departureCity, String arrivalCity, double busFareint, int numberOfStops) {
+
+	public void addBus(String companyName, String departureCity, String arrivalCity, double busFareint,
+			int numberOfStops) {
 		try {
 			Bus bus = new Bus(companyName, departureCity, arrivalCity, busFareint, numberOfStops);
 			transports.add(bus);
 			recentTransports.addRecent(bus);
-		}catch(InvalidTransportDataException e) {
+		} catch (InvalidTransportDataException e) {
 			System.err.println(e.getMessage() + " Failed to create bus. \n");
-		}	
+		}
 	}
 
 	// method: check if client exist
@@ -182,56 +225,17 @@ public class SmartTravelService {
 		return false; // return false if client doesnt exist
 	}
 
-	//FIND OBJECT B ADD AND RETURN INDEX
-	// method: find client by ID and return its index
-	public Client findClientById(String clientID) throws EntityNotFoundException {
-		// loop thru the array
-		for (int i = 0; i < clients.size(); i++) {
-			if (clients.get(i) != null && clients.get(i).getClientID().equals(clientID)) {
-				return clients.get(i); // return the matching client
-			}
+	// FIND OBJECT AND RETURN INDEX
+	public static <T extends Identifiable> int findObjectByID(List<T> list, String ID) throws EntityNotFoundException {
+		int index = 0;
+		for (Identifiable item : list) {
+			if (item.getId().equals(ID))
+				return index;
+			index++;
 		}
-		throw new EntityNotFoundException("Client ID not found: " + clientID); // throw exception if not found
+		throw new EntityNotFoundException("Entity not found."); // item has not been found since loop is over and
+																	// nothing was returned
 	}
-
-	// method: find accommodation by ID
-	public Accommodation findAccommodationById(String accommodationID) throws EntityNotFoundException {
-		// loop thru the accommodation array
-		for (int i = 0; i < accommodations.size(); i++) {
-			if (accommodations.get(i) != null &&
-					accommodations.get(i).getAccommodationID().equals(accommodationID)) {
-				return accommodations.get(i); // return the accommodation if found
-			}
-		}
-		throw new EntityNotFoundException("Accommodation ID not found: " + accommodationID); // if not found, throw the
-																								// // exception
-	}
-
-	// method: find transportation by ID
-	public Transportation findTransportationById(String transportID) throws EntityNotFoundException {
-		// loop thru the transportation array
-		for (int i = 0; i < transports.size(); i++) {
-			if (transports.get(i) != null &&
-					transports.get(i).getTransportID().equals(transportID)) {
-				return transports.get(i); // return the matching transportation object
-			}
-		}
-		throw new EntityNotFoundException("Transportation ID not found: " + transportID); // if not found, throw the
-																							// exception
-	}
-
-	// method: find trip by ID
-	public Trip findTripById(String tripID) throws EntityNotFoundException {
-		// loop thru the trip array
-		for (int i = 0; i < trips.size(); i++) {
-			if (trips.get(i) != null && trips.get(i).getTripID().equals(tripID)) {
-				return trips.get(i); // return the trip object if found
-			}
-		}
-		throw new EntityNotFoundException("Trip ID not found: " + tripID); // throw exception if trip not found
-	}
-
-
 
 	// load all data method
 
@@ -286,6 +290,7 @@ public class SmartTravelService {
 			System.out.println("Error while saving data: " + e.getMessage()); // print a message if there's an error
 		}
 	}
+
 	// calculate total trip cost at a given index
 	public double calculateTripTotal(int index) {
 		// check if index is invalid
@@ -305,5 +310,28 @@ public class SmartTravelService {
 			System.err.println(e.getMessage());
 		}
 		return -1; // if error in try block
+	}
+
+	//print list method - to be used to print any array
+	private static <T extends Printable> void printList(List<T> list) {
+		int count = 1;
+		for (Printable item : list) {
+			System.out.println(count + ". " + item);
+			count++;
+			System.out.println();
+		}
+	}
+	//print list methods
+	public void printClients() {
+		printList(clients);
+	}
+	public void printTrips() {
+		printList(trips);
+	}
+	public void printAccommodations() {
+		printList(accommodations);
+	}
+	public void printTransports() {
+		printList(transports);
 	}
 }
