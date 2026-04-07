@@ -3,15 +3,10 @@ package service;
 // import all the required packages, exceptions and persistence files 
 
 import interfaces.Identifiable;
-import clientPackage.Client;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-import exceptions.*;
-import persistence.*;
 import exceptions.*;
 
 public class Repository<T extends Identifiable & Comparable<? super T>> {
@@ -55,26 +50,26 @@ public class Repository<T extends Identifiable & Comparable<? super T>> {
         return returnList;
     }
 
-    public List<T> getSorted() { //////UNFINISHED!!!!!!!!
+    public List<T> getSorted() { 
+        //Sorts in descending order based on compareTo
         List<T> returnList = copy(list);
         T keep, compare, temp;
         int indexOfGreatest;
         for(int i = 0; i < list.size(); i++) {
             keep = list.get(i);
             indexOfGreatest = i; //start the index at i
-            for(int j = 0; j < list.size(); j++) {
+            for(int j = i; j < list.size(); j++) {
                 compare = list.get(j);
                 if(keep.compareTo(compare) < 0) {
                     //compare is the larger one
                     keep = list.get(j); //store the current largest value in keep
                     indexOfGreatest = j;
-
                 }
-
             }
-            keep = returnList.remove(indexOfGreatest); //removing it should not affect the add later on since the largest item will be after...
-            returnList.add(i, keep); //add the largest item to the array at the last place we left off
-            
+            //swap
+            temp = list.get(i); //store, since will be replaced by the largest (keep)
+            list.set(i, keep); //put the largest value at i
+            list.set(indexOfGreatest, temp); //store the removed value in keep's old place  
         }
         return returnList;
     }
