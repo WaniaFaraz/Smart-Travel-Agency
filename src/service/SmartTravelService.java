@@ -495,4 +495,72 @@ public class SmartTravelService {
 			System.out.println("This client has no trips.\n");
 		}
 	}
+
+	public void findMostExpensiveTrip() {
+		if(trips.size() == 0) {
+			System.out.println("\nThere are no saved trips.\n");
+			return;
+		}
+		try { //for compiler - exception should technically not be generated
+			Trip mostExpensiveTrip = trips.get(0);
+			double maxCost = mostExpensiveTrip.calculateTotalCost();
+			Trip currentTrip;
+			double currentCost;
+			for (int i = 0; i < trips.size(); i++) {
+				currentTrip = trips.get(i);
+				currentCost = currentTrip.calculateTotalCost();
+				if (maxCost < currentCost) {
+					maxCost = currentCost;
+					mostExpensiveTrip = currentTrip;
+				}
+			}
+			System.out.println("The most expensive trip is:\n" + mostExpensiveTrip);
+			String string = String.format("%nThe total cost of this trip is $%.2f.", maxCost);
+			System.out.println(string);
+		} catch(InvalidAccommodationDataException e) {
+		}
+	}
+	//Deep copy of transportation array
+	public <T extends Transportation> List<Transportation> copyTransportationArray()
+			throws InvalidTransportDataException {
+		List<Transportation> copy = new ArrayList<>();
+		for (int i = 0; i < transports.size(); i++) {
+			Transportation transport;
+			Transportation current = transports.get(i);
+			if (transports.get(i) == null) {
+				transport = null;
+				copy.add(transport);
+			} else if (current.getClass() == (new Flight()).getClass()) {
+				transport = new Flight((Flight) current);
+				copy.add(transport);
+			} else if (current.getClass() == (new Train()).getClass()) {
+				transport = new Train((Train) current);
+				copy.add(transport);
+			} else if (current.getClass() == (new Bus()).getClass()) {
+				transport = new Bus((Bus) current);
+				copy.add(transport);
+			}
+		}
+		return copy;
+	}
+	//Deep copy of accommodation array
+	public <T extends Accommodation> List<Accommodation> copyAccommodationArray()
+			throws InvalidAccommodationDataException {
+		List<Accommodation> copy = new ArrayList<>();
+		for (int i = 0; i < accommodations.size(); i++) {
+			Accommodation accommodation;
+			Accommodation current = accommodations.get(i);
+			if (current == null) {
+				accommodation = null;
+				copy.add(accommodation);
+			} else if (current.getClass() == (new Hotel()).getClass()) {
+				accommodation = new Hotel((Hotel) current);
+				copy.add(accommodation);
+			} else if (current.getClass() == (new Hostel()).getClass()) {
+				accommodation = new Hostel((Hostel) current);
+				copy.add(accommodation);
+			}
+		}
+		return copy;
+	}
 }

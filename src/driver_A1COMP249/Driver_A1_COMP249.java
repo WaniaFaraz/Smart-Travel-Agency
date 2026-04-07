@@ -637,62 +637,29 @@ public class Driver_A1_COMP249 {
 			}
 			// Additional Operations
 			else if (option == 5) {
+				boolean printed = false; //to know if service printed a list
 				while (subMenuOption != ADDITIONAL_OPERATIONS_MENU_MAX) {
 					subMenuOption = validateMenuOption(additionalOperationsMenu, ADDITIONAL_OPERATIONS_MENU_MAX,
 							!ZERO_ACCEPTED);
 					switch (subMenuOption) {
 						case 1:// Display the most expensive trip
-							if (trips.size() == 0) {
-								System.out.println("There are no saved trips.\n");
-								break;
-							}
-							try {
-								findMostExpensiveTrip(trips);
-							} catch (InvalidAccommodationDataException e) {
-								System.err.println(
-										"Failed to calculate most expensive trip. One of the trips has an accommodation with an invalid number of days.");
-							}
-
+							service.findMostExpensiveTrip();
 							break;
 						case 2:// Calculate and display the total cost of a trip
-							if (trips.size() == 0) {
-								System.out.println("There are no saved trips.\n");
-								break;
-							}
 							System.out.println("Here is the list of trips");
-							printArray(trips);
+							printed = service.printTrips();
 							System.out.print("\nEnter the ID of the trip you would like to calculate the cost of: ");
 							ID = keyboard.next();
-							try {
-								index = findObjectByID(trips, ID);
-								Trip trip = trips.get(index);
-								try {
-									double cost = trip.calculateTotalCost();
-									String display = String.format("\nThe trip you selected costs $%.2f.\n", cost);
-									System.out.println(display);
-								} catch (InvalidAccommodationDataException e) {
-									System.err.println(e.getMessage() + "Failed to calculate trip cost.");
-								}
-							} catch (EntityNotFoundException e) {
-								System.out.println("\nTrip not found.\n");
-							}
+							int indexOfTrip = service.findTrip(ID);
+							double cost = service.calculateTripTotal(indexOfTrip);
+							String formattedCost = String.format("%.2f", cost);
+							System.out.println("Total cost of trip " + ID + ": $" + formattedCost);
 							break;
 						case 3:// Create a deep copy of the transportation array
-							try {
-								copyTransportationArray(transports);
-								System.out.println("\nDeep copy created successfully!\n");
-							} catch (InvalidTransportDataException e) {
-								System.err.println(e.getMessage() + " Failed to copy array.");
-							}
+							List<Transportation> copiedTransports = service.copyTransportationArray()
 							break;
 						case 4:// Create a deep copy of the accommodation array
-							try {
-								copyAccommodationArray(accommodations);
-								System.out.println("\nDeep copy created successfully!\n");
-							} catch (InvalidAccommodationDataException e) {
-								System.err.println(e.getMessage() + " Failed to copy array.");
-								e.printStackTrace();
-							}
+							List<Accommodation> copieAccommodations = service.copyAccommodationArray();
 							break;
 						case 5:// Back to main menu
 							System.out.println("\nReturning to main menu...\n");
@@ -705,7 +672,7 @@ public class Driver_A1_COMP249 {
 			else if (option == 6) {
 
 			}
-			// List All Data Summary (Prints all trip data)
+			//Advanced Analytics Menu (Prints all trip data)
 			else if (option == 7) {
 				while (subMenuOption != ADVANCED_ANALYTICS_MENU_MAX) {
 					// prompt user to choose a menu option and validate input
@@ -956,7 +923,7 @@ public class Driver_A1_COMP249 {
 
 
 	
-
+////CHECK IF CAN BE REMOVED....
 	public static int indexOfTripOfClient(List<Trip> trips, Client client) {
 		// check the trips array to find the first trip that is associated to the given
 		// client
@@ -971,67 +938,10 @@ public class Driver_A1_COMP249 {
 		return index;
 	}
 
-	public static void findMostExpensiveTrip(List<Trip> trips) throws InvalidAccommodationDataException {
-		Trip mostExpensiveTrip = trips.get(0);
-		double maxCost = mostExpensiveTrip.calculateTotalCost(); // if this part is reached, then there is at least one
-																	// trip in the trips array (because of where it is
-																	// called in the main method)
-		Trip currentTrip;
-		double currentCost;
-		for (int i = 0; i < trips.size(); i++) {
-			currentTrip = trips.get(i);
-			currentCost = currentTrip.calculateTotalCost();
-			if (maxCost < currentCost) {
-				maxCost = currentCost;
-				mostExpensiveTrip = currentTrip;
-			}
-		}
-		System.out.println("The most expensive trip is:\n" + mostExpensiveTrip);
-		String string = String.format("%nThe total cost of this trip is $%.2f.", maxCost);
-		System.out.println(string);
-	}
 
-	public static <T extends Transportation> List<Transportation> copyTransportationArray(List<T> original)
-			throws InvalidTransportDataException {
-		List<Transportation> copy = new ArrayList<>();
 
-		for (int i = 0; i < original.size(); i++) {
-			Transportation transport;
-			if (original.get(i) == null) {
-				transport = null;
-				copy.add(transport);
-			} else if (original.get(i).getClass() == (new Flight()).getClass()) {
-				transport = new Flight((Flight) original.get(i));
-				copy.add(transport);
-			} else if (original.get(i).getClass() == (new Train()).getClass()) {
-				transport = new Train((Train) original.get(i));
-				copy.add(transport);
-			} else if (original.get(i).getClass() == (new Bus()).getClass()) {
-				transport = new Bus((Bus) original.get(i));
-				copy.add(transport);
-			}
+	
 
-		}
-		return copy;
-	}
-
-	public static <T extends Accommodation> List<Accommodation> copyAccommodationArray(List<T> original)
-			throws InvalidAccommodationDataException {
-		List<Accommodation> copy = new ArrayList<>();
-		for (int i = 0; i < original.size(); i++) {
-			Accommodation accommodation;
-			if (original.get(i) == null) {
-				accommodation = null;
-				copy.add(accommodation);
-			} else if (original.get(i).getClass() == (new Hotel()).getClass()) {
-				accommodation = new Hotel((Hotel) original.get(i));
-				copy.add(accommodation);
-			} else if (original.get(i).getClass() == (new Hostel()).getClass()) {
-				accommodation = new Hostel((Hostel) original.get(i));
-				copy.add(accommodation);
-			}
-		}
-		return copy;
-	}
+	
 
 }
