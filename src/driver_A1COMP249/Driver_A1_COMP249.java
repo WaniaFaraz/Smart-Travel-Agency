@@ -954,6 +954,17 @@ public class Driver_A1_COMP249 {
 				System.out.println("Trip base price: "+ s.getTrip(0).getBasePrice());
 				System.out.println("Trip total cost: "+ s.getTrip(0).getTotalCost());
 
+				//Comparable
+				System.out.println("\n Business natural ordering ");
+				System.out.println("\n Before sorting: ");
+				s.printTransports();
+
+				s.sortAll();
+
+				System.out.println("\n After sorting (highest price first)");
+				s.printTransports();
+		
+
 				//Generic File Manager
 				try {
 					//create new clients
