@@ -1,5 +1,5 @@
 //-----------------------------------------------------------------------------
-//Assignment 1
+//Assignment 3
 //Written by:
 // 		Wania Faraz 40332781
 //		Zahira Atmani 40350242
@@ -12,6 +12,7 @@ import travelPackage.*;
 import exceptions.*;
 import service.SmartTravelService;
 import interfaces.*;
+import persistence.*;
 
 import visualization.DashboardGenerator;
 
@@ -51,12 +52,11 @@ public class Driver_A1_COMP249 {
 				3. Transportation Management
 				4. Accommodation Management
 				5. Additional Operations
-				6. Generate Visualization
+				6. Generate Visualization (dashboard + charts)
 				7. Advanced Analytics
 				8. Load All Data (output/data/*.csv)
 				9. Save All Data (output/data/*.csv)
 				10. Run predefined scenario
-				   11. Generate Dashboard (HTML + charts)
 				0. Exit
 
 				Please select an option from the above menu:""" + " ";
@@ -706,10 +706,16 @@ public class Driver_A1_COMP249 {
 				}
 				subMenuOption = 0; // reset to 0 since all other subMenuOptions use the same variable
 			}
-			// GENERATE VISUALIZATION
+			// GENERATE VISUALIZATION (the html dashboard and the charts will be generated)
 			else if (option == 6) {
+				try {
+					DashboardGenerator.generateDashboard(service);
+				} catch (IOException e) {
+					System.err.println(e.getMessage());
+				}
 
 			}
+				
 			// Advanced Analytics Menu (Prints all trip data)
 			else if (option == 7) {
 				while (subMenuOption != ADVANCED_ANALYTICS_MENU_MAX) {
@@ -929,6 +935,50 @@ public class Driver_A1_COMP249 {
 				s.saveAllData("output/data/");
 				System.out.println("Data saved successfully!\n");
 
+				//use of Identifiable interface
+				System.out.println("\n Identifiable Interface ");
+				System.out.println("Client ID using getId(): "+ s.getClient(0).getId());
+				System.out.println("Trip ID using getId(): "+ s.getTrip(0).getId());
+				System.out.println("Accommodation ID using getId(): "+ s.getAccommodation(0).getId());
+				System.out.println("Transportation ID using getId(): "+ s.getTransportation(0).getId());
+
+				//CSV persistable interface
+				System.out.println("\n CsvPersistable Interface ");
+				System.out.println("Client CSV row: "+ s.getClient(0).toCsvRow());
+				System.out.println("Accommodation CSV row: "+ s.getAccommodation(0).toCsvRow());
+				System.out.println("Transportation CSV row: "+ s.getTransportation(0).toCsvRow());
+				System.out.println("Trip CSV row: "+ s.getTrip(0).toCsvRow());
+
+				//Billable Interface
+				System.out.println("\n Billable Interface (trip) ");
+				System.out.println("Trip base price: "+ s.getTrip(0).getBasePrice());
+				System.out.println("Trip total cost: "+ s.getTrip(0).getTotalCost());
+
+				//Generic File Manager
+				try {
+					//create new clients
+					List<Client> demoClients = new ArrayList<Client>();
+					demoClients.add(new Client("Layla", "Atman", "layla@gmail.com"));
+					demoClients.add(new Client("Omar", "Saleh", "omar@gmail.com"));
+
+					//save by using genericfilemanager
+					GenericFileManager.save(demoClients, "output/data/demo_clients_generic.csv");
+					System.out.println("Demo clients saved by using GenericFileManager.");
+
+					//load by using generic file manager
+					List<Client> loadedClients = GenericFileManager.load("output/data/demo_clients_generic.csv", Client.class);
+
+					System.out.println("\n Demo clients loaded using GenericFileManager:");
+					for (Client client : loadedClients){
+						System.out.println(client);
+					}
+				} catch (Exception e){
+					System.out.println("GenericFileManager testing failed "+ e.getMessage());
+				}
+				
+				
+				
+
 				// Deep copy of transportation array
 				System.out.println("Original transports array:\n");
 				s.printTransports();
@@ -999,15 +1049,7 @@ public class Driver_A1_COMP249 {
 				System.out.println("Display trips going to the destination: ");
 			}
 
-			// dashboard generator
-			else if (option == 11) {
-				try {
-					DashboardGenerator.generateDashboard(service);
-				} catch (IOException e) {
-					System.err.println(e.getMessage());
-				}
-
-			}
+			
 			// Exit
 			else if (option == 0) {
 				System.out.println("Thank you for using the Smart Travel Agency Booking System!");
