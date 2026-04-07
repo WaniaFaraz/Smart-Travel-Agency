@@ -164,12 +164,13 @@ public class SmartTravelService {
 			}
 			// if no transport and no accommodation, throw exception
 			if (foundAccommodation == null && foundTransportation == null) {
-				throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation");
+				throw new InvalidTripDataException("Trip must include at least an accommodation or a transportation.");
 			}
 			// If at least a transportation or accommodation exists, create trip
 			try {
 				Trip trip = new Trip(destination, duration, basePrice, foundClient, foundAccommodation,
 						foundTransportation);
+				System.out.println("Trip created successfully!\n");
 				trips.add(trip);
 				recentTrips.addRecent(trip);
 				tripRepo.add(trip);
@@ -668,5 +669,16 @@ public class SmartTravelService {
 		trips = tripRepo.getSorted();
 		accommodations = accommodationRepo.getSorted();
 		transports = transportRepo.getSorted();
+	}
+	//show all recent lists
+	public void printRecents() {
+		System.out.println("Recent clients:");
+		recentClients.printRecent(10);
+		System.out.println("\nRecent trips:");
+		recentTrips.printRecent(10);
+		System.out.println("\nRecent accommodations:");
+		recentAccommodations.printRecent(10);
+		System.out.println("\nRecent transports:");
+		recentTransports.printRecent(10);
 	}
 }

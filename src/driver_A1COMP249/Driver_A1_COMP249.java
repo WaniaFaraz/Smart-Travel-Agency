@@ -832,11 +832,16 @@ public class Driver_A1_COMP249 {
 				s.addHostel("The Bee Hostel", "Amsterdam City Centre", 80, 1);
 				s.addHostel("The Bee Hostel", "Amsterdam City Centre", 0, 1); // invalid price per night
 
+				System.out.println("Number of clients, accommodations, transportations:");
+				System.out.println("Clients: " + s.getClientCount());
+				System.out.println("Transportations: " + s.getTransportationCount());
+				System.out.println("Accommodations: " + s.getAccommodationCount());
+				System.out.println();
 				// Trip creation
 				// IDs of clients, accommodations, transportations to create trips
 				String[] clientIds = { s.getClient(1).getClientId(),
 						s.getClient(2).getClientId(),
-						s.getClient(3).getClientId() };
+						s.getClient(0).getClientId() };
 
 				String[] accommodationIds = { s.getAccommodation(1).getAccommodationID(),
 						s.getAccommodation(2).getAccommodationID(),
@@ -856,13 +861,17 @@ public class Driver_A1_COMP249 {
 				// 2. Display all objects using toString()
 				System.out.println("\n2. Display all objects using toString():");
 
-				System.out.println("\nClients:\n" + s.printClients());
+				System.out.println("\nClients:\n");
+				s.printClients();
 
-				System.out.println("\nTrips:\n" + s.printTrips());
+				System.out.println("\nTrips:\n");
+				s.printTrips();
 
-				System.out.println("\nTransportations:\n" + s.printTransports());
+				System.out.println("\nTransportations:\n");
+				s.printTransports();
 
-				System.out.println("\nAccommodations:\n" + s.printAccommodations());
+				System.out.println("\nAccommodations:\n");
+				s.printAccommodations();
 
 				// 3. Display the equals method
 				System.out.println("\n\nDisplay the equals methods");
@@ -875,8 +884,8 @@ public class Driver_A1_COMP249 {
 				System.out.println("\nObjects of the same class with different attributes: (should return false)");
 				System.out.println("Clients: " + s.getClient(1).equals(s.getClient(2)));
 				System.out.println("Trips: " + s.getTrip(1).equals(s.getTrip(2)));
-				System.out.println("Transportation: " + s.getTransportation(1).equals(s.getTransportation(2)));
-				System.out.println("Accommodation: " + s.getAccommodation(1).equals(s.getAccommodation(2)));
+				System.out.println("Transportation: " + s.getTransportation(1).equals(s.getTransportation(0)));
+				System.out.println("Accommodation: " + s.getAccommodation(1).equals(s.getAccommodation(0)));
 
 				System.out.println("\nObjects of the same class with same attributes: (should return true)");
 				System.out.println("Clients: " + s.getClient(0).equals(s.getClient(0)));
@@ -896,7 +905,29 @@ public class Driver_A1_COMP249 {
 
 				System.out.println("Find most expensive trip:\n");
 				s.findMostExpensiveTrip();
-				;
+				
+				//SHOW LOAD ALL DATA
+				System.out.println("\n\nLoad all data: ");
+				s.loadAllData("output/data/");
+				System.out.println("Data loaded:\n");
+				s.printClients();
+				s.printTrips();
+				s.printAccommodations();
+				s.printTransports();
+
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				System.out.println("Add 4 clients to the system: ");
+				s.addClient("firstName", "lastName", "email@email.com");
+				s.addClient("firstName", "lastName", "email2@email.com");
+				s.addClient("firstName", "lastName", "email3@email.com");
+				s.addClient("firstName", "lastName", "emai4@email.com");
+				System.out.println();
+				System.out.println("SAVING DATA...");
+				
+				s.saveAllData("output/data/");
+				System.out.println("Data saved successfully!\n");
 
 				// Deep copy of transportation array
 				System.out.println("Original transports array:\n");
@@ -912,29 +943,60 @@ public class Driver_A1_COMP249 {
 					System.out.println("One of the transports contains invalid data. Failed to copy array.\n");
 				}
 				
-				//SHOW LOAD ALL DATA
-				System.out.println("\n\nLoad all data: ");
-				s.loadAllData("../output/data/");
-				System.out.println("Data loaded:\n");
-				s.printClients();
-				s.printTrips();
-				s.printAccommodations();
-				s.printTransports();
+				//SHOW RECENTS
+				System.out.println("RecentList functionality:\n");
+				System.out.println("Adding 10 clients, accommodations, transportations, and 2 trips to the system...\n");
+				s.addClient("new", "name", "1@email.com");
+				s.addClient("new", "name", "2@email.com");
+				s.addClient("new", "name", "3@email.com");
+				s.addClient("new", "name", "4@email.com");
+				s.addClient("new", "name", "5@email.com");
+				s.addClient("new", "name", "6@email.com");
+				s.addClient("new", "name", "7@email.com");
+				s.addClient("new", "name", "9@email.com");
+				s.addClient("new", "name", "8@email.com");
+				s.addClient("new", "name", "10@email.com");
+				s.addClient("new", "name", "11@email.com");
 
-				System.out.println();
-				System.out.println();
-				System.out.println();
-				System.out.println("Add 4 client to the system: ");
-				s.addClient("firstName", "lastName", "email@email.com");
-				s.addClient("firstName", "lastName", "email2@email.com");
-				s.addClient("firstName", "lastName", "email3@email.com");
-				s.addClient("firstName", "lastName", "emai4@email.com");
-				System.out.println();
-				System.out.println("SAVING DATA...");
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+				s.addHotel("hotel", "location", 100, 3);
+
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+				s.addFlight("company", "departure", "arrival", 200, 22);
+
+				s.createTrip("destination", 2, 200, s.getClient(1).getClientId(), s.getAccommodation(1).getAccommodationID(), s.getTransportation(1).getTransportID());
+				s.createTrip("destination", 2, 200, s.getClient(0).getClientId(), s.getAccommodation(0).getAccommodationID(), s.getTransportation(0).getTransportID());
 				
-				s.saveAllData("../output/data/");
-				System.out.println("Data saved successfully!\n");
-
+				System.out.println("Printing all recents lists:\n");
+				service.printRecents();
+				
+				//SHOW FILTERING IN REPOSITORY
+				System.out.println("Repository filtering:\n");
+				System.out.println("Display trips below $800:");
+				List<Trip> tripsBelow500 = s.tripsWithinCostRange(500);
+				for(Trip trip:tripsBelow500) {
+					System.out.println(trip);
+				}
+				System.out.println();
+				System.out.println("Display trips going to the destination: ");
 			}
 
 			// dashboard generator

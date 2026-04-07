@@ -117,7 +117,11 @@ public class Client implements Identifiable, CsvPersistable, Comparable<Client>,
 		return lastName;
 	}
 
-	public String getEmail() {
+	public String getEmail() { //this one is used in the dashboard generator
+		return emailAddress;
+	}
+
+	public String getEmailAddress() {
 		return emailAddress;
 	}
 

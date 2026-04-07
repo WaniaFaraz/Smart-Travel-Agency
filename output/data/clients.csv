@@ -5,7 +5,9 @@ C1004;Emma;Wilson;emma.wilson@usa.com
 C1005;Miguel;Gomez;miguel.gomez@spain.com
 C1006;John;Smith;john.smith@canada.com
 C1007;Alice;Johnson;alice.johnson@uk.com
-C1008;Bob Brown;bob.brown@australia.com
 C1009;Diana;Prince;diana.prince@greece.com
 C1010;Lee;Kim;lee.kim@korea.com
-C1011;Mig;Gomez;miguel.gomez@spain.com
+C1004;firstName;lastName;email@email.com
+C1005;firstName;lastName;email2@email.com
+C1006;firstName;lastName;email3@email.com
+C1007;firstName;lastName;emai4@email.com
