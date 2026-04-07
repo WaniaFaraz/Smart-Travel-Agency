@@ -304,7 +304,7 @@ public class Driver_A1_COMP249 {
 							!ZERO_ACCEPTED);
 					switch (subMenuOption) {
 						case 1:// Create a trip
-							String clientID, transportID, accommdodationID;
+							String clientID, transportID, accommodationID;
 							System.out.println("Enter the following information in order to create a new trip.");
 							System.out.print("Destination of trip: ");
 							destination = keyboard.next();
@@ -322,88 +322,42 @@ public class Driver_A1_COMP249 {
 							System.out.print("Enter the ID of the client associated with this trip: ");
 							clientID = keyboard.next();
 							//ACCOMMODATION SELECTION
-							
-
-							if (accommodations.size() == 0) {
-								System.out.println(
-										"There are no saved accommodations. Setting accommodation to null and skipping accommodation selection.");
-								accommodationOfTrip = null;
-							} else {
-								System.out.println("Here is the list of offered accommodations: ");
-								printArray(accommodations);
-								System.out.print("Enter the ID of the accommodation you wish to add to this trip: ");
-								ID = keyboard.next();
-								try {
-									indexOfAccommodation = findObjectByID(accommodations, ID);
-									accommodationOfTrip = accommodations.get(indexOfAccommodation);
-								} catch (EntityNotFoundException e) {
-									System.err.println(e.getMessage() + "\n");
-									break; // accommodation not found - exit current menu option
-								}
+							System.out.println("Accommodation selection for trip:\n");
+							printed = service.printAccommodations();
+							if(!printed) {
+								System.out.println("Unable to proceed any further. Returning to previous menu...");
+								break; //no clients, exit
 							}
-
-							if (transports.size() == 0) {
-								System.out.println(
-										"There are no saved transports. Setting transportation to null and skipping transportation selection.");
-								transportOfTrip = null;
-							} else {
-								System.out.println("Here is the list of offered transports: ");
-								printArray(transports);
-								System.out.print("Enter the ID of the transport you wish to add to this trip: ");
-								ID = keyboard.next();
-								try {
-									indexOfTransport = findObjectByID(transports, ID);
-									transportOfTrip = transports.get(indexOfTransport);
-									try {
-										Trip trip;
-										trip = new Trip(destination, duration, basePrice, clientOfTrip,
-												accommodationOfTrip, transportOfTrip);
-										service.createTrip(trip);
-										amountSpent = clientOfTrip.getAmountSpent();
-										double amount = trip.calculateTotalCost();
-										amountSpent += amount;
-										clientOfTrip.setAmountSpent(amountSpent);
-										System.out.println("\nTrip added successfully!\n");
-									} catch (InvalidTripDataException e) {
-										System.err.println(e.getMessage() + " Failed to create Trip.");
-									} catch (InvalidAccommodationDataException e) {
-										System.err.println(e.getMessage() + " Failed to create Trip.");
-									} catch (InvalidTransportDataException e) {
-										System.err.println(e.getMessage() + " Failed to create Trip.");
-									}
-								} catch (EntityNotFoundException e) {
-									System.err.println(e.getMessage() + "\n");
-								}
+							System.out.print("Enter the ID of the accommodation associated with this trip: ");
+							accommodationID = keyboard.next();
+							//TRANSPORTATION SELECTION
+							System.out.println("Transportation selection for trip:\n");
+							printed = service.printTransports();
+							if(!printed) {
+								System.out.println("Unable to proceed any further. Returning to previous menu...");
+								break; //no clients, exit
 							}
+							System.out.print("Enter the ID of the transportation associated with this trip: ");
+							transportID = keyboard.next();
+							//CREATE TRIP
+							service.createTrip(destination, duration, basePrice, clientID, accommodationID, transportID);
+							//if trip was not created, the service will print an error message
 							break;
 						case 2:// Edit Trip
 							boolean tripUpdated = false; // verification for success message
-							if (trips.size() == 0) {
-								System.out.println("There are no saved trips.\n");
-								break;
-							}
 							System.out.println("\nHere is the list of current trips:");
-							printArray(trips);
+							printed = service.printTrips();
+							if(!printed) break; //no trips to edit, exit
 							System.out.println("Enter the ID of the trip you wish to edit: ");
 							ID = keyboard.next();
 							try {
-								indexOfTrip = findObjectByID(trips, ID);
+								indexOfTrip = service.findTrip(ID);
 							} catch (EntityNotFoundException e) {
 								System.err.println(e.getMessage());
 								break; // trip not found - exit menu option since unable to edit trip
 							}
-							Trip tripToEdit = trips.get(indexOfTrip);
-							subMenuOption = validateMenuOption(tripEditMenu, TRIP_EDIT_MENU_MAX, !ZERO_ACCEPTED); // Print
-																													// trip
-																													// menu
-																													// and
-																													// prompt
-																													// user
-																													// for
-																													// choice.
-																													// Validate
-																													// input
-							tripUpdated = false;
+							Trip tripToEdit = service.getTrip(indexOfTrip);
+							subMenuOption = validateMenuOption(tripEditMenu, TRIP_EDIT_MENU_MAX, !ZERO_ACCEPTED); // Print trip menu and prompt user for choice. Validate input
 							switch (subMenuOption) {
 								case 1:// edit destination
 									System.out.print("Enter new destination: ");
@@ -439,8 +393,9 @@ public class Driver_A1_COMP249 {
 									ID = keyboard.next();
 									try {
 										indexOfClient = service.findClient(ID);
+										clientOfTrip = service.getClient(indexOfClient);
 										try {
-											tripToEdit.setClient(clients.get(indexOfClient));
+											tripToEdit.setClient(clientOfTrip);
 											tripUpdated = true;
 										} catch (InvalidTripDataException e) {
 											System.err.println(e.getMessage() + " Failed to edit client.");
@@ -450,20 +405,16 @@ public class Driver_A1_COMP249 {
 									}
 									break;
 								case 5: // edit accommodation
-									if (accommodations.size() == 0) {
-										System.out.println(
-												"There are no saved accommodations. Returning to previous menu.\n");
-										break;
-									}
 									System.out.println("\nHere is the list of current accommodations offered: ");
-									printArray(accommodations);
-									System.out.print(
-											"Enter the ID of the accommodation you wish to associate with this trip:");
+									printed = service.printAccommodations();
+									if(!printed) break; //no accommodations; exit
+									System.out.print("Enter the ID of the accommodation you wish to associate with this trip:");
 									ID = keyboard.next();
 									try {
-										indexOfAccommodation = findObjectByID(accommodations, ID);
+										indexOfAccommodation = service.findAccommodation(ID);
+										accommodationOfTrip = service.getAccommodation(indexOfAccommodation);
 										try {
-											tripToEdit.setAccommodation(accommodations.get(indexOfAccommodation));
+											tripToEdit.setAccommodation(accommodationOfTrip);
 											tripUpdated = true;
 										} catch (InvalidAccommodationDataException e) {
 											System.err.println(e.getMessage() + "Failed to edit Accommodation.");
@@ -473,21 +424,16 @@ public class Driver_A1_COMP249 {
 									}
 									break;
 								case 6: // edit transportation
-									if (transports.size() == 0) {
-										System.out.println(
-												"There are no saved transports. Returning to previous menu... \n");
-										break;
-									}
-									System.out.println(
-											"\nHere is the list of current transports offered: ");
-									printArray(transports);
-									System.out.print(
-											"Enter the ID of the transport you wish to associate with this trip:");
+									System.out.println("\nHere is the list of current transportations offered: ");
+									printed = service.printTransports();
+									if(!printed) break; //no accommodations; exit
+									System.out.print("Enter the ID of the transportation you wish to associate with this trip:");
 									ID = keyboard.next();
 									try {
-										indexOfTransport = findObjectByID(transports, ID);
+										indexOfTransport = service.findTransport(ID);
+										transportOfTrip = service.geTransportation(indexOfTransport);
 										try {
-											tripToEdit.setTransportation(transports.get(indexOfTransport));
+											tripToEdit.setTransportation(transportOfTrip);
 											tripUpdated = true;
 										} catch (InvalidTransportDataException e) {
 											System.err.println(e.getMessage() + "Failed to edit Transportation.");
@@ -510,49 +456,22 @@ public class Driver_A1_COMP249 {
 
 							break;
 						case 3:// Cancel a trip
-							if (trips.size() == 0) {
-								System.out.println("There are no saved trips.\n");
-								break;
-							}
 							System.out.println("\nHere is the list of current trips:");
-							// print all trips in trips array
-							printArray(trips);
+							printed = service.printTrips();
+							if(!printed) break; //no trips, exit							
 							System.out.print("Enter the ID of the trip you wish to cancel: ");
 							ID = keyboard.next();
-							try {
-								index = findObjectByID(trips, ID);
-								trips.remove(index);
-								System.out.println("\nTrip canceled successfully!\n");
-							} catch (EntityNotFoundException e) {
-								System.err.println(e.getMessage() + "\n");
-							}
+							service.deleteTrip(ID);
 							break;
 						case 4:// List all trips
-							if (trips.size() == 0) {
-								System.out.println("There are no saved trips.\n");
-							}
-							printArray(trips);
+							service.printTrips();
 							break;
 						case 5:// List all trips for a specific client
-							if (service.getClientCount() == 0) {
-								System.out.println("There are no saved clients.\n");
-								break;
-							}
-							System.out.println("Here is the list of clients: ");
-							service.printClients();
-							System.out.print("Enter the ID of the client whose trips you wish to see: ");
+							printed = service.printClients();
+							if(!printed) break;
+							System.out.print("\nEnter the ID of the client whose trips you wish to see: ");
 							ID = keyboard.next();
-							boolean tripFound = false;
-							for (int i = 0; i < trips.size(); i++) {
-								if (trips.get(i).getClient().CLIENT_ID.equals(ID)) {
-									tripFound = true;
-									System.out.println(trips.get(i));
-									System.out.println();
-								}
-							}
-							if (!tripFound) {
-								System.out.println("\nThere are no trips associated with this client ID.\n");
-							}
+							service.printTripsOfClient(ID);
 							break;
 						case 6:
 							System.out.println("Returning to main menu...\n");
@@ -567,7 +486,7 @@ public class Driver_A1_COMP249 {
 					subMenuOption = validateMenuOption(transportationManagementMenu, TRANSPORTATION_MANAGEMENT_MENU_MAX,
 							!ZERO_ACCEPTED);
 					int transportChoice; // transportChoice menu option
-					boolean transportCreated = false;
+					boolean printed; //to know whether the service printed the list
 					// General transportation variables
 					String companyName;
 					String departureCity;
@@ -607,14 +526,7 @@ public class Driver_A1_COMP249 {
 								luggageAllowance = keyboard.nextDouble();
 								System.out.print("Ticket price: ");
 								ticketPrice = keyboard.nextDouble();
-								try {
-									Transportation transport = new Flight(companyName, departureCity, arrivalCity,
-											luggageAllowance, ticketPrice);
-									transports.add(transport);
-									transportCreated = true;
-								} catch (InvalidTransportDataException e) {
-									System.err.println(e.getMessage() + " Failed to create Flight.");
-								}
+								service.addFlight(companyName, departureCity, arrivalCity, ticketPrice, luggageAllowance);
 							}
 							// TRAIN
 							else if (transportChoice == TRAIN) {
@@ -622,10 +534,7 @@ public class Driver_A1_COMP249 {
 								trainType = keyboard.nextLine();
 								System.out.print("Base fare: ");
 								baseFare = keyboard.nextDouble();
-								Transportation transport = new Train(companyName,
-										departureCity, arrivalCity, baseFare, trainType);
-								transports.add(transport);
-								transportCreated = true;
+								service.addTrain(companyName, departureCity, arrivalCity, baseFare, trainType);
 							}
 							// BUS
 							else if (transportChoice == BUS) {
@@ -633,85 +542,24 @@ public class Driver_A1_COMP249 {
 								numberOfStops = keyboard.nextInt();
 								System.out.print("Bus fare: ");
 								busFare = keyboard.nextDouble();
-								try {
-									Transportation transport = new Bus(companyName,
-											departureCity, arrivalCity, busFare, numberOfStops);
-									transports.add(transport);
-									transportCreated = true;
-								} catch (InvalidTransportDataException e) {
-									System.err.println(e.getMessage() + " Failed to create Bus.");
-								}
-							}
-							if (transportCreated == true) {
-								System.out.println("\nTransport option added successfully!\n");
+								service.addBus(companyName, departureCity, arrivalCity, busFare, numberOfStops);
 							}
 							break;
 						case 2:// Remove a transportation option
-							if (transports.size() == 0) {
-								System.out.println("There are no saved transports.\n");
-								break;
-							}
 							System.out.println("Here is the list of current transports:");
-							printArray(transports);
+							printed = service.printTransports();
+							if(!printed) break; //no transports, exit
 							System.out.println("Enter the ID of the transport you would like to remove: ");
 							ID = keyboard.next();
-							try {
-								index = findObjectByID(transports, ID);
-								transports.remove(index);
-							} catch (EntityNotFoundException e) {
-								System.err.println(e.getMessage() + "\n");
-							}
+							service.deleteTransportation(ID);
 							break;
 						case 3:// List transportation options by type (Flight, Train, Bus)
-							int flightCount = 0, trainCount = 0, busCount = 0;
-							// PRINT FLIGHTS
-							System.out.println("Flights:");
-							for (int i = 0; i < transports.size(); i++) {
-								Transportation transport = transports.get(i);
-								try {
-									if (transport.getClass() == (new Flight()).getClass()) {
-										flightCount++;
-										System.out.println(transport);
-									}
-								} catch (InvalidTransportDataException e) {
-									System.err.println(e.getMessage()); // should not end up happening anyway
-								}
-
-							}
-							if (flightCount == 0)
-								System.out.println("None.");
-							// PRINT TRAINS
-							System.out.println("Trains:");
-							for (int i = 0; i < transports.size(); i++) {
-								Transportation transport = transports.get(i);
-								try {
-									if (transport.getClass() == (new Train()).getClass()) {
-										trainCount++;
-										System.out.println(transport);
-									}
-								} catch (InvalidTransportDataException e) {
-									System.err.println(e.getMessage()); // should not end up happening anyway
-								}
-
-							}
-							if (trainCount == 0)
-								System.out.println("None.");
-							// PRINT BUSES
+							System.out.println("\nFlights:");
+							service.printFlights();
+							System.out.println("\nTrains:");
+							service.printTrains();
 							System.out.println("\nBuses:");
-							for (int i = 0; i < transports.size(); i++) {
-								Transportation transport = transports.get(i);
-								try {
-									if (transport.getClass() == (new Bus()).getClass()) {
-										busCount++;
-										System.out.println(transport);
-									}
-								} catch (InvalidTransportDataException e) {
-									System.err.println(e.getMessage()); // should not end up happening anyway
-								}
-
-							}
-							if (busCount == 0)
-								System.out.println("None.");
+							service.printBuses();
 							break;
 						case 4:// Back to Main Menu
 							System.out.println("Returning to main menu...\n");
@@ -733,6 +581,7 @@ public class Driver_A1_COMP249 {
 					int starRating; // Hotel variable
 					int numOfBeds; // Hostel variable
 					boolean accommodationCreated = false; // to decide whether or not to print success message
+					boolean printed = false; //to know if service printed a list
 					switch (subMenuOption) {
 						case 1:// Add an accommodation
 							final int HOTEL = 0, HOSTEL = 1;
@@ -755,82 +604,29 @@ public class Driver_A1_COMP249 {
 							if (accommodationChoice == HOTEL) { // Hotel
 								System.out.print("Star rating: ");
 								starRating = keyboard.nextInt();
-								try {
-									Accommodation accommodation = new Hotel(name, location,
-											pricePerNight, starRating);
-									accommodations.add(accommodation);
-									accommodationCreated = true;
-								} catch (InvalidAccommodationDataException e) {
-									System.err.println(e.getMessage() + " Failed to add Hotel.");
-								}
-
+								service.addHotel(name, location, pricePerNight, starRating);
 							} else if (accommodationChoice == HOSTEL) { // Hostel
 								System.out.print("Number of shared beds per room: ");
 								numOfBeds = keyboard.nextInt();
-								try {
-									Accommodation accommodation = new Hostel(name, location,
-											pricePerNight, numOfBeds);
-									accommodations.add(accommodation);
-									accommodationCreated = true;
-								} catch (InvalidAccommodationDataException e) {
-									System.err.println("Failed to create Hostel.");
-								}
-							}
-							if (accommodationCreated) {
-								System.out.println("Accommodation added successfully!\n");
+								service.addHostel(name, location, pricePerNight, numOfBeds);
 							}
 							break;
 						case 2:// Remove an accommodation
-							if (accommodations.size() == 0) {
-								System.out.println("There are no saved accommodations.\n");
-								break;
-							}
 							System.out.println("Here is the list of current accommodations offered");
-							printArray(accommodations);
+							printed = service.printAccommodations();
+							if(!printed) break; //no accommodations, exit
 							System.out.print("Enter the ID of the accommodation you would like to remove: ");
 							ID = keyboard.next();
-							try {
-								index = findObjectByID(accommodations, ID);
-								accommodations.remove(index);
-								System.out.println("Accommodation deleted successfully!");
-							} catch (EntityNotFoundException e) {
-								System.err.println(e.getMessage() + "\n");
-							}
+							service.deleteAccommodation(ID);
 							break;
 						case 3:// List accommodations by type
 							int hotelCount = 0, hostelCount = 0;
 							// PRINT HOTELS
 							System.out.println("Hotels: ");
-							for (int i = 0; i < accommodations.size(); i++) {
-								Accommodation accommodation = accommodations.get(i);
-								try {
-									if (accommodation.getClass() == (new Hotel()).getClass()) {
-										System.out.println(accommodation);
-										hotelCount++;
-									}
-								} catch (InvalidAccommodationDataException e) {
-									System.err.println("Failed to create Hostel.");
-								}
-
-							}
-							if (hotelCount == 0)
-								System.out.println("None.");
+							service.printHotels();
 							// PRINT HOSTELS
 							System.out.println("Hostels: ");
-							for (int i = 0; i < accommodations.size(); i++) {
-								Accommodation accommodation = accommodations.get(i);
-								try {
-									if (accommodation.getClass() == (new Hostel()).getClass()) {
-										System.out.println(accommodation);
-										hostelCount++;
-									}
-								} catch (InvalidAccommodationDataException e) {
-									System.err.println("Failed to create Hostel.");
-								}
-
-							}
-							if (hostelCount == 0)
-								System.out.println("None.");
+							service.printHostels();
 							break;
 						case 4:// Back to main menu
 							System.out.println("Returning to main menu...\n");

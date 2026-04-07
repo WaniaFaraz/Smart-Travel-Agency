@@ -23,11 +23,11 @@ public class Train extends Transportation {
 		setTrainType(trainType);
 	}
 
-	public Train(Train other) throws InvalidTransportDataException{
+	public Train(Train other){
 		this(other.getCompanyName(), other.getDepartureCity(), other.getArrivalCity(),other.baseFare, other.trainType);
 	}
 
-	public Train() throws InvalidTransportDataException {
+	public Train(){
 		this("no company name", "no departure city", "no arrival city", 30, "no train type");
 	}
 

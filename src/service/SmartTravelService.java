@@ -384,8 +384,7 @@ public class SmartTravelService {
 		else {
 			printList(trips);
 			return true;
-		}
-		
+		}		
 	}
 	public boolean printAccommodations() {
 		if(accommodations.size() == 0) {
@@ -406,6 +405,94 @@ public class SmartTravelService {
 			printList(transports);
 			return true;
 		}
+	}
+	//print specific type of each object. (flight, train, bus,...etc.)
+	public void printFlights() {
+		boolean flightFound = false;
+		try { //for compiler -- creating flight 'error' (never generated)
+			for(Transportation transport:transports) {
+				if(transport.getClass() == (new Flight().getClass())) {
+					System.out.println(transport);
+					flightFound = true;
+				}
+			}
+		}catch(InvalidTransportDataException e) {}//no need
+		finally{
+			if(!flightFound) {
+				System.out.println("None");
+			}
+		}
+	}
+	public void printTrains() {
+		boolean trainFound = false;
+		for(Transportation transport:transports) {
+			if(transport.getClass() == (new Train().getClass())) {
+				System.out.println(transport);
+				trainFound = true;
+			}
+		}
+		if(!trainFound) System.out.println("None");
 		
+	}
+	public void printBuses() {
+		boolean busFound = false;
+		try { //for compiler -- creating flight 'error' (never generated)
+			for(Transportation transport:transports) {
+				if(transport.getClass() == (new Bus().getClass())) {
+					System.out.println(transport);
+					busFound = true;
+				}
+			}
+		}catch(InvalidTransportDataException e) {}//no need
+		finally{
+			if(!busFound) {
+				System.out.println("None");
+			}
+		}
+	}
+	public void printHotels() {
+		boolean hotelFound = false;
+		try { //for compiler -- creating flight 'error' (never generated)
+			for(Accommodation accommodation:accommodations) {
+				if(accommodation.getClass() == (new Hotel().getClass())) {
+					System.out.println(accommodation);
+					hotelFound = true;
+				}
+			}
+		}catch(InvalidAccommodationDataException e) {}//no need
+		finally{
+			if(!hotelFound) {
+				System.out.println("None");
+			}
+		}
+	}
+	public void printHostels() {
+		boolean hostelFound = false;
+		try { //for compiler -- creating flight 'error' (never generated)
+			for(Accommodation accommodation:accommodations) {
+				if(accommodation.getClass() == (new Hostel().getClass())) {
+					System.out.println(accommodation);
+					hostelFound = true;
+				}
+			}
+		}catch(InvalidAccommodationDataException e) {}//no need
+		finally{
+			if(!hostelFound) System.out.println("None");
+		}
+			
+	}
+	public void printTripsOfClient(String ID) {
+		boolean tripFound = false;
+		for(Trip trip:trips) {
+			Client client = trip.getClient();
+			String clientId = client.CLIENT_ID;
+			if(ID.equals(clientId)) {
+				System.out.print(trip);
+				tripFound = true;
+			}
+		}
+		if(!tripFound) {
+			System.out.println("This client has no trips.\n");
+		}
 	}
 }
