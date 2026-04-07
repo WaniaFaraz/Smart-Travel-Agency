@@ -180,7 +180,6 @@ public class SmartTravelService {
 			System.err.println(e.getMessage() + " Failed to create hostel.\n");
 		}
 	}
-
 	// Create and add transportation
 	public void addFlight(String companyName, String departureCity, String arrivalCity, double ticketPrice,
 			double luggageAllowance) {
@@ -213,6 +212,39 @@ public class SmartTravelService {
 			System.err.println(e.getMessage() + " Failed to create bus. \n");
 		}
 	}
+	//DELETE OBJECTS
+	private static <T extends Identifiable> void deleteObject(List<T> list, String ID) throws EntityNotFoundException{
+		int index = findObjectByID(list, ID);
+		list.remove(index);
+	}
+	public void deleteClient(String ID) {
+		try {
+			deleteObject(clients, ID);
+		}catch(EntityNotFoundException e) {
+			System.err.println("Client does not exist. Nothing deleted.\n");
+		}
+	}
+	public void deleteTrip(String ID) throws EntityNotFoundException {
+		try {
+			deleteObject(trips, ID);
+		}catch(EntityNotFoundException e) {
+			System.err.println("Trip does not exist. Nothing deleted.\n");
+		}
+	}
+	public void deleteAccommodation(String ID) throws EntityNotFoundException {
+		try {
+			deleteObject(accommodations, ID);
+		}catch(EntityNotFoundException e) {
+			System.err.println("Accommodation does not exist. Nothing deleted.\n");
+		}
+	}
+	public void deleteTransportation(String ID) throws EntityNotFoundException {
+		try {
+			deleteObject(transports, ID);
+		}catch(EntityNotFoundException e) {
+			System.err.println("Transportation does not exist. Nothing deleted.\n");
+		}
+	}
 
 	// method: check if client exist
 	public boolean clientExists(String clientID) {
@@ -226,7 +258,7 @@ public class SmartTravelService {
 	}
 
 	// FIND OBJECT AND RETURN INDEX
-	public static <T extends Identifiable> int findObjectByID(List<T> list, String ID) throws EntityNotFoundException {
+	private static <T extends Identifiable> int findObjectByID(List<T> list, String ID) throws EntityNotFoundException {
 		int index = 0;
 		for (Identifiable item : list) {
 			if (item.getId().equals(ID))
@@ -236,7 +268,19 @@ public class SmartTravelService {
 		throw new EntityNotFoundException("Entity not found."); // item has not been found since loop is over and
 																	// nothing was returned
 	}
-
+	//FIND OBJECTS BY ID - FOR DRIVER - RETURNS THE INDEX OF THE OBJECT
+	public int findClient(String ID) throws EntityNotFoundException {
+		return findObjectByID(clients, ID);
+	}
+	public int findTrip(String ID) throws EntityNotFoundException {
+		return findObjectByID(trips, ID);
+	}
+	public int findTransport(String ID) throws EntityNotFoundException {
+		return findObjectByID(transports, ID);
+	}
+	public int findAccommodation(String ID) throws EntityNotFoundException {
+		return findObjectByID(accommodations, ID);
+	}
 	// load all data method
 
 	public void loadAllData(String folderPath) {
@@ -285,7 +329,7 @@ public class SmartTravelService {
 			TripFileManager.saveTrips(
 					trips,
 					folderPath + "trips.csv");
-			System.out.println("All data saved successfully."); // print message once its done
+			System.out.println("All data saved successfully.\n"); // print message once its done
 		} catch (IOException e) {
 			System.out.println("Error while saving data: " + e.getMessage()); // print a message if there's an error
 		}
@@ -321,17 +365,47 @@ public class SmartTravelService {
 			System.out.println();
 		}
 	}
-	//print list methods
-	public void printClients() {
-		printList(clients);
+	//print list methods - returns true if printed
+	public boolean printClients() {
+		if(clients.size() == 0) {
+			System.out.println("There are no saved clients.\n");
+			return false;
+		}
+		else {
+			printList(clients);
+			return true;
+		}
 	}
-	public void printTrips() {
-		printList(trips);
+	public boolean printTrips() {
+		if(trips.size() == 0) {
+			System.out.println("There are no saved trips.\n");
+			return false;
+		}
+		else {
+			printList(trips);
+			return true;
+		}
+		
 	}
-	public void printAccommodations() {
-		printList(accommodations);
+	public boolean printAccommodations() {
+		if(accommodations.size() == 0) {
+			System.out.println("There are no saved accommodations.\n");
+			return false;
+		}
+		else {
+			printList(accommodations);
+			return true;
+		}
 	}
-	public void printTransports() {
-		printList(transports);
+	public boolean printTransports() {
+		if(transports.size() == 0) {
+			System.out.println("There are no saved transportations.\n");
+			return false;
+		}
+		else {
+			printList(transports);
+			return true;
+		}
+		
 	}
 }

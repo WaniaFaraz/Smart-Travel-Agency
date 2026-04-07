@@ -41,15 +41,7 @@ public class Driver_A1_COMP249 {
 											// or not
 
 		SmartTravelService service = new SmartTravelService();
-		// arrays
-		// Creation of arrays
-		// Will be filled with data from service package in menu option 9: Load all
-		// data, using service methods
-		List<Client> clients = service.getClients(); // clients
-		List<Trip> trips = service.getTrips(); // trips of all clients
-		List<Transportation> transports = service.transports; // all transports
-		List<Accommodation> accommodations = service.accommodations; // all accommodations
-
+		
 		boolean dataLoaded = false; // to keep track of whether the data has been loaded
 
 		String mainMenu = """
@@ -193,6 +185,7 @@ public class Driver_A1_COMP249 {
 					String lastName;
 					String emailAddress;
 					boolean clientUpdated = false; // to decide whether to print success message
+					boolean printed = false; //to know whether the print method from service was executed or not
 					// Client management subMenu
 					switch (subMenuOption) {
 						case 1: // Add a client
@@ -203,31 +196,27 @@ public class Driver_A1_COMP249 {
 							lastName = keyboard.next();
 							System.out.print("Clients's email address: ");
 							emailAddress = keyboard.next();
-							try {
-								Client client = new Client(firstName, lastName, emailAddress);
-								service.addClient(client);
-								System.out.println("\nClient added successfully!\n");
-							} catch (InvalidClientDataException e) {
-								System.err.println("\n" + e.getMessage() + " Failed to create client.\n");
-							}
+							service.addClient(firstName, lastName, emailAddress); //error handled in service
 							break;
 						case 2: // Edit a client
-							if (clients.size() == 0) {
+							Client clientToEdit = null;
+							if (service.getClientCount() == 0) {
 								System.out.println("There are no saved clients.\n");
 								break;
 							}
 							System.out.println("\nHere is the list of all current clients:");
 							// print all IDs in names array
-							printArray(clients);
+							printed = service.printClients();
+							if(!printed) break; //no clients - nothing to edit - exit current
 							System.out.print("Enter the ID of the client you wish to edit: ");
 							ID = keyboard.next();
 							try {
-								index = findObjectByID(clients, ID);
+								index = service.findClient(ID);
+								clientToEdit = service.getClient(index);
 							} catch (EntityNotFoundException e) {
-								System.err.println(e.getMessage() + "\n");
+								System.err.println("Client not found." + "\n");
 								break; // client not found - exit current menu option
 							}
-
 							// print menu to edit client and prompt user to pick an attribute to edit.
 							// Validate user input
 							subMenuOption = validateMenuOption(clientEditMenu, CLIENT_EDIT_MENU_MAX, !ZERO_ACCEPTED);
@@ -236,7 +225,7 @@ public class Driver_A1_COMP249 {
 									System.out.print("Enter new first name: ");
 									firstName = keyboard.next();
 									try {
-										clients.get(index).setFirstName(firstName);
+										clientToEdit.setFirstName(firstName);
 										clientUpdated = true;
 									} catch (InvalidClientDataException e) {
 										System.err.println(e.getMessage() + " Failed to edit client first name\n.");
@@ -246,7 +235,7 @@ public class Driver_A1_COMP249 {
 									System.out.print("Enter new last name: ");
 									lastName = keyboard.next();
 									try {
-										clients.get(index).setLastName(lastName);
+										clientToEdit.setLastName(lastName);
 										clientUpdated = true;
 									} catch (InvalidClientDataException e) {
 										System.err.println(e.getMessage() + " Failed to edit client last name.\n");
@@ -256,7 +245,7 @@ public class Driver_A1_COMP249 {
 									System.out.print("Enter new email address: ");
 									emailAddress = keyboard.next();
 									try {
-										clients.get(index).setEmailAddress(emailAddress);
+										clientToEdit.setEmailAddress(emailAddress);
 										clientUpdated = true;
 									} catch (InvalidClientDataException e) {
 										System.err.println("Failed to edit client email address.\n");
@@ -264,8 +253,7 @@ public class Driver_A1_COMP249 {
 									break;
 								case 4:
 									System.out.println("Returning to main menu...\n");
-									// no need for default case since the validateMenuOption function ensures a
-									// valid input
+									// no need for default case since the validateMenuOption function ensures a valid input
 									break;
 							}
 							// Success message - after all cases have been executed
@@ -274,36 +262,17 @@ public class Driver_A1_COMP249 {
 							}
 							break;
 						case 3: // Delete a client
-							if (clients.size() == 0) {
-								System.out.println("There are no saved clients.\n");
-								break;
-							}
 							System.out.println("\nHere is the list of current clients:");
-							printArray(clients); // print all clients in clients array
+							printed = service.printClients();
+							if(!printed) break; //no clients, exit
 							System.out.print("Enter the ID of the client you wish to delete: ");
 							ID = keyboard.next();
-							try {
-								index = findObjectByID(clients, ID); // returns the index of the client that has the ID
-																		// in the clients array
-								// delete trips associated with that client to free up array
-								for (int i = 0; i < trips.size(); i++) {
-									if (trips.get(i).getClient().equals(clients.get(index))) {
-										trips.remove(i);
-									}
-								}
-								// remove client from array
-								clients.remove(index);
-								System.out.println("\nClient deleted successfully!\n");
-							} catch (EntityNotFoundException e) {
-								System.err.println(e.getMessage());
-							}
+							service.deleteClient(ID);
 							break;
 						case 4: // List all clients
-							if (clients.size() == 0) {
-								System.out.println("There are no saved clients.\n");
-							} else {
-								printArray(clients);
-							}
+							System.out.println("Here is the list of clients.\n");
+							printed = service.printClients();
+							if(!printed) break; //no clients, exit
 							break;
 						case 5: // Back to Main Menu
 							System.out.println("Returning to main menu...\n");
@@ -328,12 +297,14 @@ public class Driver_A1_COMP249 {
 				Transportation transportOfTrip; // reference to transportation from array or from trip (visual
 												// simplicity)
 				int indexOfTrip; // index in trips array
+				boolean printed = false; //to know whether the list of service was printed
 				while (subMenuOption != TRIP_MANAGEMENT_MENU_MAX) { // TRIP MANAGEMENT MENU
 					// print menu and validate input
 					subMenuOption = validateMenuOption(tripManagementMenu, TRIP_MANAGEMENT_MENU_MAX,
 							!ZERO_ACCEPTED);
 					switch (subMenuOption) {
 						case 1:// Create a trip
+							String clientID, transportID, accommdodationID;
 							System.out.println("Enter the following information in order to create a new trip.");
 							System.out.print("Destination of trip: ");
 							destination = keyboard.next();
@@ -341,23 +312,17 @@ public class Driver_A1_COMP249 {
 							duration = keyboard.nextInt();
 							System.out.print("Base price of trip: ");
 							basePrice = keyboard.nextDouble();
-							if (clients.size() == 0) {
-								System.out.println("There are no saved clients.\n");
-								clientOfTrip = null;
-							} else {
-								System.out.println("Here is the list of current clients: ");
-								printArray(clients);
-								System.out.print("Enter the ID of the client associated with this trip: ");
-								ID = keyboard.next();
-								try {
-									indexOfClient = findObjectByID(clients, ID);
-									clientOfTrip = clients.get(indexOfClient);
-
-								} catch (EntityNotFoundException e) {
-									System.err.println(e.getMessage() + "\n");
-									break; // client not found - trip cannot be created - exit menu option
-								}
+							//CLIENT SELECTION
+							System.out.println("Client selection for trip:\n");
+							printed = service.printClients();
+							if(!printed) {
+								System.out.println("Unable to proceed any further. Returning to previous menu...");
+								break; //no clients, exit
 							}
+							System.out.print("Enter the ID of the client associated with this trip: ");
+							clientID = keyboard.next();
+							//ACCOMMODATION SELECTION
+							
 
 							if (accommodations.size() == 0) {
 								System.out.println(
@@ -468,12 +433,12 @@ public class Driver_A1_COMP249 {
 									break;
 								case 4: // edit client
 									System.out.println("\nHere is the list of current clients: ");
-									printArray(clients);
+									service.printClients();
 									System.out
 											.print("Enter the ID of the client you wish to associate with this trip:");
 									ID = keyboard.next();
 									try {
-										indexOfClient = findObjectByID(clients, ID);
+										indexOfClient = service.findClient(ID);
 										try {
 											tripToEdit.setClient(clients.get(indexOfClient));
 											tripUpdated = true;
@@ -569,12 +534,12 @@ public class Driver_A1_COMP249 {
 							printArray(trips);
 							break;
 						case 5:// List all trips for a specific client
-							if (clients.size() == 0) {
+							if (service.getClientCount() == 0) {
 								System.out.println("There are no saved clients.\n");
 								break;
 							}
 							System.out.println("Here is the list of clients: ");
-							printArray(clients);
+							service.printClients();
 							System.out.print("Enter the ID of the client whose trips you wish to see: ");
 							ID = keyboard.next();
 							boolean tripFound = false;
