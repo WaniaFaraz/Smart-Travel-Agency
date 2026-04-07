@@ -661,7 +661,7 @@ public class SmartTravelService {
 	}
 	//Print recent trips
 	public void printRecentTrips() {
-		recentTrips.printAll();
+		recentTrips.printRecent(10);
 	}
 	//sort all arrays
 	public void sortAll() {
