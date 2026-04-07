@@ -954,7 +954,7 @@ public class Driver_A1_COMP249 {
 				System.out.println("Trip base price: "+ s.getTrip(0).getBasePrice());
 				System.out.println("Trip total cost: "+ s.getTrip(0).getTotalCost());
 
-				//Comparable
+				//Comparable with Transportation
 				System.out.println("\n Business natural ordering ");
 				System.out.println("\n Before sorting: ");
 				s.printTransports();
