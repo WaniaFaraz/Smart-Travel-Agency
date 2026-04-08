@@ -76,8 +76,8 @@ public class Repository<T extends Identifiable & Comparable<? super T>> {
 
     private List<T> copy(List<T> list) {
         List<T> copy = new ArrayList<>();
-        for(T item:list) {
-            copy.add(item);
+        for(int i = 0; i < list.size(); i++) {
+            copy.add(list.get(i));
         }
         return copy; //shallow copy - only used in sorting methods
     }

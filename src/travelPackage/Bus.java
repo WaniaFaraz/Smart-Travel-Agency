@@ -98,7 +98,7 @@ public class Bus extends Transportation {
 	public String toString() {
 		String display;
 		String formattedFare = String.format("%.2f", busFare);
-		display = String.join(";", TRANSPORT_TYPE, TRANSPORT_ID, companyName, departureCity, arrivalCity, formattedFare, numberOfStops+"");
+		display = String.join(";", TRANSPORT_TYPE, TRANSPORT_ID, companyName, departureCity, arrivalCity, formattedFare, (numberOfStops + ""));
 		return display;
 	}
 

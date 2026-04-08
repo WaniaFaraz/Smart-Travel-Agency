@@ -5,7 +5,7 @@
 //		Zahira Atmani 40350242
 //-----------------------------------------------------------------------------
 
-package driver_A1COMP249;
+package Driver_A1_COMP249;
 
 import clientPackage.*;
 import travelPackage.*;
@@ -689,7 +689,7 @@ public class Driver_A1_COMP249 {
 							break;
 						case 4:// Create a deep copy of the accommodation array
 							try {
-								List<Accommodation> copieAccommodations = service.copyAccommodationArray();
+								List<Accommodation> copiedAccommodations = service.copyAccommodationArray();
 							}catch(InvalidAccommodationDataException e) {
 								System.out.println("An accommodation for one of the trips contains invalid data. Failed to copy array.\n");
 							}							
@@ -1085,7 +1085,7 @@ public class Driver_A1_COMP249 {
 				} else if (!zeroAccepted && option > 0 && option <= maxMenuOption) {
 					return option;
 				} else {
-					System.out.println("Invalid option. " + errorMsg);
+					System.out.println("Inva1lid option. " + errorMsg);
 				}
 			} else {
 				discard = keyboard.next();
