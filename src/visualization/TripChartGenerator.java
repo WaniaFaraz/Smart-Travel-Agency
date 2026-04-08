@@ -156,7 +156,7 @@ public class TripChartGenerator {
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < count; i++) {
 			Trip trip = service.getTrip(i);
-            dataset.addValue(trips[i].getDuration(), "Duration (days)", trip.getTripID());
+            dataset.addValue(trip.getDuration(), "Duration (days)", trip.getTripID());
         }
 
         JFreeChart chart = ChartFactory.createLineChart(
