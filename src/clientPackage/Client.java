@@ -146,7 +146,7 @@ public class Client implements Identifiable, CsvPersistable, Comparable<Client>,
 	//method that will sort clients by total amount spent
 	@Override
 	public int compareTo(Client other){
-		return Double.compare(other.amountSpent, this.amountSpent);
+		return Double.compare(this.amountSpent, other.amountSpent);
 	}
 
 	// Other Methods
