@@ -87,7 +87,7 @@ abstract public class Accommodation implements Identifiable, CsvPersistable, Com
 	//method to sort accommodations by price per night
 	@Override
 	public int compareTo(Accommodation other){
-		return Double.compare(other.pricePerNight, this.pricePerNight);
+		return Double.compare(this.pricePerNight, other.pricePerNight);
 	}
 	//method to convert accommodation object to csv format
 	@Override
