@@ -197,7 +197,7 @@ public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<
 	//method to sort Trip by total cost
 	@Override
 	public int compareTo(Trip other){
-		return Double.compare(other.getTotalCost(), this.getTotalCost());
+		return Double.compare(this.getTotalCost(), other.getTotalCost());
 	}
 	//method to create trip object from csv row
 	public static Trip fromCsvRow(String csvLine, Client client, Accommodation accommodation, Transportation transportation) throws InvalidTripDataException, InvalidAccommodationDataException, InvalidTransportDataException{
