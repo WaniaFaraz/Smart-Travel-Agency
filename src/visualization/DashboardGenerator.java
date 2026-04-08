@@ -167,8 +167,8 @@ public class DashboardGenerator {
         for (int i = 0; i < service.getTripCount(); i++) {
             Trip trip = service.getTrip(i);
             out.println("                    <tr>");
-            out.println("                        <td><strong>" + trip.getTripId() + "</strong></td>");
-            out.println("                        <td>" + trip.getClientId() + "</td>");
+            out.println("                        <td><strong>" + trip.getTripID() + "</strong></td>");
+            out.println("                        <td>" + trip.get.getClient().ClientID() + "</td>");
             out.println("                        <td>" + trip.getDestination() + "</td>");
             out.println("                        <td>" + trip.getDuration() + "</td>");
             out.println("                        <td>$" + String.format("%.2f", service.calculateTripTotal(i)) + "</td>");
