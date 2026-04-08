@@ -20,8 +20,8 @@ public class RecentList<T extends Identifiable & Comparable<? super T>> {
     private final int MAX_SIZE = 10;
 
     public void addRecent(T item) {
-        list.add(item);
-        if(list.size() > MAX_SIZE) list.remove(0); //KEEPS LIST AT THE MAX_SIZE       
+        list.add(0, item);
+        if(list.size() > MAX_SIZE) list.remove(MAX_SIZE); //KEEPS LIST AT THE MAX_SIZE       
     }
 
     public void removeRecent(String ID) {
