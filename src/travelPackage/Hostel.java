@@ -76,7 +76,7 @@ public class Hostel extends Accommodation {
 	public String toCsvRow(){
 		return toString();
 	}
-	@Override
+	
 	public static Hostel fromCsvRow(String csvLine) throws InvalidAccommodationDataException{
 		String[] parts = csvLine.split(";");
 
