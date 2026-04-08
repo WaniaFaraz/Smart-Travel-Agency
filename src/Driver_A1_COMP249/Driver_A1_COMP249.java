@@ -896,9 +896,9 @@ public class Driver_A1_COMP249 {
 
 				// Total cost of multiple trips:
 				System.out.println("\nTotal cost of some trips ");
-				System.out.printf("Trip 0: %.2f", s.calculateTripTotal(0));
-				System.out.printf("Trip 1: %.2f", s.calculateTripTotal(1));
-				System.out.printf("Trip 2: %.2f", s.calculateTripTotal(2));
+				System.out.printf("Trip 0: %.2f%n", s.calculateTripTotal(0));
+				System.out.printf("Trip 1: %.2f%n", s.calculateTripTotal(1));
+				System.out.printf("Trip 2: %.2f%n", s.calculateTripTotal(2));
 
 				// Method that displays the most expensive trip
 				System.out.println();
@@ -937,7 +937,7 @@ public class Driver_A1_COMP249 {
 
 				s.sortAll();
 
-				System.out.println("\n After sorting (highest price first)");
+				System.out.println("\n After sorting (highest price first) - print returned array");
 				s.printTransports();
 
 				//SHOW LOAD ALL DATA
@@ -1046,17 +1046,21 @@ public class Driver_A1_COMP249 {
 				s.createTrip("destination", 2, 200, s.getClient(0).getClientId(), s.getAccommodation(0).getAccommodationID(), s.getTransportation(0).getTransportID());
 				
 				System.out.println("Printing all recents lists:\n");
-				service.printRecents();
+				s.printRecents();
 				
 				//SHOW FILTERING IN REPOSITORY
 				System.out.println("Repository filtering:\n");
-				System.out.println("Display trips below $800:");
-				List<Trip> tripsBelow500 = s.tripsWithinCostRange(500);
+				System.out.println("Display trips below $1000:");
+				List<Trip> tripsBelow500 = s.tripsWithinCostRange(1000);
 				for(Trip trip:tripsBelow500) {
 					System.out.println(trip);
 				}
 				System.out.println();
-				System.out.println("Display trips going to the destination: ");
+				System.out.println("Display trips going to the destination London: ");
+				List<Trip> tripsToLondon = s.tripsWithDestination("London");
+				for(Trip trip: tripsToLondon) {
+					System.out.println(trip);
+				}
 			}
 
 			

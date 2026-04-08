@@ -667,6 +667,7 @@ public class SmartTravelService {
 		trips = tripRepo.getSorted();
 		accommodations = accommodationRepo.getSorted();
 		transports = transportRepo.getSorted();
+		
 	}
 	//show all recent lists
 	public void printRecents() {

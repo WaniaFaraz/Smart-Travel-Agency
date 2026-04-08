@@ -55,21 +55,21 @@ public class Repository<T extends Identifiable & Comparable<? super T>> {
         List<T> returnList = copy(list);
         T keep, compare, temp;
         int indexOfGreatest;
-        for(int i = 0; i < list.size(); i++) {
-            keep = list.get(i);
+        for(int i = 0; i < returnList.size(); i++) {
+            keep = returnList.get(i);
             indexOfGreatest = i; //start the index at i
-            for(int j = i; j < list.size(); j++) {
-                compare = list.get(j);
+            for(int j = i; j < returnList.size(); j++) {
+                compare = returnList.get(j);
                 if(keep.compareTo(compare) < 0) {
                     //compare is the larger one
-                    keep = list.get(j); //store the current largest value in keep
+                    keep = returnList.get(j); //store the current largest value in keep
                     indexOfGreatest = j;
                 }
             }
             //swap
-            temp = list.get(i); //store, since will be replaced by the largest (keep)
-            list.set(i, keep); //put the largest value at i
-            list.set(indexOfGreatest, temp); //store the removed value in keep's old place  
+            temp = returnList.get(i); //store, since will be replaced by the largest (keep)
+            returnList.set(i, keep); //put the largest value at i
+            returnList.set(indexOfGreatest, temp); //store the removed value in keep's old place  
         }
         return returnList;
     }

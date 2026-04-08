@@ -21,9 +21,7 @@ public class RecentList<T extends Identifiable & Comparable<? super T>> {
 
     public void addRecent(T item) {
         list.add(item);
-        if(list.size() > MAX_SIZE) list.remove(MAX_SIZE); //KEEPS LIST AT THE MAX_SIZE
-        System.out.println("Recents: " + list);
-        
+        if(list.size() > MAX_SIZE) list.remove(0); //KEEPS LIST AT THE MAX_SIZE       
     }
 
     public void removeRecent(String ID) {
@@ -34,8 +32,10 @@ public class RecentList<T extends Identifiable & Comparable<? super T>> {
     }
 
     public void printRecent(int maxToShow) {
-        for (int i = 0; i < maxToShow; i++) {
-            System.out.println(list.get(i));
+        for (int i = 0; i < list.size(); i++) {
+            if(i < maxToShow) {
+                System.out.println(list.get(i));
+            }
         }
     }
 
