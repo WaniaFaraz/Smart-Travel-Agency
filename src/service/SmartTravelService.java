@@ -404,10 +404,8 @@ public class SmartTravelService {
 		Transportation transport = trips.get(index).getTransportation();
 		Accommodation accommodation = trips.get(index).getAccommodation();
 		try {
-			return trips.get(index).getTotalCost(client, accommodation, transport); // if index is valid, return the
-																					// full
-			// trip cost
-
+			return trips.get(index).getTotalCost(client, accommodation, transport); // if index is valid, return the full trip cost
+			
 		} catch (InvalidAccommodationDataException e) {
 			System.err.println(e.getMessage());
 		}

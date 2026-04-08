@@ -11,15 +11,12 @@ import clientPackage.*;
 import travelPackage.*;
 import exceptions.*;
 import service.SmartTravelService;
-import interfaces.*;
 import persistence.*;
 
 import visualization.DashboardGenerator;
 
 import java.io.IOException;
-import java.nio.file.SecureDirectoryStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -296,7 +293,6 @@ public class Driver_A1_COMP249 {
 																			// associated with trip
 																			// (same for accommodation and transport)
 				Client clientOfTrip; // reference to actual client taken from array. for visual simplicity
-				double amountSpent; // for updating the client amountSpent attribute
 				Accommodation accommodationOfTrip; // reference to accommodation from array or from trip (visual
 													// simplicity)
 				Transportation transportOfTrip; // reference to transportation from array or from trip (visual
@@ -604,7 +600,6 @@ public class Driver_A1_COMP249 {
 					double pricePerNight;
 					int starRating; // Hotel variable
 					int numOfBeds; // Hostel variable
-					boolean accommodationCreated = false; // to decide whether or not to print success message
 					boolean printed = false; // to know if service printed a list
 					switch (subMenuOption) {
 						case 1:// Add an accommodation
@@ -645,7 +640,6 @@ public class Driver_A1_COMP249 {
 							service.deleteAccommodation(ID);
 							break;
 						case 3:// List accommodations by type
-							int hotelCount = 0, hostelCount = 0;
 							// PRINT HOTELS
 							System.out.println("Hotels: ");
 							service.printHotels();
@@ -673,6 +667,7 @@ public class Driver_A1_COMP249 {
 						case 2:// Calculate and display the total cost of a trip
 							System.out.println("Here is the list of trips");
 							printed = service.printTrips();
+							if(!printed) break; //no trips, exit
 							System.out.print("\nEnter the ID of the trip you would like to calculate the cost of: ");
 							ID = keyboard.next();
 							try {
@@ -885,7 +880,7 @@ public class Driver_A1_COMP249 {
 				System.out.println(
 						"accommodation and transportation: " + s.getAccommodation(1).equals(s.getTransportation(1)));
 				System.out.println("client and transportation: " + s.getClient(1).equals(s.getTransportation(1)));
-				System.out.println("client and trip: " + s.getTrip(1).equals(s.getTrip(1)));
+				System.out.println("client and trip: " + s.getClient(1).equals(s.getTrip(1)));
 
 				System.out.println("\nObjects of the same class with different attributes: (should return false)");
 				System.out.println("Clients: " + s.getClient(1).equals(s.getClient(2)));
@@ -901,9 +896,9 @@ public class Driver_A1_COMP249 {
 
 				// Total cost of multiple trips:
 				System.out.println("\nTotal cost of some trips ");
-				System.out.println("Trip 0: " + s.calculateTripTotal(0));
-				System.out.println("Trip 1: " + s.calculateTripTotal(1));
-				System.out.println("Trip 3: " + s.calculateTripTotal(2));
+				System.out.printf("Trip 0: %.2f", s.calculateTripTotal(0));
+				System.out.printf("Trip 1: %.2f", s.calculateTripTotal(1));
+				System.out.printf("Trip 2: %.2f", s.calculateTripTotal(2));
 
 				// Method that displays the most expensive trip
 				System.out.println();
@@ -912,28 +907,9 @@ public class Driver_A1_COMP249 {
 				System.out.println("Find most expensive trip:\n");
 				s.findMostExpensiveTrip();
 				
-				//SHOW LOAD ALL DATA
-				System.out.println("\n\nLoad all data: ");
-				s.loadAllData("output/data/");
-				System.out.println("Data loaded:\n");
-				s.printClients();
-				s.printTrips();
-				s.printAccommodations();
-				s.printTransports();
-
-				System.out.println();
-				System.out.println();
-				System.out.println();
-				System.out.println("Add 4 clients to the system: ");
-				s.addClient("firstName", "lastName", "email@email.com");
-				s.addClient("firstName", "lastName", "email2@email.com");
-				s.addClient("firstName", "lastName", "email3@email.com");
-				s.addClient("firstName", "lastName", "emai4@email.com");
-				System.out.println();
-				System.out.println("SAVING DATA...");
 				
-				s.saveAllData("output/data/");
-				System.out.println("Data saved successfully!\n");
+
+				
 
 				//use of Identifiable interface
 				System.out.println("\n Identifiable Interface ");
@@ -963,6 +939,29 @@ public class Driver_A1_COMP249 {
 
 				System.out.println("\n After sorting (highest price first)");
 				s.printTransports();
+
+				//SHOW LOAD ALL DATA
+				System.out.println("\n\nLoad all data (Since the previous data was not saved first, all previous data will be lost): ");
+				s.loadAllData("output/data/");
+				System.out.println("Data loaded:\n");
+				s.printClients();
+				s.printTrips();
+				s.printAccommodations();
+				s.printTransports();
+
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				System.out.println("Add 4 clients to the system: ");
+				s.addClient("firstName", "lastName", "email@email.com");
+				s.addClient("firstName", "lastName", "email2@email.com");
+				s.addClient("firstName", "lastName", "email3@email.com");
+				s.addClient("firstName", "lastName", "emai4@email.com");
+				System.out.println();
+				System.out.println("SAVING DATA...");
+				
+				s.saveAllData("output/data/");
+				System.out.println("Data saved successfully!\n");
 		
 
 				//Generic File Manager

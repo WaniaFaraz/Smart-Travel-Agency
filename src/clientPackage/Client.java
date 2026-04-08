@@ -131,10 +131,10 @@ public class Client implements Identifiable, CsvPersistable, Comparable<Client>,
 	//methods required by interfaces
 	@Override
 	public String getId(){
-		return getClientID();
+		return CLIENT_ID;
 	}
 	public String getClientId() {
-		return getClientID(); //added since the driver from previous assignments uses a different spelling
+		return CLIENT_ID; //added since the driver from previous assignments uses a different spelling
 		//this one is for the HTML Dashboard generator
 	}
 
