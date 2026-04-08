@@ -87,11 +87,12 @@ public class TripChartGenerator {
      */
     public static void generateCostBarChart(SmartTravelService service) throws IOException {
         
-    	Trip[] trips = service.getTrip();
+    	
     	int count = service.getTripCount();
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < count; i++) {
-            dataset.addValue(service.calculateTripTotal(i), "Total Cost", trips[i].getTripID());
+			Trip trip = service.getTrip(i);
+            dataset.addValue(service.calculateTripTotal(i), "Total Cost", trip.getTripID());
         }
 
         JFreeChart chart = ChartFactory.createBarChart(
@@ -114,13 +115,14 @@ public class TripChartGenerator {
      */
     public static void generateDestinationPieChart(SmartTravelService service) throws IOException {
         
-    	Trip[] trips = service.getTrip();
+    	
     	int count = service.getTripCount();
     	DefaultPieDataset<String> dataset = new DefaultPieDataset<>();
 
         // Count trips per destination
         for (int i = 0; i < count; i++) {
-            String destination = trips[i].getDestination();
+			Trip trip = service.getTrip(i);
+            String destination = trip.getDestination();
             if (dataset.getIndex(destination) != -1) {
                 double value = dataset.getValue(destination).doubleValue();
                 dataset.setValue(destination, value + 1);
@@ -149,11 +151,12 @@ public class TripChartGenerator {
      */
     public static void generateDurationLineChart(SmartTravelService service) throws IOException {
         
-    	Trip[] trips = service.getTrip();
+    	
     	int count = service.getTripCount();
     	DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (int i = 0; i < count; i++) {
-            dataset.addValue(trips[i].getDuration(), "Duration (days)", trips[i].getTripID());
+			Trip trip = service.getTrip(i);
+            dataset.addValue(trips[i].getDuration(), "Duration (days)", trip.getTripID());
         }
 
         JFreeChart chart = ChartFactory.createLineChart(
