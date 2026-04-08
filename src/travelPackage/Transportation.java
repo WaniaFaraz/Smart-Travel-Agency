@@ -87,7 +87,7 @@ abstract public class Transportation implements Identifiable, CsvPersistable, Co
 	//method to sort transportation object based on base price
 	@Override
 	public int compareTo(Transportation other){
-		return Double.compare(other.getBasePrice(), this.getBasePrice());
+		return Double.compare(this.getBasePrice(), other.getBasePrice());
 	}
 
 	//abstract method for toCsvRow
