@@ -728,6 +728,7 @@ public class Driver_A1_COMP249 {
 							for (Trip trip : filteredTrips) {
 								System.out.println(trip);
 							}
+							break;
 						case 2: // Trips by cost range
 							System.out.println("Enter a cost to see trips below that cost: ");
 							Double upperCost = keyboard.nextDouble();
@@ -736,10 +737,13 @@ public class Driver_A1_COMP249 {
 							for (Trip trip : filteredTrips) {
 								System.out.println(trip);
 							}
+							break;
 						case 3: // Top Clients by spending
 							service.printTopClientsBySpending();
+							break;
 						case 4: // Recent Trips
 							service.printRecentTrips();
+							break;
 						case 5: // Smart sort collections
 							service.sortAll();
 							System.out.println("All collections successfully sorted!");
@@ -755,6 +759,7 @@ public class Driver_A1_COMP249 {
 								System.out.println("\nTransports:\n");
 								service.printTransports();
 							}
+							break;
 						case 6: // return to main menu
 							System.out.println("\nReturning to main menu...\n");
 							break;

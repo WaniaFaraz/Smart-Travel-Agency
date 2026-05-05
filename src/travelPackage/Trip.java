@@ -48,6 +48,8 @@ public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<
 
 	public Trip() throws InvalidTripDataException, InvalidClientDataException, InvalidAccommodationDataException, InvalidTransportDataException{
 		this("no destination", 0, 100, new Client(), null, null);
+		double amountSpent = client.getAmountSpent();
+		client.setAmountSpent(amountSpent + calculateTotalCost());
 	}
 
 	public Trip(Trip other) throws InvalidTripDataException, InvalidClientDataException, InvalidAccommodationDataException, InvalidTransportDataException{
@@ -69,6 +71,8 @@ public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<
 		setDestination(destination);
 		setAccommodation(accommodation);
 		setTransportation(transportation);
+		double amountSpent = client.getAmountSpent();
+		client.setAmountSpent(amountSpent + calculateTotalCost());
 		
 	}
 
@@ -251,7 +255,11 @@ public class Trip implements Identifiable, Billable, CsvPersistable, Comparable<
 
 	public double getTotalCost(Client client, Accommodation accommodation, Transportation transport) throws InvalidAccommodationDataException {
 		double total;
-		total = client.getAmountSpent() + accommodation.calculateCost(duration) + transportation.calculateCost(duration);
+		double accommodationCost = 0;
+		if(accommodation != null) accommodationCost = accommodation.calculateCost(duration);
+		double transportCost = 0;
+		if(transportation != null) transportCost = transportation.calculateCost(duration);
+		total =  accommodationCost + transportCost;
 		return total;
 	}
 

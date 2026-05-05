@@ -24,6 +24,12 @@ public class RecentList<T extends Identifiable & Comparable<? super T>> {
         if(list.size() > MAX_SIZE) list.remove(MAX_SIZE); //KEEPS LIST AT THE MAX_SIZE       
     }
 
+    public void addAllRecent(List<T> otherList) {
+        for(T item:otherList) {
+            addRecent(item);
+        }
+    }
+
     public void removeRecent(String ID) {
         
         int index = findById(ID);

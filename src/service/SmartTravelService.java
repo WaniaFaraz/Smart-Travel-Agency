@@ -174,10 +174,7 @@ public class SmartTravelService {
 				trips.add(trip);
 				recentTrips.addRecent(trip);
 				tripRepo.add(trip);
-				//Update amount spent for client
-				double amountSpent = foundClient.getAmountSpent();
-				amountSpent += trip.calculateTotalCost();
-				foundClient.setAmountSpent(amountSpent);
+
 			} catch (InvalidTripDataException e) {
 				System.err.println(e.getMessage() + " Failed to create trip. \n");
 			} catch (InvalidAccommodationDataException e) {
@@ -349,16 +346,31 @@ public class SmartTravelService {
 		accommodations = new ArrayList<>();
 		transports = new ArrayList<>();
 
-		// DECIDE HOW TO DO THE RECENT CLIENTS, TRIPS, ...
 		recentClients = new RecentList<>();
 		recentTrips = new RecentList<>();
 		recentAccommodations = new RecentList<>();
 		recentTransports = new RecentList<>();
+
+		clientRepo = new Repository<>();
+		tripRepo = new Repository<>();
+		accommodationRepo = new Repository<>();
+		transportRepo = new Repository<>();
 		try {
 			ClientFileManager.loadClients(clients, folderPath + "clients.csv");
+			clientRepo.addAll(clients);
+			recentClients.addAllRecent(clients);
+
 			AccommodationFileManager.loadAccommodations(accommodations, folderPath + "accommodations.csv");
+			accommodationRepo.addAll(accommodations);
+			recentAccommodations.addAllRecent(accommodations);
+			
 			TransportFileManager.loadTransportations(transports, folderPath + "transports.csv");
+			transportRepo.addAll(transports);
+			recentTransports.addAllRecent(transports);
+
 			TripFileManager.loadTrips(trips, folderPath + "trips.csv", clients, accommodations, transports);
+			tripRepo.addAll(trips);
+			recentTrips.addAllRecent(trips);
 
 			System.out.println("All data loaded successfully.\n"); // print the message once its done
 

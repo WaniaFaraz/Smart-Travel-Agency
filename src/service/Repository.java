@@ -30,6 +30,12 @@ public class Repository<T extends Identifiable & Comparable<? super T>> {
         list.add(item);
     }
 
+    public void addAll(List<T> list) {
+        for(T item:list) {
+            add(item);
+        }
+    }
+
     public void remove(int index) {
         list.remove(index);
     }

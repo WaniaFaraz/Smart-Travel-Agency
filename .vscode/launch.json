@@ -6,13 +6,6 @@
     "configurations": [
         {
             "type": "java",
-            "name": "tester",
-            "request": "launch",
-            "mainClass": "tester",
-            "projectName": "Smart-Travel-Agency_c0f3d2b8"
-        },
-        {
-            "type": "java",
             "name": "Current File",
             "request": "launch",
             "mainClass": "${file}",
