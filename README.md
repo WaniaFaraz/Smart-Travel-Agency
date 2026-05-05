@@ -11,7 +11,7 @@
 * <a href="#main-menu-each-menu-option-also-has-a-sub-menu---not-included-here-see-driver_a1_comp249">Main Menu (actual)</a>
 * <a href="#how-to-run">How to run</a>
 ---
-### 6 packages:
+### 6 packages
 * ```clientPackage```: contains the ```Client``` class
 * ```travelPackage```: all travel entities; ```Trip```, ```Accommodation``` (and sub-classes), ```Transportation``` (and sub-classes)
 * ```service```: ```SmartTravelService``` class (for business logic), ```RecentList``` and ```Repository``` classes (for history and easy filtering, respectively)
