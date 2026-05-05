@@ -4,14 +4,14 @@
 #### Travel Agency Booking system that manages Clients, Trips, Accommodations, and Transportations. Command Line Interface Application that prompts for user input using menus. Stores clients and their trips. Trips consist of a base cost, and at least one among a transport and accommodation, as well as the destination, duration and base price. Each object has a unique ID to help with searching and association (i.e. finding a certain client, associating a client to a trip, etc.)
 ---
 ### Table of contents
-* <a href="6-packages">Packages</a>
+* <a href="packages">Packages</a>
 * <a href="#oop-concepts-used">OOP Concepts Used</a>
 * <a href="#other-features-and-system--design-choices">Other Features and System & Design Choices</a>
 * <a href="#major-menu-options">Major Menu Options</a>
 * <a href="#main-menu-each-menu-option-also-has-a-sub-menu---not-included-here-see-driver_a1_comp249">Main Menu (actual)</a>
 * <a href="#how-to-run">How to run</a>
 ---
-### 6 packages
+### Packages
 * ```clientPackage```: contains the ```Client``` class
 * ```travelPackage```: all travel entities; ```Trip```, ```Accommodation``` (and sub-classes), ```Transportation``` (and sub-classes)
 * ```service```: ```SmartTravelService``` class (for business logic), ```RecentList``` and ```Repository``` classes (for history and easy filtering, respectively)
